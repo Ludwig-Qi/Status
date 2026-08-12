@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta content="width=device-width,initial-scale=1" name="viewport">
+<title>COS 数据清单 · data_access 数据字典（2026-08-11）</title>
+<style>
+:root{--bg:#f3f5f9;--panel:#fff;--ink:#172033;--muted:#667085;--line:#dfe4ec;--blue:#2457d6;--blue2:#edf3ff;--nav:#0d1a2e;--nav2:#182945;--good:#eaf7f1;--risk:#fff1e8;--warn:#fff8e8;--shadow:0 10px 30px rgba(20,39,75,.08);--sidebar-w:360px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--blue);text-decoration:none}
+/* ===== 侧边栏 ===== */
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar-w);background:linear-gradient(180deg,var(--nav),#081322);color:white;overflow:auto;overscroll-behavior:contain;padding:22px 16px 40px;z-index:30;transition:transform .22s ease}.brand{padding:2px 8px 18px;border-bottom:1px solid rgba(255,255,255,.12)}.brand h1{font-size:18px;line-height:1.4;margin:0 0 7px}.brand p{font-size:12px;color:#aab7ca;margin:0}
+.nav-tools{position:sticky;top:-22px;background:linear-gradient(180deg,var(--nav) 82%,rgba(13,26,46,.95));padding:14px 4px 12px;z-index:4}.search{width:100%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:white;border-radius:9px;padding:10px 11px;outline:none}.search::placeholder{color:#aab5c7}.toolbar{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.toolbar button,.filter-row button{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:#dfe7f5;border-radius:7px;padding:7px 8px;cursor:pointer;font-size:12px}.filter-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.filter-row button.active,.toolbar button:hover,.filter-row button:hover{background:#2f63dc;color:#fff}
+.nav-group{margin:6px 0}.nav-group-title{font-size:11px;letter-spacing:.07em;color:#8193b3;padding:8px 8px 7px;font-weight:700}.nav-item{display:flex;gap:8px;color:#cbd5e4;text-decoration:none;padding:8px;border-radius:8px;font-size:12px;line-height:1.35;margin:2px 0;border-left:3px solid transparent}.nav-item span{flex:0 0 26px;font-weight:800;color:#8295b8}.nav-item:hover{background:rgba(255,255,255,.07)}.nav-item.active{background:var(--nav2);border-left-color:#6fa0ff;color:#fff}.nav-item.hidden{display:none}
+.nav-section-label{font-size:11px;letter-spacing:.07em;color:#8193b3;padding:16px 8px 8px;font-weight:700;border-top:1px solid rgba(255,255,255,.1);margin-top:12px}.nav-accordion{margin:4px 0}.nav-accordion>summary{list-style:none;cursor:pointer;padding:9px 8px;border-radius:8px;color:#cbd5e4;font-size:12px;font-weight:700}.nav-accordion>summary::-webkit-details-marker{display:none}.nav-accordion>summary:hover{background:rgba(255,255,255,.07)}
+.sidebar-toggle{position:fixed;left:14px;top:14px;z-index:60;border:1px solid #cad5e5;background:#fff;color:#18304e;border-radius:10px;padding:9px 12px;font-weight:750;cursor:pointer;box-shadow:0 5px 18px rgba(20,39,75,.16)}.sidebar-close{position:absolute;right:13px;top:14px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:12px}
+body.sidebar-collapsed .sidebar{transform:translateX(-100%)}.content{margin-left:var(--sidebar-w);max-width:1600px;padding:30px 44px 100px;transition:margin-left .22s ease}body.sidebar-collapsed .content{margin-left:0}
+/* ===== Hero ===== */
+.hero{background:linear-gradient(135deg,#fff,#ecf2ff);border:1px solid var(--line);border-radius:18px;padding:35px 40px;box-shadow:var(--shadow)}.hero .eyebrow,.group-header .eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--blue)}.hero h1{font-size:30px;line-height:1.25;margin:8px 0 13px}.hero p{color:var(--muted);max-width:1150px}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 15px}.stat b{font-size:20px;margin-right:5px;color:var(--blue)}
+/* ===== Panel ===== */
+.panel{margin:20px 0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:25px 29px;box-shadow:var(--shadow)}.panel h2{margin-top:0;font-size:24px}.panel h3{font-size:18px;color:#173f68}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--blue)}
+.group-header{margin:38px 0 14px;padding:20px 23px;border-bottom:2px solid #cdd8ee;background:linear-gradient(90deg,#edf3ff,transparent);border-radius:12px}.group-header h2{margin:4px 0;font-size:24px}.group-header p{margin:0;color:var(--muted)}
+/* ===== 表格 ===== */
+.table-wrap{overflow-x:auto}.feature-table,.registry-table,.coverage-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px}.feature-table th,.feature-table td,.registry-table th,.registry-table td,.coverage-table th,.coverage-table td{border-right:1px solid #d7e2ed;border-bottom:1px solid #d7e2ed;padding:9px 11px;vertical-align:top;text-align:left}.feature-table th:first-child,.feature-table td:first-child,.registry-table th:first-child,.registry-table td:first-child{border-left:1px solid #d7e2ed}.feature-table thead th,.registry-table thead th,.coverage-table thead th{position:sticky;top:0;background:#eaf2fa;color:#173f68;z-index:2;border-top:1px solid #d7e2ed}.feature-table th:nth-child(1){min-width:150px}.feature-table th:nth-child(2){min-width:80px}.feature-table th:nth-child(3){min-width:190px}.feature-table th:nth-child(4){min-width:120px}.feature-table th:nth-child(5){min-width:220px}
+code,.field-name{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:#24548f}.field-name{background:#eef3ff;border-radius:5px;padding:1px 5px;white-space:nowrap}
+/* ===== 数据集卡片 ===== */
+details.dataset-card{background:#fff;border:1px solid var(--line);border-radius:14px;margin:14px 0;box-shadow:0 5px 16px rgba(27,45,78,.05);overflow:hidden;scroll-margin-top:18px}details.dataset-card[open]{box-shadow:var(--shadow);border-color:#b9c8e6}.ds-summary{list-style:none;cursor:pointer;padding:17px 22px;display:flex;justify-content:space-between;gap:16px;align-items:flex-start;user-select:none}.ds-summary::-webkit-details-marker{display:none}.ds-summary:hover{background:#fafbfe}.ds-kicker{display:flex;flex-wrap:wrap;gap:7px;color:var(--muted);font-size:12px;align-items:center}.ds-kicker span:not(.badge){padding:2px 7px;background:#f0f3f8;border-radius:5px}.ds-main h3{margin:7px 0 3px;font-size:19px;line-height:1.4}.ds-orig{margin:0;color:var(--muted);font-size:12.5px}.chevron{font-size:22px;color:#8090aa;transition:.2s}details[open]>.ds-summary .chevron{transform:rotate(180deg)}.ds-body{padding:0 22px 22px;border-top:1px solid var(--line)}.ds-meta{display:flex;flex-wrap:wrap;gap:8px 22px;padding:13px 0 8px;color:#47556e;font-size:13px}.ds-meta b{color:#173f68}
+/* ===== 徽章 ===== */
+.badge{display:inline-block;border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:700;white-space:nowrap}.mk-ashare{background:#eaf3ff;color:#255b92}.mk-us{background:#edf7ee;color:#2d6b3a}.mk-platform{background:#f1eaff;color:#5b4386}.model-D1{background:#e8f1ff;color:#24548f}.model-S1{background:#fff0d7;color:#84550d}.model-E1,.model-E2{background:#fdeaea;color:#932f2f}.model-RAW_EVENT{background:#fdeaea;color:#932f2f}.model-X0{background:#fff3d8;color:#805300}.model-MINUTE{background:#e6f6ed;color:#17673c}.model-STATIC{background:#eef1f4;color:#536272}.model-EMPTY{background:#f1f2f4;color:#5f6672}.pit-strict{background:#e6f6ed;color:#17673c}.pit-effective{background:#fff3d8;color:#805300}.pit-unsupported{background:#f1f2f4;color:#5f6672}
+.tag{display:inline-block;border-radius:6px;padding:1px 6px;font-size:11px;font-weight:700;margin:1px 2px}.tag-req{background:#fdeaea;color:#932f2f}.tag-key{background:#eaf3ff;color:#255b92}.tag-warn{background:#fff0d7;color:#84550d}
+/* ===== callout ===== */
+.callout{border-radius:9px;padding:12px 14px;margin:10px 0}.direct{background:#eef4ff;border-left:4px solid #4b78e6}.use{background:var(--good);border-left:4px solid #2c9a6b}.risk{background:var(--risk);border-left:4px solid #dc7a34}.warn{background:var(--warn);border-left:4px solid #d49a2d}
+/* ===== 网格 ===== */
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.grid-2>div,.grid-3>div,.grid-4>div{background:#f8fbff;border:1px solid #dce6f2;border-radius:11px;padding:12px}.grid-2 b,.grid-3 b,.grid-4 b{color:#153f69;display:block;margin-bottom:4px}.grid-2 p,.grid-3 p,.grid-4 p{margin:4px 0 0;font-size:13px;color:#405a73}
+/* ===== 单位规范 ===== */
+.unit-row{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:9px 12px;border-bottom:1px solid #edf1f7;font-size:14px}.unit-row:last-child{border-bottom:0}.unit-row .u{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;color:#24548f}
+.semantic-table{width:100%;border-collapse:collapse;font-size:13px}.semantic-table th,.semantic-table td{border:1px solid #dbe3ec;padding:8px 10px;vertical-align:top;text-align:left}.semantic-table th{background:#edf4fb;color:#173c62}
+details.subblock{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:#fcfdff;overflow:hidden}.subblock>summary{list-style:none;cursor:pointer;padding:12px 15px;font-weight:700;color:#173c62}.subblock>summary::-webkit-details-marker{display:none}.subblock[open]>summary{border-bottom:1px solid var(--line)}.subbody{padding:13px 15px;line-height:1.8}
+.legend-strip{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;padding:10px 12px;border:1px solid #d8e2ee;background:#f8fbff;border-radius:10px;font-size:12.5px;color:#405a73;align-items:center}
+.footer-note{margin:30px 0 0;padding:16px 18px;border:1px solid #cdd9ea;background:#f4f8fd;border-radius:12px;font-size:13px;color:#526077;line-height:1.8}
+@media(max-width:1100px){.sidebar{position:relative;width:auto;max-height:520px}.content{margin-left:0;padding:22px}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr}}@media(max-width:720px){.content{padding:13px}.hero{padding:22px}.hero h1{font-size:22px}.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+@media print{.sidebar{display:none}.content{margin:0;max-width:none}details.dataset-card>.ds-body,details.subblock>.subbody{display:block!important}details.dataset-card,details.subblock{break-inside:avoid}}
+</style>
+</head>
+<body id="top"><button aria-label="展开或收起目录" class="sidebar-toggle" id="sidebarToggle" type="button">☰ 目录</button>
+<aside class="sidebar">
+<button aria-label="收起目录" class="sidebar-close" id="sidebarClose" type="button">收起</button>
+<div class="brand"><h1>COS 数据清单 · data_access 数据字典</h1><p>data_access v0.10.2｜2026-08-11 快照</p></div>
+<div class="nav-tools">
+<input class="search" id="search" placeholder="搜索表名 / 字段 / 单位 / 口径…">
+<div class="toolbar"><button id="expandAll" type="button">展开全部数据集</button><button id="collapseAll" type="button">收起全部数据集</button></div>
+<div class="filter-row" id="filters"><button class="active" data-filter="all" type="button">全部</button><button data-filter="ashare" type="button">A股</button><button data-filter="us" type="button">美股</button><button data-filter="platform" type="button">平台</button></div>
+</div>
+<div class="nav-section-label">文档导航</div>
+<nav>
+<div class="nav-group">
+<a class="nav-item" data-filter="all" data-target="overview" href="#overview"><span>总</span> 01｜总览与读法</a>
+<a class="nav-item" data-filter="all" data-target="conventions" href="#conventions"><span>约</span> 02｜命名·模型·单位约定</a>
+<a class="nav-item" data-filter="all" data-target="ashare-group" href="#ashare-group"><span>A</span> 03｜A股 COS 数据集（22 张）</a>
+<a class="nav-item" data-filter="all" data-target="us-group" href="#us-group"><span>U</span> 04｜美股 COS 数据集（28 张）</a>
+<a class="nav-item" data-filter="all" data-target="platform-group" href="#platform-group"><span>P</span> 05｜平台/基础设施数据</a>
+<a class="nav-item" data-filter="all" data-target="semantic" href="#semantic"><span>义</span> 06｜语义字段与单位规范</a>
+<a class="nav-item" data-filter="all" data-target="contract" href="#contract"><span>契</span> 07｜COS 契约与 PIT 口径</a>
+</div>
+</nav>
+<div class="nav-section-label">A股数据集索引</div>
+<details class="nav-accordion" data-nav-group="ashare" open=""><summary class="nav-accordion-title">A股 22 张表</summary><div class="nav-group" id="nav-ashare"></div></details>
+<div class="nav-section-label">美股数据集索引</div>
+<details class="nav-accordion" data-nav-group="us" open=""><summary class="nav-accordion-title">美股 28 张表</summary><div class="nav-group" id="nav-us"></div></details>
+<div class="nav-section-label">平台数据集索引</div>
+<details class="nav-accordion" data-nav-group="platform"><summary class="nav-accordion-title">平台/基础设施</summary><div class="nav-group" id="nav-platform"></div></details>
+</aside>
+
+<main class="content">
+<section class="hero">
+<div class="eyebrow">DATA ACCESS · COS CLEAN LAYER · FIELD DICTIONARY</div>
+<h1>COS 数据清单｜data_access 支持的数据表与字段字典</h1>
+<p>本清单整理 <b>data_access v0.10.2</b>（GitHub: HKUST-QUANT-SOCIETY/data_access）当前支持的全部 COS 数据表及字段：表名、字段名、字段含义、单位与口径（量纲、复权/PIT 约定、过滤要求）。数据源权威定义见库内 <code>config/datasets.yaml</code>（schema 单一事实来源）、<code>config/semantic_fields.yaml</code>（字段语义/单位归一化）与 <code>cos_contract*.py</code>（时间模型 / PIT 契约）。</p>
+<div class="stats"><div class="stat"><b>71</b>个已登记数据集</div><div class="stat"><b>22</b>A股 COS 表</div><div class="stat"><b>28</b>美股 COS 表</div><div class="stat"><b>21</b>平台/基础设施表</div><div class="stat"><b>400+</b>字段条目</div></div>
+</section>
+
+<!-- ============ 01 总览 ============ -->
+<section class="panel" id="overview">
+<div class="eyebrow">OVERVIEW · HOW TO READ</div>
+<h2>01｜总览与读法</h2>
+<p class="reader-intro">data_access 把「COS 清洗层 + 本地镜像」的 Parquet 数据统一登记为带 <b>语义契约</b> 的数据集。每个数据集声明：市场（A股/美股）、时间模型、标的列、panel/PIT 策略、过滤条件与单位口径。读取时按契约校验，防止「前复权/后复权混用」「% 当小数」「未来事件前视」等经典错误。</p>
+<div class="grid-2">
+<div><b>时间模型（temporal_model）</b><p>D1=完整日频面板；S1=稀疏日频快照；MINUTE=分钟面板；E1/E2=财务/事件表（PIT 可见）；RAW_EVENT=新闻等原始事件；X0=稀疏事件表（禁止当全历史面板）；STATIC=静态维表；EMPTY=占位表（禁止读取）。</p></div>
+<div><b>PIT 策略（pit_policy）</b><p>strict=有可靠公告时点（严格 PIT）；effective_time_only=仅生效日（禁止无界读取）；unsupported=不支持 PIT。A股财务 knowledge_time=PubDate；美股财务 knowledge_time=filing_date（支持 vintage）。</p></div>
+<div><b>单位口径（重点）</b><p>A股 Return 为 bp（÷10000）；TurnoverRatio/Roe/Roa/Weight 等为 %（÷100）；美股 Ret 系列/比率已是小数（禁止再除）。复权：A股 Factor 与美股 AdjFactor 均为「后复权乘数」，跨市场禁止混用。</p></div>
+<div><b>必填过滤（required filters）</b><p>ashare_stock_industry 必须指定 IndustrySource；ashare_index_constituent 必须指定 IndexSymbol；美股财务表必须指定 timeframe（quarterly/annual/trailing_twelve_months）。缺省即拒绝。</p></div>
+</div>
+<div class="callout warn"><b>阅读提示：</b>「口径」列集中记录单位、复权约定、PIT 时点、过滤要求与易错点。加 <span class="tag tag-req">必填过滤</span> 表示读取时必须显式提供；<span class="tag tag-key">关键列</span> 表示时间/标的/PIT 列；<span class="tag tag-warn">注意</span> 表示易错口径。</div>
+</section>
+
+<!-- ============ 02 约定 ============ -->
+<section class="panel" id="conventions">
+<div class="eyebrow">CONVENTIONS · NAMING / MODELS / UNITS</div>
+<h2>02｜命名 · 时间模型 · 单位约定</h2>
+<h3>命名规则</h3>
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>前缀</th><th>市场</th><th>示例</th></tr></thead><tbody>
+<tr><td><code>ashare_</code></td><td>A股（lqtp 数据，COS: clean_data/ashare/lqtp_data/*）</td><td><code>ashare_stock_daily</code></td></tr>
+<tr><td><code>us_</code></td><td>美股（massive_data / clean_data）</td><td><code>us_stock_daily</code></td></tr>
+<tr><td>（无前缀）</td><td>平台/基础设施（因子湖、流式、回测）</td><td><code>factor_lake</code></td></tr>
+</tbody></table></div>
+<h3>字段类型约定</h3>
+<p>A股行情/估值/财务用 PascalCase 列名（如 <code>TradeDate</code>、<code>MarketCap</code>）；美股 massive 用 snake_case 列名（如 <code>trade_date</code>、<code>market_cap</code>）。两市场 schema 完全不同，禁止套用对方 schema。</p>
+<h3>跨市场通用单位速查</h3>
+<div class="unit-row"><span class="u">收益</span><span>A股 <code>Return</code>：bp（基点，÷10000 得小数）；美股 <code>Ret</code>/<code>Ret_Intra</code>/<code>Ret_Overnight</code>：小数，禁止再除。</span></div>
+<div class="unit-row"><span class="u">百分比类</span><span>A股 <code>TurnoverRatio</code>/<code>DividendRatio</code>、财务 <code>Roe</code>/<code>Roa</code>/<code>*Margin</code>、指数 <code>Weight</code>：% （÷100 得小数）。美股 <code>dividend_yield</code>/<code>return_on_equity</code>/<code>return_on_assets</code>：已是小数。</span></div>
+<div class="unit-row"><span class="u">估值倍数</span><span><code>PeRatio</code>/<code>PbRatio</code>/<code>PsRatio</code>/<code>PcfRatio</code> 及美股 <code>price_to_*</code>/<code>debt_to_equity</code>/<code>current</code>/<code>quick</code>/<code>cash</code>/<code>ev_to_*</code>：倍数/比率，原样。</span></div>
+<div class="unit-row"><span class="u">股本</span><span>A股 <code>Capitalization</code> 系列、<code>TurnoverBase</code>/<code>EffectiveFloatShares</code>、美股 <code>shares_outstanding</code> 系列：股。</span></div>
+<div class="unit-row"><span class="u">金额</span><span>A股财务/市值：元（CNY）；美股财务/市值/价格：USD。美股分红 <code>cash_amount</code> 币种随 <code>currency</code> 列动态（HKD/EUR/…，非恒 USD）。</span></div>
+<div class="unit-row"><span class="u">复权</span><span>A股 <code>Factor</code>、美股 <code>AdjFactor</code>/<code>adj_factor</code>：后复权乘数，后复权价 ≈ 原始价 × 因子。A股为 <code>backward_vendor_factor</code>，美股 <code>us_stock_daily</code> 为 <code>backward_vendor_factor</code>、<code>us_adj_factor</code> 为 <code>backward_clean_factor</code>。基期/事件覆盖不同，禁止跨市场混用同一列。</span></div>
+<div class="callout direct"><b>时间表示：</b>A股财务/美股财务的公告时间均为 <code>date_label</code>（非 UTC instant），禁止把 naive 00:00 当 UTC instant 转时区提前一天。美股 <code>us_fact_news</code> 的 <code>published_utc</code> 为真 UTC instant（唯一 instant 路径）。</div>
+</section>
+
+<!-- ============ A股 ============ -->
+<div class="group-header" id="ashare-group"><div class="eyebrow">A-SHARE · COS LQTP CLEAN LAYER</div><h2>03｜A股 COS 数据集（22 张）</h2><p>数据源：clean_data/ashare/lqtp_data/*；本地镜像按需从 COS 增量拉取。单位口径以库内字典为准。</p></div>
+
+<details class="dataset-card" data-dataset="ashare_calendar" data-market="ashare" id="ds-ashare_calendar" open=""><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-STATIC">STATIC 静态</span><span class="badge pit-unsupported">PIT: not_applicable</span><span>时间列 TradeDate</span></div><div class="ds-main"><h3>ashare_calendar <span class="field-name">A股交易日历</span></h3><p class="ds-orig">Calendar 表：全市场交易日历，判断某日是否交易日。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span> 日历日</td></tr>
+<tr><td><span class="field-name">IsTradeDay</span></td><td>bool</td><td>是否交易日</td><td>—</td><td>true=交易日；A股节假日/周末=false</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_daily" data-market="ashare" id="ds-ashare_stock_daily" open=""><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1 日频面板</span><span class="badge pit-unsupported">PIT: not_applicable</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_daily <span class="field-name">A股股票日线行情</span></h3><p class="ds-orig">StockDailyBar：全市场股票日频 OHLCV + 收益率 + 后复权因子 + 涨跌停。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span> 如 000001.SZ</td></tr>
+<tr><td><span class="field-name">Open</span></td><td>double</td><td>开盘价</td><td>元</td><td>不复权原始价</td></tr>
+<tr><td><span class="field-name">High</span></td><td>double</td><td>最高价</td><td>元</td><td>不复权原始价</td></tr>
+<tr><td><span class="field-name">Low</span></td><td>double</td><td>最低价</td><td>元</td><td>不复权原始价</td></tr>
+<tr><td><span class="field-name">Close</span></td><td>double</td><td>收盘价</td><td>元</td><td>不复权原始价；后复权价=Close×Factor</td></tr>
+<tr><td><span class="field-name">PreClose</span></td><td>double</td><td>前收盘价</td><td>元</td><td>收益计算基准（上一交易日收盘）</td></tr>
+<tr><td><span class="field-name">Volume</span></td><td>int</td><td>成交量</td><td>股</td><td>当日总成交量</td></tr>
+<tr><td><span class="field-name">Amount</span></td><td>double</td><td>成交额</td><td>元</td><td>当日总成交金额</td></tr>
+<tr><td><span class="field-name">HighLimit</span></td><td>double</td><td>涨停价</td><td>元</td><td>涨跌停限制价</td></tr>
+<tr><td><span class="field-name">LowLimit</span></td><td>double</td><td>跌停价</td><td>元</td><td>涨跌停限制价</td></tr>
+<tr><td><span class="field-name">Return</span></td><td>double</td><td>日收益率</td><td>bp（基点）</td><td><span class="tag tag-warn">注意</span> ÷10000 才是小数收益；return_column 契约</td></tr>
+<tr><td><span class="field-name">Factor</span></td><td>double</td><td>后复权因子</td><td>无量纲乘数</td><td><span class="tag tag-warn">注意</span> 后复权价=Close×Factor（backward_vendor_factor），非前复权</td></tr>
+<tr><td><span class="field-name">Vwap</span></td><td>double</td><td>成交均价</td><td>元</td><td>量加权均价</td></tr>
+<tr><td><span class="field-name">IsSuspend</span></td><td>bool</td><td>是否停牌</td><td>—</td><td>true=当日停牌</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamptz</td><td>更新时间</td><td>时间戳</td><td>供应商 freshness（UTC），非市场可知修订时点</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_minute" data-market="ashare" id="ds-ashare_stock_minute"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-MINUTE">MINUTE 分钟</span><span class="badge pit-unsupported">PIT: not_applicable</span><span>时间列 QuoteTime</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_minute <span class="field-name">A股股票分钟行情</span></h3><p class="ds-orig">StockMinuteBar：分钟级 OHLCV + 均价。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">QuoteTime</span></td><td>timestamp</td><td>分钟时间戳</td><td>—</td><td><span class="tag tag-key">时间列</span> 分钟级</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">Open</span></td><td>double</td><td>分钟开盘价</td><td>元</td><td>该分钟首笔</td></tr>
+<tr><td><span class="field-name">High</span></td><td>double</td><td>分钟最高价</td><td>元</td><td>该分钟最高</td></tr>
+<tr><td><span class="field-name">Low</span></td><td>double</td><td>分钟最低价</td><td>元</td><td>该分钟最低</td></tr>
+<tr><td><span class="field-name">Close</span></td><td>double</td><td>分钟收盘价</td><td>元</td><td>该分钟末笔</td></tr>
+<tr><td><span class="field-name">Volume</span></td><td>int</td><td>分钟成交量</td><td>股</td><td>该分钟累计</td></tr>
+<tr><td><span class="field-name">Amount</span></td><td>double</td><td>分钟成交额</td><td>元</td><td>该分钟累计</td></tr>
+<tr><td><span class="field-name">Vwap</span></td><td>double</td><td>分钟均价</td><td>元</td><td>量加权</td></tr>
+</tbody></table></div>
+<div class="callout warn"><b>读取约束：</b>query_policy 要求显式选列，max_rows=20,000,000；bucket 布局（64 桶）用于剪枝。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_valuation_daily" data-market="ashare" id="ds-ashare_stock_valuation_daily"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1 日频面板</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_valuation_daily <span class="field-name">A股估值日频</span></h3><p class="ds-orig">StockValuationDaily：股本、市值、换手率、估值倍数、股息率。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">Capitalization</span></td><td>double</td><td>总股本</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">CirculatingCap</span></td><td>double</td><td>流通股本</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">MarketCap</span></td><td>double</td><td>总市值</td><td>元</td><td><span class="tag tag-key">关键</span> =Close×总股本口径</td></tr>
+<tr><td><span class="field-name">CirculatingMarketCap</span></td><td>double</td><td>流通市值</td><td>元</td><td>=Close×流通股本口径</td></tr>
+<tr><td><span class="field-name">TurnoverRatio</span></td><td>double</td><td>换手率</td><td>%</td><td><span class="tag tag-warn">注意</span> ÷100 得小数</td></tr>
+<tr><td><span class="field-name">PeRatio</span></td><td>double</td><td>市盈率（动态/滚动）</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">PeRatioLyr</span></td><td>double</td><td>市盈率（静态）</td><td>倍数</td><td>按上年报</td></tr>
+<tr><td><span class="field-name">PbRatio</span></td><td>double</td><td>市净率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">PsRatio</span></td><td>double</td><td>市销率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">PcfRatio</span></td><td>double</td><td>市现率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">PcfRatio2</span></td><td>double</td><td>市现率（修正）</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">DividendRatio</span></td><td>double</td><td>股息率</td><td>%</td><td><span class="tag tag-warn">注意</span> ÷100 得小数</td></tr>
+<tr><td><span class="field-name">FreeCap</span></td><td>double</td><td>自由流通股本</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">FreeMarketCap</span></td><td>double</td><td>自由流通市值</td><td>元</td><td>—</td></tr>
+<tr><td><span class="field-name">ACap</span></td><td>double</td><td>A股总股本</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">AMarketCap</span></td><td>double</td><td>A股市值</td><td>元</td><td>—</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamptz</td><td>更新时间</td><td>时间戳</td><td>UTC</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_capital_daily" data-market="ashare" id="ds-ashare_stock_capital_daily"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-S1">S1 稀疏快照</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_capital_daily <span class="field-name">A股股本日频</span></h3><p class="ds-orig">StockCapitalDaily：日终股本快照（≠ 美股拆股事件表）。覆盖可能短于行情。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">ChangeDate</span></td><td>date</td><td>股本变动日</td><td>—</td><td>股本变化的生效日</td></tr>
+<tr><td><span class="field-name">PubDate</span></td><td>date</td><td>公告日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">TotalCapital</span></td><td>double</td><td>总股本</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">CirculatingCapital</span></td><td>double</td><td>流通股本</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamp</td><td>更新时间</td><td>时间戳</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_indicator" data-market="ashare" id="ds-ashare_stock_indicator"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-E1">E1 财务事件</span><span class="badge pit-strict">PIT: strict (PubDate)</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_indicator <span class="field-name">A股财务指标</span></h3><p class="ds-orig">StockIndicator：每股收益、ROE/ROA、利润率等财务指标。文件名=PubDate，PIT=PubDate。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>供应商记录日</td><td>—</td><td>非 PIT 时点（PIT 用 PubDate）</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">PubDate</span></td><td>date</td><td>公告日期</td><td>—</td><td><span class="tag tag-key">PIT 可见时点</span> knowledge_time</td></tr>
+<tr><td><span class="field-name">ReportPeriodEndDate</span></td><td>date</td><td>报告期截止日</td><td>—</td><td><span class="tag tag-key">会计期间</span> period_time</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamp</td><td>更新时间</td><td>时间戳</td><td>修订去重 tiebreaker，非市场可知修订时点</td></tr>
+<tr><td><span class="field-name">Eps</span></td><td>double</td><td>每股收益</td><td>元/股</td><td>财务 PIT：PubDate 可见、下一交易日可用</td></tr>
+<tr><td><span class="field-name">Roe</span></td><td>double</td><td>净资产收益率</td><td>%</td><td><span class="tag tag-warn">注意</span> ÷100 得小数</td></tr>
+<tr><td><span class="field-name">Roa</span></td><td>double</td><td>总资产收益率</td><td>%</td><td><span class="tag tag-warn">注意</span> ÷100 得小数</td></tr>
+<tr><td><span class="field-name">NetProfitMargin</span></td><td>double</td><td>净利率</td><td>%</td><td>÷100 得小数</td></tr>
+<tr><td><span class="field-name">GrossProfitMargin</span></td><td>double</td><td>毛利率</td><td>%</td><td>÷100 得小数</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_balance" data-market="ashare" id="ds-ashare_stock_balance"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-E1">E1 财务事件</span><span class="badge pit-strict">PIT: strict (PubDate)</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_balance <span class="field-name">A股资产负债表</span></h3><p class="ds-orig">StockBalance：关键科目（完整 111 字段见字典；高缺失金融科目不在此声明）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>供应商记录日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">PubDate</span></td><td>date</td><td>公告日期</td><td>—</td><td><span class="tag tag-key">PIT 可见时点</span> knowledge_time</td></tr>
+<tr><td><span class="field-name">ReportPeriodEndDate</span></td><td>date</td><td>报告期截止日</td><td>—</td><td><span class="tag tag-key">会计期间</span> period_time</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamptz</td><td>更新时间</td><td>时间戳</td><td>修订去重 tiebreaker（UTC）</td></tr>
+<tr><td><span class="field-name">TotalAssets</span></td><td>double</td><td>总资产</td><td>元</td><td>时点科目（point_in_time_stock）</td></tr>
+<tr><td><span class="field-name">TotalLiability</span></td><td>double</td><td>总负债</td><td>元</td><td>时点科目</td></tr>
+<tr><td><span class="field-name">TotalOwnerEquities</span></td><td>double</td><td>所有者权益合计</td><td>元</td><td>时点科目</td></tr>
+<tr><td><span class="field-name">TotalCurrentAssets</span></td><td>double</td><td>流动资产合计</td><td>元</td><td>时点科目</td></tr>
+<tr><td><span class="field-name">TotalNonCurrentAssets</span></td><td>double</td><td>非流动资产合计</td><td>元</td><td>时点科目</td></tr>
+</tbody></table></div>
+<div class="callout direct"><b>PIT 口径：</b>knowledge_time=PubDate（公告可见时点），period_time=ReportPeriodEndDate，revision_order=[UpdateTime]；availability=next_trading_day；join_policy=pit_asof_backward。绝不把 TradeDate 当 PIT 时点。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_income" data-market="ashare" id="ds-ashare_stock_income"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-E1">E1 财务事件</span><span class="badge pit-strict">PIT: strict (PubDate)</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_income <span class="field-name">A股利润表</span></h3><p class="ds-orig">StockIncome：营收、成本、净利润（含少数股东 / 归母）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>供应商记录日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">PubDate</span></td><td>date</td><td>公告日期</td><td>—</td><td><span class="tag tag-key">PIT 可见时点</span> knowledge_time</td></tr>
+<tr><td><span class="field-name">ReportPeriodEndDate</span></td><td>date</td><td>报告期截止日</td><td>—</td><td><span class="tag tag-key">会计期间</span> period_time</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamp</td><td>更新时间</td><td>时间戳</td><td>修订去重 tiebreaker</td></tr>
+<tr><td><span class="field-name">TotalOperatingRevenue</span></td><td>double</td><td>营业总收入</td><td>元</td><td>含其他业务收入；流量科目（cumulative_ytd_flow）</td></tr>
+<tr><td><span class="field-name">OperatingRevenue</span></td><td>double</td><td>营业收入</td><td>元</td><td>—</td></tr>
+<tr><td><span class="field-name">OperatingCost</span></td><td>double</td><td>营业成本</td><td>元</td><td>—</td></tr>
+<tr><td><span class="field-name">NetProfit</span></td><td>double</td><td>净利润</td><td>元</td><td><span class="tag tag-warn">注意</span> 含少数股东损益</td></tr>
+<tr><td><span class="field-name">NpParentCompanyOwners</span></td><td>double</td><td>归母净利润</td><td>元</td><td>归母口径用此列</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_cashflow" data-market="ashare" id="ds-ashare_stock_cashflow"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-E1">E1 财务事件</span><span class="badge pit-strict">PIT: strict (PubDate)</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_cashflow <span class="field-name">A股现金流量表</span></h3><p class="ds-orig">StockCashFlow：经营/投资/筹资现金流净额。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>供应商记录日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">PubDate</span></td><td>date</td><td>公告日期</td><td>—</td><td><span class="tag tag-key">PIT 可见时点</span> knowledge_time</td></tr>
+<tr><td><span class="field-name">ReportPeriodEndDate</span></td><td>date</td><td>报告期截止日</td><td>—</td><td><span class="tag tag-key">会计期间</span> period_time</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamp</td><td>更新时间</td><td>时间戳</td><td>修订去重 tiebreaker</td></tr>
+<tr><td><span class="field-name">NetOperateCashFlow</span></td><td>double</td><td>经营活动现金流净额（OCF）</td><td>元</td><td>累计口径</td></tr>
+<tr><td><span class="field-name">NetInvestCashFlow</span></td><td>double</td><td>投资活动现金流净额</td><td>元</td><td>累计口径</td></tr>
+<tr><td><span class="field-name">NetFinanceCashFlow</span></td><td>double</td><td>筹资活动现金流净额</td><td>元</td><td>累计口径</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_dividend" data-market="ashare" id="ds-ashare_stock_dividend"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-E1">E1 事件</span><span class="badge pit-effective">PIT: effective_time_only</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_dividend <span class="field-name">A股分红送转</span></h3><p class="ds-orig">StockDividend：现金分红、送股、转增。无可靠公告时点，仅可显式按生效日保守使用。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>记录日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">RightRegDate</span></td><td>date</td><td>股权登记日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">ExDividendDate</span></td><td>date</td><td>除权除息日</td><td>—</td><td><span class="tag tag-key">生效日</span> event_column；文件名=ExDividendDate</td></tr>
+<tr><td><span class="field-name">CashDividend</span></td><td>double</td><td>每股现金分红</td><td>元/股</td><td>—</td></tr>
+<tr><td><span class="field-name">StockDividend</span></td><td>double</td><td>每股送股</td><td>比例</td><td>每股送股比例</td></tr>
+<tr><td><span class="field-name">StockTransfer</span></td><td>double</td><td>每股转增</td><td>比例</td><td>每股转增比例</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamp</td><td>更新时间</td><td>时间戳</td><td>—</td></tr>
+</tbody></table></div>
+<div class="callout risk"><b>前视风险：</b>effective_time_only 表没有可靠公告时点。无界读取可能读到未来生效事件（前视）；production 下必须给生效日上界（time_range.end 或 as_of）。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_index_daily" data-market="ashare" id="ds-ashare_index_daily"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1 日频面板</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_index_daily <span class="field-name">A股指数日线</span></h3><p class="ds-orig">IndexDailyBar：指数 OHLC + 成交量 + 收益。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>指数代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">Open</span></td><td>double</td><td>开盘点位</td><td>点</td><td>—</td></tr>
+<tr><td><span class="field-name">High</span></td><td>double</td><td>最高点位</td><td>点</td><td>—</td></tr>
+<tr><td><span class="field-name">Low</span></td><td>double</td><td>最低点位</td><td>点</td><td>—</td></tr>
+<tr><td><span class="field-name">Close</span></td><td>double</td><td>收盘点位</td><td>点</td><td>—</td></tr>
+<tr><td><span class="field-name">Volume</span></td><td>int</td><td>成交量</td><td>股/手</td><td>按源口径</td></tr>
+<tr><td><span class="field-name">Return</span></td><td>double</td><td>指数日收益</td><td>bp</td><td><span class="tag tag-warn">注意</span> ÷10000 得小数；return_column 契约</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_index_constituent" data-market="ashare" id="ds-ashare_index_constituent"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1 日频面板</span><span class="tag tag-req">必填过滤 IndexSymbol</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_index_constituent <span class="field-name">A股指数成分股</span></h3><p class="ds-orig">IndexConstituent：成分股及其权重；grain=(TradeDate, IndexSymbol, Symbol)；必须指定 IndexSymbol。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">IndexSymbol</span></td><td>string</td><td>指数代码</td><td>—</td><td><span class="tag tag-req">必填过滤</span> required_dimension_filter；单值才能证明 1:1</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>成分股代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">Weight</span></td><td>double</td><td>权重</td><td>%</td><td><span class="tag tag-warn">注意</span> ÷100 得小数；同截面和≈100</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamp</td><td>更新时间</td><td>时间戳</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_etf_daily" data-market="ashare" id="ds-ashare_etf_daily"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1 日频面板</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_etf_daily <span class="field-name">A股 ETF 日线</span></h3><p class="ds-orig">ETFDailyBar：ETF 收盘价与成交量。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>ETF 代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">Close</span></td><td>double</td><td>收盘价</td><td>元</td><td>—</td></tr>
+<tr><td><span class="field-name">Volume</span></td><td>int</td><td>成交量</td><td>份</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_list" data-market="ashare" id="ds-ashare_stock_list"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1</span><span>日历域 calendar_day</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_list <span class="field-name">A股股票列表</span></h3><p class="ds-orig">StockList：股票名称清单（含周末自然日文件）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span> 含自然日</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">Name</span></td><td>string</td><td>股票名称</td><td>—</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_etf_list" data-market="ashare" id="ds-ashare_etf_list"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1</span><span>日历域 calendar_day</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_etf_list <span class="field-name">A股 ETF 列表</span></h3><p class="ds-orig">ETFList：ETF 清单。未在 datasets.yaml 声明静态 schema（物理 schema 以字典为准）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>datasets.yaml 未声明 schema 的「列表」数据集，物理列以数据字典为准；读取时按 union_by_name 合并。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_index_list" data-market="ashare" id="ds-ashare_index_list"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1</span><span>日历域 calendar_day</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_index_list <span class="field-name">A股指数列表</span></h3><p class="ds-orig">IndexList：指数清单。schema 未静态声明，以字典为准。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>物理列以数据字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_industry" data-market="ashare" id="ds-ashare_stock_industry"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1</span><span class="tag tag-req">必填过滤 IndustrySource</span><span>one_to_many</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_industry <span class="field-name">A股行业分类</span></h3><p class="ds-orig">StockIndustry：多来源行业分类；grain=(TradeDate, Symbol, IndustrySource)；join 前必须先过滤单一来源。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span> 含自然日</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">IndustrySource</span></td><td>string</td><td>行业分类来源</td><td>—</td><td><span class="tag tag-req">必填过滤</span> sw_l1/sw_l2/sw_l3/zjw/jq_l1/jq_l2；否则行数×6</td></tr>
+<tr><td><span class="field-name">IndustryCode</span></td><td>string</td><td>行业代码</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">IndustryName</span></td><td>string</td><td>行业名称</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamptz</td><td>更新时间</td><td>时间戳</td><td>UTC</td></tr>
+</tbody></table></div>
+<div class="callout warn"><b>fan-out 守卫：</b>cardinality=one_to_many。IN 多值不能证明退化为一行；只有单值 IndustrySource 才能 exact join 无 fan-out。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_status" data-market="ashare" id="ds-ashare_stock_status"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-S1">S1 快照</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_status <span class="field-name">A股交易状态</span></h3><p class="ds-orig">StockStatus：上市/交易状态快照；可交易过滤 PublicStatus=='正常上市'。注意：不存在「ListedState」列。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span> 含自然日</td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">CompanyId</span></td><td>int</td><td>公司 ID</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">PubDate</span></td><td>date</td><td>公告日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">ChangeDate</span></td><td>date</td><td>状态变更日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">PublicStatusCode</span></td><td>int</td><td>上市状态代码</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">PublicStatus</span></td><td>string</td><td>上市状态</td><td>—</td><td><span class="tag tag-key">关键</span> 可交易过滤 '正常上市'</td></tr>
+<tr><td><span class="field-name">ChangeReason</span></td><td>string</td><td>变更原因</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">ChangeTypeCode</span></td><td>int</td><td>变更类型代码</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">ChangeType</span></td><td>string</td><td>变更类型</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">Comments</span></td><td>string</td><td>备注</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">UpdateTime</span></td><td>timestamp</td><td>更新时间</td><td>时间戳</td><td>—</td></tr>
+</tbody></table></div>
+<div class="callout direct"><b>注意：</b>IsSuspend 不在本表（在 ashare_stock_daily）；停牌信息请查行情表。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_universe_daily" data-market="ashare" id="ds-ashare_universe_daily"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1</span><span>参数化 universe_id</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_universe_daily <span class="field-name">A股研究股票池（PIT）</span></h3><p class="ds-orig">universe_daily：生产因子评估用的 PIT 研究池 + 可交易掩码。每行描述 TradeDate 当时可知/可交易；缺失行=不合格。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">is_member</span></td><td>bool</td><td>是否池内成员</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">is_tradable</span></td><td>bool</td><td>当日是否可交易</td><td>—</td><td><span class="tag tag-key">关键</span> 含停牌/涨跌停限制语义</td></tr>
+</tbody></table></div>
+<div class="callout direct"><b>参数：</b>universe_id（路径段）；hive 分区 date=*；这是 curated clean-data 契约，不是当前证券快照。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_topten_shareholder" data-market="ashare" id="ds-ashare_stock_topten_shareholder"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-S1">S1</span><span>one_to_many</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_topten_shareholder <span class="field-name">A股十大股东</span></h3><p class="ds-orig">StockTopTenShareholder：前十大股东明细（报告期快照）。unique_key=(TradeDate, Symbol, Rank)。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>fan-out：</b>cardinality=one_to_many；join 前须按 Rank 聚合/去重或显式策略。schema 未静态声明，物理列以字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_stock_topten_float_shareholder" data-market="ashare" id="ds-ashare_stock_topten_float_shareholder"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-S1">S1</span><span>one_to_many</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_stock_topten_float_shareholder <span class="field-name">A股十大流通股东</span></h3><p class="ds-orig">StockTopTenFloatShareholder：前十大流通股东明细。unique_key=(TradeDate, Symbol, Rank)。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>fan-out：</b>cardinality=one_to_many；join 前须显式聚合/去重。schema 未静态声明，物理列以字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="ashare_turnover_base_daily" data-market="ashare" id="ds-ashare_turnover_base_daily"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-ashare">A股</span><span class="badge model-D1">D1</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>ashare_turnover_base_daily <span class="field-name">A股换手基数</span></h3><p class="ds-orig">TurnoverBaseDaily：换手率计算基数与有效流通股本。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">Symbol</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">TurnoverBase</span></td><td>double</td><td>换手基数</td><td>股</td><td>换手率=成交量/换手基数 用</td></tr>
+<tr><td><span class="field-name">EffectiveFloatShares</span></td><td>double</td><td>有效流通股本</td><td>股</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<!-- ============ 美股 ============ -->
+<div class="group-header" id="us-group"><div class="eyebrow">US EQUITY · MASSIVE / CLEAN LAYER</div><h2>04｜美股 COS 数据集（28 张）</h2><p>数据源：massive_data（全量）/ clean_data（衍生层）；列名 snake_case；比率已为小数。</p></div>
+
+<details class="dataset-card" data-dataset="us_calendar" data-market="us" id="ds-us_calendar"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-STATIC">STATIC</span><span>时间列 trade_date</span></div><div class="ds-main"><h3>us_calendar <span class="field-name">美股交易日历</span></h3><p class="ds-orig">Calendar：美股交易日历。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">trade_date</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">is_trading_day</span></td><td>bool</td><td>是否交易日</td><td>—</td><td>true=交易日</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_daily" data-market="us" id="ds-us_stock_daily" open=""><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1 日频面板</span><span>时间列 TradeDate</span><span>标的列 Ticker</span></div><div class="ds-main"><h3>us_stock_daily <span class="field-name">美股股票日线</span></h3><p class="ds-orig">StockDailyBar：美股日频 OHLCV + 拆分收益 + 后复权因子。Ret 系列为小数。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">TradeDate</span></td><td>timestamp</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span> timestamp[ns]</td></tr>
+<tr><td><span class="field-name">Ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">Open</span></td><td>double</td><td>开盘价</td><td>USD</td><td>不复权</td></tr>
+<tr><td><span class="field-name">High</span></td><td>double</td><td>最高价</td><td>USD</td><td>不复权</td></tr>
+<tr><td><span class="field-name">Low</span></td><td>double</td><td>最低价</td><td>USD</td><td>不复权</td></tr>
+<tr><td><span class="field-name">Close</span></td><td>double</td><td>收盘价</td><td>USD</td><td>不复权；后复权价≈Close×AdjFactor</td></tr>
+<tr><td><span class="field-name">PreClose</span></td><td>double</td><td>前收盘价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">Volume</span></td><td>double</td><td>成交量</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">Amount</span></td><td>double</td><td>成交额</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">AdjFactor</span></td><td>double</td><td>后复权因子</td><td>乘数</td><td><span class="tag tag-warn">注意</span> 调整价≈原价×AdjFactor（backward_vendor_factor）</td></tr>
+<tr><td><span class="field-name">VWAP</span></td><td>double</td><td>成交均价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">Ret</span></td><td>double</td><td>日收益率</td><td>小数</td><td><span class="tag tag-warn">注意</span> 已是小数，禁止再 /100 或 /10000</td></tr>
+<tr><td><span class="field-name">Ret_Intra</span></td><td>double</td><td>日内收益</td><td>小数</td><td>盘中收益</td></tr>
+<tr><td><span class="field-name">Ret_Overnight</span></td><td>double</td><td>隔夜收益</td><td>小数</td><td>前收→开盘</td></tr>
+<tr><td><span class="field-name">High_Low_Ratio</span></td><td>double</td><td>高低比</td><td>倍数</td><td>High/Low</td></tr>
+<tr><td><span class="field-name">Upper_Shadow_Ratio</span></td><td>double</td><td>上影线比例</td><td>小数</td><td>—</td></tr>
+<tr><td><span class="field-name">Vwap_Close_Dist</span></td><td>double</td><td>VWAP 与收盘距离</td><td>小数</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_valuation_daily" data-market="us" id="ds-us_stock_valuation_daily"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-X0">X0 稀疏表</span><span class="badge pit-unsupported">PIT: unsupported</span><span>时间列 TradeDate</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stock_valuation_daily <span class="field-name">美股估值日频（稀疏）</span></h3><p class="ds-orig">StockValuationDaily（美股）：X0 稀疏表（~49 文件，禁止当全历史面板）。比率已为小数。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">cik</span></td><td>string</td><td>SEC CIK</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">TradeDate</span></td><td>timestamp</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">price</span></td><td>double</td><td>股价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">average_volume</span></td><td>double</td><td>平均成交量</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">market_cap</span></td><td>double</td><td>市值</td><td>USD</td><td>X0 稀疏 raw reference；日频市值用 derived market_cap_daily</td></tr>
+<tr><td><span class="field-name">earnings_per_share</span></td><td>double</td><td>每股收益</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_earnings</span></td><td>double</td><td>市盈率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_book</span></td><td>double</td><td>市净率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_sales</span></td><td>double</td><td>市销率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_cash_flow</span></td><td>double</td><td>市现率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_free_cash_flow</span></td><td>double</td><td>市现率（FCF）</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">dividend_yield</span></td><td>double</td><td>股息率</td><td>小数</td><td><span class="tag tag-warn">注意</span> 已是小数，禁止再 /100</td></tr>
+<tr><td><span class="field-name">return_on_assets</span></td><td>double</td><td>总资产收益率</td><td>小数</td><td>已是小数</td></tr>
+<tr><td><span class="field-name">return_on_equity</span></td><td>double</td><td>净资产收益率</td><td>小数</td><td>已是小数</td></tr>
+<tr><td><span class="field-name">debt_to_equity</span></td><td>double</td><td>负债权益比</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">current</span></td><td>double</td><td>流动比率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">quick</span></td><td>double</td><td>速动比率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">cash</span></td><td>double</td><td>现金比率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">ev_to_sales</span></td><td>double</td><td>EV/Sales</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">ev_to_ebitda</span></td><td>double</td><td>EV/EBITDA</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">enterprise_value</span></td><td>double</td><td>企业价值</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">free_cash_flow</span></td><td>double</td><td>自由现金流</td><td>USD</td><td>—</td></tr>
+</tbody></table></div>
+<div class="callout risk"><b>禁止当完整面板：</b>X0 稀疏表逐股常有缺失，不能当默认因子挖掘字段（mining_allowed=false）。构建成 serving daily panel 后才可用于挖掘。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_indicator" data-market="us" id="ds-us_stock_indicator"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-X0">X0 稀疏表</span><span class="badge pit-unsupported">PIT: unsupported</span><span>时间列 TradeDate</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stock_indicator <span class="field-name">美股指标（稀疏）</span></h3><p class="ds-orig">StockIndicator（美股）：Valuation 克隆（不是 A股财务比率表）；比 Valuation 少 Volatility_20d。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">cik</span></td><td>string</td><td>SEC CIK</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">TradeDate</span></td><td>timestamp</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">price</span></td><td>double</td><td>股价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">average_volume</span></td><td>double</td><td>平均成交量</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">market_cap</span></td><td>double</td><td>市值</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">earnings_per_share</span></td><td>double</td><td>每股收益</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_earnings</span></td><td>double</td><td>市盈率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_book</span></td><td>double</td><td>市净率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_sales</span></td><td>double</td><td>市销率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_cash_flow</span></td><td>double</td><td>市现率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_free_cash_flow</span></td><td>double</td><td>市现率（FCF）</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">dividend_yield</span></td><td>double</td><td>股息率</td><td>小数</td><td>已是小数</td></tr>
+<tr><td><span class="field-name">return_on_assets</span></td><td>double</td><td>总资产收益率</td><td>小数</td><td>已是小数</td></tr>
+<tr><td><span class="field-name">return_on_equity</span></td><td>double</td><td>净资产收益率</td><td>小数</td><td>已是小数</td></tr>
+<tr><td><span class="field-name">debt_to_equity</span></td><td>double</td><td>负债权益比</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">current</span></td><td>double</td><td>流动比率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">quick</span></td><td>double</td><td>速动比率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">cash</span></td><td>double</td><td>现金比率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">ev_to_sales</span></td><td>double</td><td>EV/Sales</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">ev_to_ebitda</span></td><td>double</td><td>EV/EBITDA</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">enterprise_value</span></td><td>double</td><td>企业价值</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">free_cash_flow</span></td><td>double</td><td>自由现金流</td><td>USD</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_balance" data-market="us" id="ds-us_stock_balance"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-E2">E2 财务事件</span><span class="badge pit-strict">PIT: vintage (filing_date)</span><span class="tag tag-req">必填过滤 timeframe</span><span>时间列 filing_date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stock_balance <span class="field-name">美股资产负债表</span></h3><p class="ds-orig">StockBalance：美股资产负债表；文件名=period_end，PIT=filing_date；必须 filter timeframe。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">cik</span></td><td>string</td><td>SEC CIK</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">period_end</span></td><td>string</td><td>报告期末</td><td>—</td><td><span class="tag tag-key">会计期间</span> period_time</td></tr>
+<tr><td><span class="field-name">filing_date</span></td><td>timestamp</td><td>申报日期</td><td>—</td><td><span class="tag tag-key">PIT 可见时点</span> knowledge_time；date_label</td></tr>
+<tr><td><span class="field-name">fiscal_quarter</span></td><td>int</td><td>财季</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">fiscal_year</span></td><td>int</td><td>财年</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">timeframe</span></td><td>string</td><td>时间口径</td><td>—</td><td><span class="tag tag-req">必填过滤</span> quarterly/annual/trailing_twelve_months（exactly-one）</td></tr>
+<tr><td><span class="field-name">total_assets</span></td><td>double</td><td>总资产</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">total_liabilities</span></td><td>double</td><td>总负债</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">total_equity</span></td><td>double</td><td>股东权益</td><td>USD</td><td>—</td></tr>
+</tbody></table></div>
+<div class="callout direct"><b>PIT 口径：</b>knowledge_time=filing_date（真披露时点，支持 vintage PIT）；availability=next_session_open；join_policy=pit_asof_backward；timeframe 必须 exactly-one 进入 identity。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_income" data-market="us" id="ds-us_stock_income"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-E2">E2 财务事件</span><span class="badge pit-strict">PIT: vintage (filing_date)</span><span class="tag tag-req">必填过滤 timeframe</span><span>时间列 filing_date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stock_income <span class="field-name">美股利润表</span></h3><p class="ds-orig">StockIncome：营收、毛利、营业利润、归普通股股东净利润；必须 filter timeframe。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">cik</span></td><td>string</td><td>SEC CIK</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">period_end</span></td><td>string</td><td>报告期末</td><td>—</td><td><span class="tag tag-key">会计期间</span> period_time</td></tr>
+<tr><td><span class="field-name">filing_date</span></td><td>timestamp</td><td>申报日期</td><td>—</td><td><span class="tag tag-key">PIT 可见时点</span> knowledge_time；date_label</td></tr>
+<tr><td><span class="field-name">fiscal_quarter</span></td><td>int</td><td>财季</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">fiscal_year</span></td><td>int</td><td>财年</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">timeframe</span></td><td>string</td><td>时间口径</td><td>—</td><td><span class="tag tag-req">必填过滤</span> quarterly/annual/trailing_twelve_months（exactly-one）</td></tr>
+<tr><td><span class="field-name">revenue</span></td><td>double</td><td>营业收入</td><td>USD</td><td>single_period_flow</td></tr>
+<tr><td><span class="field-name">gross_profit</span></td><td>double</td><td>毛利润</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">operating_income</span></td><td>double</td><td>营业利润</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">net_income_loss_attributable_common_shareholders</span></td><td>double</td><td>归普通股股东净利润</td><td>USD</td><td><span class="tag tag-key">关键</span> consolidated 与 attributable 不是同义词，禁止静默 alias</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_cashflow" data-market="us" id="ds-us_stock_cashflow"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-E2">E2 财务事件</span><span class="badge pit-strict">PIT: vintage (filing_date)</span><span class="tag tag-req">必填过滤 timeframe</span><span>时间列 filing_date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stock_cashflow <span class="field-name">美股现金流量表</span></h3><p class="ds-orig">StockCashFlow：经营/投资/筹资现金流净额；必须 filter timeframe。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">cik</span></td><td>string</td><td>SEC CIK</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">period_end</span></td><td>string</td><td>报告期末</td><td>—</td><td><span class="tag tag-key">会计期间</span> period_time</td></tr>
+<tr><td><span class="field-name">filing_date</span></td><td>timestamp</td><td>申报日期</td><td>—</td><td><span class="tag tag-key">PIT 可见时点</span> knowledge_time；date_label</td></tr>
+<tr><td><span class="field-name">fiscal_quarter</span></td><td>int</td><td>财季</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">fiscal_year</span></td><td>int</td><td>财年</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">timeframe</span></td><td>string</td><td>时间口径</td><td>—</td><td><span class="tag tag-req">必填过滤</span> quarterly/annual/trailing_twelve_months（exactly-one）</td></tr>
+<tr><td><span class="field-name">net_cash_from_operating_activities</span></td><td>double</td><td>经营现金流净额</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">net_cash_from_investing_activities</span></td><td>double</td><td>投资现金流净额</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">net_cash_from_financing_activities</span></td><td>double</td><td>筹资现金流净额</td><td>USD</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_capital_split" data-market="us" id="ds-us_stock_capital_split"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-E2">E2 事件</span><span class="badge pit-effective">PIT: effective_time_only</span><span>时间列 TradeDate</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stock_capital_split <span class="field-name">美股拆股/调整事件</span></h3><p class="ds-orig">StockCapitalDaily 目录的 {date}.parquet：拆分/调整事件（forward_split/reverse_split/stock_dividend），非日频股本快照。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">id</span></td><td>string</td><td>事件 ID</td><td>—</td><td><span class="tag tag-key">event_id</span></td></tr>
+<tr><td><span class="field-name">execution_date</span></td><td>timestamp</td><td>执行日</td><td>—</td><td><span class="tag tag-key">生效日</span> event_column</td></tr>
+<tr><td><span class="field-name">split_from</span></td><td>double</td><td>拆股前</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">split_to</span></td><td>double</td><td>拆股后</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">adjustment_type</span></td><td>string</td><td>调整类型</td><td>—</td><td>forward_split / reverse_split / stock_dividend</td></tr>
+<tr><td><span class="field-name">historical_adjustment_factor</span></td><td>double</td><td>历史调整因子</td><td>乘数</td><td>—</td></tr>
+<tr><td><span class="field-name">TradeDate</span></td><td>timestamp</td><td>交易日</td><td>—</td><td>—</td></tr>
+</tbody></table></div>
+<div class="callout risk"><b>前视风险：</b>effective_time_only，仅可显式按生效日保守使用；禁止无界读取。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_capital_shares" data-market="us" id="ds-us_stock_capital_shares"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-E2">E2 稀疏 PIT</span><span class="badge pit-strict">PIT: strict (TradeDate)</span><span>one_to_many</span><span>时间列 TradeDate</span><span>标的列 Ticker</span></div><div class="ds-main"><h3>us_stock_capital_shares <span class="field-name">美股稀疏 PIT 股本</span></h3><p class="ds-orig">shares_{date}.parquet：稀疏 PIT 股本；同日同 Ticker 可多行（去重）；日频股本首选 us_ticker_shares_snapshot。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">Ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">TradeDate</span></td><td>timestamp</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列/PIT</span></td></tr>
+<tr><td><span class="field-name">pit_basic_shares_outstanding</span></td><td>double</td><td>PIT 基本股本</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">pit_diluted_shares_outstanding</span></td><td>double</td><td>PIT 摊薄股本</td><td>股</td><td>—</td></tr>
+</tbody></table></div>
+<div class="callout warn"><b>去重：</b>unique_key=(Ticker, TradeDate, id)；同日同 Ticker 可重复，需显式 dedup。偏好 us_ticker_shares_snapshot 做日频暴露。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_dividend" data-market="us" id="ds-us_stock_dividend"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-E2">E2 事件</span><span class="badge pit-strict">PIT: strict (declaration_date)</span><span>时间列 TradeDate</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stock_dividend <span class="field-name">美股分红</span></h3><p class="ds-orig">StockDividend：现金分红事件；knowledge_time=declaration_date；cash_amount 币种动态（约 12% 非 USD）；可含未来除权日文件。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">id</span></td><td>string</td><td>事件 ID</td><td>—</td><td><span class="tag tag-key">event_id</span></td></tr>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">record_date</span></td><td>string</td><td>登记日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">pay_date</span></td><td>timestamp</td><td>支付日</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">declaration_date</span></td><td>string</td><td>公告日</td><td>—</td><td><span class="tag tag-key">PIT 可见时点</span> knowledge_time；缺失则行不可用（绝不 ex-date 兜底）</td></tr>
+<tr><td><span class="field-name">ex_dividend_date</span></td><td>string</td><td>除息日</td><td>—</td><td><span class="tag tag-key">生效日</span> event_column（secondary）</td></tr>
+<tr><td><span class="field-name">frequency</span></td><td>int</td><td>分红频率</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">cash_amount</span></td><td>double</td><td>每股现金分红</td><td>随 currency</td><td><span class="tag tag-warn">注意</span> 币种动态；非 USD 约 12%，禁止当美元</td></tr>
+<tr><td><span class="field-name">currency</span></td><td>string</td><td>币种</td><td>—</td><td>USD/HKD/EUR/CAD/GBP…</td></tr>
+<tr><td><span class="field-name">distribution_type</span></td><td>string</td><td>分派类型</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">historical_adjustment_factor</span></td><td>double</td><td>历史调整因子</td><td>乘数</td><td>—</td></tr>
+<tr><td><span class="field-name">split_adjusted_cash_amount</span></td><td>double</td><td>拆股调整后每股分红</td><td>随 currency</td><td>—</td></tr>
+<tr><td><span class="field-name">TradeDate</span></td><td>timestamp</td><td>交易日</td><td>—</td><td>—</td></tr>
+</tbody></table></div>
+<div class="callout direct"><b>币种口径：</b>cash_dividend_local=value+currency（cross_market_comparable=false，需 FX）；cash_dividend_usd=仅 currency==USD 的行；绝不静默把其他币种当 USD。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_list" data-market="us" id="ds-us_stock_list"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>us_stock_list <span class="field-name">美股股票列表</span></h3><p class="ds-orig">StockList：美股股票清单。schema 未静态声明，以字典为准。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>物理列以数据字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_industry" data-market="us" id="ds-us_stock_industry"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-EMPTY">EMPTY 占位</span><span class="badge pit-unsupported">PIT: unsupported</span></div><div class="ds-main"><h3>us_stock_industry <span class="field-name">美股行业（占位）</span></h3><p class="ds-orig">StockIndustry：当前为 EMPTY 占位表，禁止作为数据源。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout risk"><b>禁止读取：</b>EMPTY 占位表没有可用数据契约，不得作为数据源。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_status" data-market="us" id="ds-us_stock_status"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-EMPTY">EMPTY 占位</span><span class="badge pit-unsupported">PIT: unsupported</span></div><div class="ds-main"><h3>us_stock_status <span class="field-name">美股交易状态（占位）</span></h3><p class="ds-orig">StockStatus：当前为 EMPTY 占位表，禁止作为数据源。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout risk"><b>禁止读取：</b>EMPTY 占位表，不得作为数据源。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_stock_indices_components" data-market="us" id="ds-us_stock_indices_components"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1</span><span>时间列 TradeDate</span><span>标的列 Symbol</span></div><div class="ds-main"><h3>us_stock_indices_components <span class="field-name">美股指数成分</span></h3><p class="ds-orig">StockIndicesComponents：美股指数成分。schema 未静态声明，以字典为准。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>物理列以数据字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_etf_daily" data-market="us" id="ds-us_etf_daily"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1</span><span>时间列 TradeDate</span><span>标的列 Ticker</span></div><div class="ds-main"><h3>us_etf_daily <span class="field-name">美股 ETF 日线</span></h3><p class="ds-orig">ETFDailyBar：美股 ETF 日线。schema 未静态声明，以字典为准。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>物理列以数据字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_etf_list" data-market="us" id="ds-us_etf_list"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-STATIC">STATIC</span><span>时间列 TradeDate</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_etf_list <span class="field-name">美股 ETF 列表</span></h3><p class="ds-orig">ETFList：美股 ETF 清单（静态）。schema 未静态声明，以字典为准。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>物理列以数据字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_security_master" data-market="us" id="ds-us_security_master"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-STATIC">STATIC</span><span>时间列 start_date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_security_master <span class="field-name">美股证券主数据</span></h3><p class="ds-orig">SecurityMaster：证券主数据（静态）。schema 未静态声明，以字典为准。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>物理列以数据字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_ticker_map" data-market="us" id="ds-us_ticker_map"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-STATIC">STATIC</span><span>时间列 effective_date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_ticker_map <span class="field-name">美股代码映射</span></h3><p class="ds-orig">TickerMap：代码映射（静态）。schema 未静态声明，以字典为准。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>物理列以数据字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_ticker_alias" data-market="us" id="ds-us_ticker_alias"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-EMPTY">EMPTY 占位</span><span class="badge pit-unsupported">PIT: unsupported</span></div><div class="ds-main"><h3>us_ticker_alias <span class="field-name">美股代码别名（占位）</span></h3><p class="ds-orig">TickerAlias：当前为 EMPTY 占位表，禁止作为数据源。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout risk"><b>禁止读取：</b>EMPTY 占位表，不得作为数据源。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_universe_daily" data-market="us" id="ds-us_universe_daily"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1</span><span>hive 分区</span><span>时间列 trade_date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_universe_daily <span class="field-name">美股研究股票池</span></h3><p class="ds-orig">universe_daily（美股）：研究股票池成员（clean_data 衍生层）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">trade_date</span></td><td>date</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_adj_factor" data-market="us" id="ds-us_adj_factor"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1</span><span>hive 分区</span><span>时间列 date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_adj_factor <span class="field-name">美股复权因子</span></h3><p class="ds-orig">adj_factor（clean_data）：后复权因子（backward_clean_factor）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">adj_factor</span></td><td>double</td><td>后复权因子</td><td>乘数</td><td><span class="tag tag-warn">注意</span> backward_clean_factor；与 us_stock_daily.AdjFactor 的 vendor factor 口径不同</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_adj_factor_clamped" data-market="us" id="ds-us_adj_factor_clamped"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1</span><span>hive 分区</span><span>时间列 date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_adj_factor_clamped <span class="field-name">复权因子钳制标记</span></h3><p class="ds-orig">is_adj_factor_clamped：标记复权因子被钳制的日期（clean_data 衍生层）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>物理列以数据字典为准；用途为识别 adj_factor 被 clamp 的历史区间。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_is_early_close" data-market="us" id="ds-us_is_early_close"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-STATIC">STATIC</span><span>时间列 date</span><span>标的列 date</span></div><div class="ds-main"><h3>us_is_early_close <span class="field-name">美股提前收盘标记</span></h3><p class="ds-orig">is_early_close：标记提前收盘的交易日。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">date</span></td><td>date</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">is_early_close</span></td><td>bool</td><td>是否提前收盘</td><td>—</td><td>true=提前收盘（如节假日半天）</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_is_ticker_halt_minute" data-market="us" id="ds-us_is_ticker_halt_minute"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-MINUTE">MINUTE</span><span>hive 分区</span><span>时间列 timestamp</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_is_ticker_halt_minute <span class="field-name">美股分钟停牌标记</span></h3><p class="ds-orig">is_ticker_halt/minute：分钟级停牌标记。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>schema 未静态声明：</b>物理列以数据字典为准。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_ticker_shares_snapshot" data-market="us" id="ds-us_ticker_shares_snapshot"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1</span><span>时间列 TradeDate</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_ticker_shares_snapshot <span class="field-name">美股股本快照（日频）</span></h3><p class="ds-orig">TickerSharesSnapshot：日频股本快照；市值中性推荐源（size 暴露 = Close × weighted_shares_outstanding）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">cik</span></td><td>string</td><td>SEC CIK</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">share_class_figi</span></td><td>string</td><td>份额类别 FIGI</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">share_class_shares_outstanding</span></td><td>double</td><td>份额类别股本</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">weighted_shares_outstanding</span></td><td>double</td><td>加权股本</td><td>股</td><td><span class="tag tag-key">关键</span> 市值暴露 = Close × weighted_shares_outstanding</td></tr>
+<tr><td><span class="field-name">TradeDate</span></td><td>string</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span>（字符串）</td></tr>
+<tr><td><span class="field-name">source</span></td><td>string</td><td>数据源</td><td>—</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_security_master_daily_snap" data-market="us" id="ds-us_security_master_daily_snap"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1</span><span>时间列 TradeDate</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_security_master_daily_snap <span class="field-name">美股证券主数据日快照</span></h3><p class="ds-orig">SecurityMasterDailySnap：每日证券主数据快照（D1）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">name</span></td><td>string</td><td>证券名称</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">type</span></td><td>string</td><td>证券类型</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">market</span></td><td>string</td><td>市场</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">locale</span></td><td>string</td><td>地区</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">TradeDate</span></td><td>timestamp</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_fact_news" data-market="us" id="ds-us_fact_news"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-RAW_EVENT">RAW_EVENT 新闻</span><span class="badge pit-strict">PIT: strict (published_utc)</span><span>one_to_many</span><span>时间列 published_utc</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_fact_news <span class="field-name">美股新闻事件（FactNews）</span></h3><p class="ds-orig">FactNews：clean 新闻；PIT=published_utc（真 UTC instant）。entity_list explode、event_id、发布时间戳、事件窗口、source confidence。TradeDate 仅分区。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">published_utc</span></td><td>timestamp</td><td>发布时间</td><td>时间戳</td><td><span class="tag tag-key">PIT 可见时点</span> 真 UTC instant；唯一 instant 路径，时区位移只在此生效</td></tr>
+<tr><td><span class="field-name">TradeDate</span></td><td>timestamp</td><td>交易日</td><td>—</td><td>仅分区列，非 PIT 时点</td></tr>
+</tbody></table></div>
+<div class="callout direct"><b>新闻特殊语义：</b>不沿用 E2 标签；按 RAW_EVENT 处理：entity_list explode、event_id、publication 时间戳、事件窗口、source confidence。读取经 instant PIT 路径（date_label 永不做时区位移）。</div></div></details>
+
+<details class="dataset-card" data-dataset="us_stocks_sip_day_aggs" data-market="us" id="ds-us_stocks_sip_day_aggs"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-us">美股</span><span class="badge model-D1">D1</span><span>正式行情库</span><span>时间列 align_time</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stocks_sip_day_aggs <span class="field-name">美股 SIP 清洗日线</span></h3><p class="ds-orig">cleaned_massive_data/us_stocks_sip/day_aggs_v1：已清洗美股日线（正式行情库，全员只读）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">align_time</span></td><td>timestamp</td><td>对齐时间</td><td>—</td><td><span class="tag tag-key">时间列</span> tz-aware</td></tr>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">open</span></td><td>double</td><td>开盘价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">high</span></td><td>double</td><td>最高价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">low</span></td><td>double</td><td>最低价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">close</span></td><td>double</td><td>收盘价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">volume</span></td><td>int</td><td>成交量</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">window_start</span></td><td>int</td><td>窗口起始</td><td>ns</td><td>int64 纳秒时间戳</td></tr>
+</tbody></table></div></div></details>
+
+<!-- ============ 平台 ============ -->
+<div class="group-header" id="platform-group"><div class="eyebrow">PLATFORM · FACTOR LAKE / STREAMING / MISC</div><h2>05｜平台 / 基础设施数据集（21 张）</h2><p>因子湖、流式、回测与 cleaned massive 衍生层；多数为参数化或专用读取。</p></div>
+
+<details class="dataset-card" data-dataset="factor_lake" data-market="platform" id="ds-factor_lake"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>参数化 factor_id</span><span>hive 分区 year</span><span>存储 long</span><span>时间列 datetime</span><span>标的列 asset</span></div><div class="ds-main"><h3>factor_lake <span class="field-name">因子湖（long）</span></h3><p class="ds-orig">已发布因子；布局 {lake}/factors/{factor_id}/year=YYYY/data.parquet。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">datetime</span></td><td>timestamp</td><td>时间</td><td>—</td><td><span class="tag tag-key">时间列</span> ns</td></tr>
+<tr><td><span class="field-name">asset</span></td><td>string</td><td>标的</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">value</span></td><td>double</td><td>因子值</td><td>随因子</td><td>—</td></tr>
+<tr><td><span class="field-name">calc_time</span></td><td>string</td><td>计算时间</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">factor_version</span></td><td>string</td><td>因子版本</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">data_snapshot_id</span></td><td>string</td><td>数据快照 ID</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">is_valid</span></td><td>int</td><td>是否有效</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">invalid_reason</span></td><td>string</td><td>无效原因</td><td>—</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="factor_lake_wide" data-market="platform" id="ds-factor_lake_wide"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>参数化 factor_id</span><span>存储 wide</span><span>specialized_only</span></div><div class="ds-main"><h3>factor_lake_wide <span class="field-name">因子湖（wide）</span></h3><p class="ds-orig">宽表 panel.parquet：datetime × {asset} pivot（asset 在列轴）；generic read/scan 一律拒绝。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout risk"><b>专用读取：</b>宽表 pivot 布局，标的在列轴上；请用 read_factors(layout='wide') / factor_matrix 专用入口，generic read/scan 拒绝。</div></div></details>
+
+<details class="dataset-card" data-dataset="factor_matrix" data-market="platform" id="ds-factor_matrix"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>参数化 universe/frequency</span><span>generation 指针</span><span>时间列 datetime</span><span>标的列 asset</span></div><div class="ds-main"><h3>factor_matrix <span class="field-name">因子矩阵</span></h3><p class="ds-orig">宽矩阵：datetime + asset + factor_* 列；schema 随因子动态扩展，由 manifest 解析 generation。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">datetime</span></td><td>timestamp</td><td>时间</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">asset</span></td><td>string</td><td>标的</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">factor_*</span></td><td>double</td><td>动态因子列</td><td>随因子</td><td>由 manifest['factors'] 提供</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="factor_lake_staging" data-market="platform" id="ds-factor_lake_staging"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>staging</span><span>namespaced</span><span>hive 分区 year</span></div><div class="ds-main"><h3>factor_lake_staging <span class="field-name">因子湖 staging（发布候选区）</span></h3><p class="ds-orig">新因子发布前暂存区；经 publish 流程校验后晋升 factor_lake。schema 同 factor_lake。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>访问：</b>staging 隔离 + 审计日志；access_mode=staging，个人 namespace 隔离。</div></div></details>
+
+<details class="dataset-card" data-dataset="single_asset_backtest_runs" data-market="platform" id="ds-single_asset_backtest_runs"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>namespaced</span><span>参数化 strategy_id/version</span></div><div class="ds-main"><h3>single_asset_backtest_runs <span class="field-name">个人单标的回测结果</span></h3><p class="ds-orig">每人隔离的回测结果目录；schema 未静态声明。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>隔离：</b>路径自动带 RUN_NAMESPACE；未 export 时兜底 anon__&lt;branch&gt;__&lt;pid&gt;。</div></div></details>
+
+<details class="dataset-card" data-dataset="factor_values_stream" data-market="platform" id="ds-factor_values_stream"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>streaming</span><span>时间列 timestamp_ns</span><span>标的列 symbol</span></div><div class="ds-main"><h3>factor_values_stream <span class="field-name">流式因子值</span></h3><p class="ds-orig">当日/即时因子数据流（factor_stream）。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">factor_id</span></td><td>string</td><td>因子 ID</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">symbol</span></td><td>string</td><td>标的</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">timestamp_ns</span></td><td>int</td><td>时间戳</td><td>ns</td><td><span class="tag tag-key">时间列</span> int64</td></tr>
+<tr><td><span class="field-name">value</span></td><td>double</td><td>因子值</td><td>随因子</td><td>—</td></tr>
+<tr><td><span class="field-name">freq</span></td><td>string</td><td>频率</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">receive_ns</span></td><td>int</td><td>接收时间</td><td>ns</td><td>int64</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="streaming_bars" data-market="platform" id="ds-streaming_bars"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>streaming</span><span>specialized_only</span><span>时间列 timestamp</span></div><div class="ds-main"><h3>streaming_bars <span class="field-name">流式 K 线</span></h3><p class="ds-orig">实时 K 线（{freq}/{YYYY-MM-DD}/{symbol}.parquet）；symbol 是文件名不是列 → generic 读拒绝。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">timestamp</span></td><td>timestamp</td><td>时间</td><td>—</td><td><span class="tag tag-key">时间列</span> ns</td></tr>
+<tr><td><span class="field-name">open</span></td><td>double</td><td>开盘价</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">high</span></td><td>double</td><td>最高价</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">low</span></td><td>double</td><td>最低价</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">close</span></td><td>double</td><td>收盘价</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">volume</span></td><td>double</td><td>成交量</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">vwap</span></td><td>double</td><td>均价</td><td>—</td><td>—</td></tr>
+<tr><td><span class="field-name">trade_count</span></td><td>int64</td><td>成交笔数</td><td>—</td><td>—</td></tr>
+</tbody></table></div>
+<div class="callout risk"><b>专用读取：</b>symbol 是文件路径段不是物理列；generic panel/read 无法按标的过滤。请用专用读取路径。</div></div></details>
+
+<details class="dataset-card" data-dataset="streaming_ticks_raw" data-market="platform" id="ds-streaming_ticks_raw"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>streaming</span><span>时间列 timestamp_ns</span><span>标的列 symbol</span></div><div class="ds-main"><h3>streaming_ticks_raw <span class="field-name">流式逐笔（未清洗）</span></h3><p class="ds-orig">trades/quotes 两种 schema 合并读取；query_policy 要求显式选列。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="callout warn"><b>trades 列：</b>timestamp_ns(int64), symbol, price, size, exchange, conditions…<br><b>quotes 列：</b>timestamp_ns(int64), symbol, bid_price, ask_price, bid_size, ask_size…</div></div></details>
+
+<details class="dataset-card" data-dataset="massive_ticks" data-market="platform" id="ds-massive_ticks"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>参数化 kind</span><span>时间列 sip_timestamp</span><span>标的列 ticker</span></div><div class="ds-main"><h3>massive_ticks <span class="field-name">历史逐笔（massive）</span></h3><p class="ds-orig">raw_massive_data/us_stocks_sip/{kind}；kind ∈ trades_v1/quotes_v1。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">sip_timestamp</span></td><td>int</td><td>SIP 时间戳</td><td>ns UTC</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">bid_price</span></td><td>double</td><td>买价</td><td>USD</td><td>quotes</td></tr>
+<tr><td><span class="field-name">ask_price</span></td><td>double</td><td>卖价</td><td>USD</td><td>quotes</td></tr>
+<tr><td><span class="field-name">price</span></td><td>double</td><td>成交价</td><td>USD</td><td>trades</td></tr>
+<tr><td><span class="field-name">size</span></td><td>double</td><td>成交/挂单量</td><td>股</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_stocks_sip_raw" data-market="platform" id="ds-us_stocks_sip_raw"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>raw</span><span>时间列 window_start</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stocks_sip_raw <span class="field-name">SIP 原始日线（未清洗）</span></h3><p class="ds-orig">raw 版本，用于数据溯源/比对；生产读取请用 cleaned 版 day_aggs。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">window_start</span></td><td>int</td><td>窗口起始</td><td>ns UTC</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">open/high/low/close</span></td><td>double</td><td>OHLC</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">volume</span></td><td>double</td><td>成交量</td><td>股</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="daily_market_summary" data-market="platform" id="ds-daily_market_summary"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>Polygon 缩写字段</span><span>时间列 trade_date</span><span>标的列 T</span></div><div class="ds-main"><h3>daily_market_summary <span class="field-name">日线市场汇总（Polygon）</span></h3><p class="ds-orig">每年一个 parquet 的聚合日线；字段为 Polygon 原始缩写。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">T</span></td><td>string</td><td>ticker 缩写</td><td>—</td><td><span class="tag tag-key">标的列</span> Polygon 原始字段</td></tr>
+<tr><td><span class="field-name">trade_date</span></td><td>string</td><td>交易日</td><td>—</td><td><span class="tag tag-key">时间列</span> VARCHAR YYYY-MM-DD</td></tr>
+<tr><td><span class="field-name">v</span></td><td>double</td><td>成交量</td><td>股</td><td>volume</td></tr>
+<tr><td><span class="field-name">vw</span></td><td>double</td><td>均价</td><td>USD</td><td>vwap</td></tr>
+<tr><td><span class="field-name">o / c / h / l</span></td><td>double</td><td>OHLC</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">t_1</span></td><td>int</td><td>时间戳</td><td>ns</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="stocks_floats" data-market="platform" id="ds-stocks_floats"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>单文件快照</span><span>时间列 effective_date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>stocks_floats <span class="field-name">流通股本快照</span></h3><p class="ds-orig">全市场自由流通快照；因子项目级 mcap weighting 用。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">effective_date</span></td><td>string</td><td>生效日</td><td>—</td><td><span class="tag tag-key">时间列</span> VARCHAR YYYY-MM-DD</td></tr>
+<tr><td><span class="field-name">free_float</span></td><td>int</td><td>自由流通股本</td><td>股</td><td>BIGINT</td></tr>
+<tr><td><span class="field-name">free_float_percent</span></td><td>double</td><td>自由流通比例</td><td>小数</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="financials_ratios" data-market="platform" id="ds-financials_ratios"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>cleaned massive</span><span>时间列 date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>financials_ratios <span class="field-name">基本面比率（cleaned）</span></h3><p class="ds-orig">cleaned_massive_data/fundamentals/financials_ratios。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">date</span></td><td>string</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">price_to_earnings</span></td><td>double</td><td>市盈率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">return_on_equity</span></td><td>double</td><td>净资产收益率</td><td>小数</td><td>—</td></tr>
+<tr><td><span class="field-name">debt_to_equity</span></td><td>double</td><td>负债权益比</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_book</span></td><td>double</td><td>市净率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">price_to_sales</span></td><td>double</td><td>市销率</td><td>倍数</td><td>—</td></tr>
+<tr><td><span class="field-name">free_cash_flow</span></td><td>double</td><td>自由现金流</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">market_cap</span></td><td>double</td><td>市值</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">enterprise_value</span></td><td>double</td><td>企业价值</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">earnings_per_share</span></td><td>double</td><td>每股收益</td><td>USD</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_stocks_sip_minute_aggs" data-market="platform" id="ds-us_stocks_sip_minute_aggs"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>cleaned massive</span><span>bucket 64</span><span>时间列 window_start</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stocks_sip_minute_aggs <span class="field-name">SIP 分钟线（cleaned）</span></h3><p class="ds-orig">minute_aggs_v1：SIP 清洗分钟线。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">window_start</span></td><td>int</td><td>窗口起始</td><td>ns UTC</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">open/high/low/close</span></td><td>double</td><td>OHLC</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">volume</span></td><td>double</td><td>成交量</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">transactions</span></td><td>double</td><td>成交笔数</td><td>—</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="fundamentals_balance_sheet" data-market="platform" id="ds-fundamentals_balance_sheet"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>cleaned massive</span><span>时间列 period_end</span><span>标的列 tickers</span></div><div class="ds-main"><h3>fundamentals_balance_sheet <span class="field-name">基本面·资产负债表（cleaned）</span></h3><p class="ds-orig">cleaned_massive_data/fundamentals/balance_sheet。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">tickers</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">period_end</span></td><td>string</td><td>报告期末</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">total_assets</span></td><td>double</td><td>总资产</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">total_equity</span></td><td>double</td><td>股东权益</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">total_liabilities</span></td><td>double</td><td>总负债</td><td>USD</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="fundamentals_income_statement" data-market="platform" id="ds-fundamentals_income_statement"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>cleaned massive</span><span>时间列 period_end</span><span>标的列 tickers</span></div><div class="ds-main"><h3>fundamentals_income_statement <span class="field-name">基本面·利润表（cleaned）</span></h3><p class="ds-orig">cleaned_massive_data/fundamentals/income_statement。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">tickers</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">period_end</span></td><td>string</td><td>报告期末</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">revenue</span></td><td>double</td><td>营业收入</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">net_income</span></td><td>double</td><td>净利润</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">operating_income</span></td><td>double</td><td>营业利润</td><td>USD</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="fundamentals_cash_flow_statement" data-market="platform" id="ds-fundamentals_cash_flow_statement"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>cleaned massive</span><span>时间列 period_end</span><span>标的列 tickers</span></div><div class="ds-main"><h3>fundamentals_cash_flow_statement <span class="field-name">基本面·现金流量表（cleaned）</span></h3><p class="ds-orig">cleaned_massive_data/fundamentals/cash_flow_statement。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">tickers</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">period_end</span></td><td>string</td><td>报告期末</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">net_cash_from_operating_activities</span></td><td>double</td><td>经营现金流净额</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">net_cash_from_investing_activities</span></td><td>double</td><td>投资现金流净额</td><td>USD</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="fundamentals_short_interest" data-market="platform" id="ds-fundamentals_short_interest"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>cleaned massive</span><span>时间列 settlement_date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>fundamentals_short_interest <span class="field-name">空头持仓（cleaned）</span></h3><p class="ds-orig">short_interest：做空持仓/回补天数。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">settlement_date</span></td><td>string</td><td>结算日</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">days_to_cover</span></td><td>double</td><td>回补天数</td><td>天</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="fundamentals_short_volume" data-market="platform" id="ds-fundamentals_short_volume"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>cleaned massive</span><span>时间列 date</span><span>标的列 ticker</span></div><div class="ds-main"><h3>fundamentals_short_volume <span class="field-name">空头成交（cleaned）</span></h3><p class="ds-orig">short_volume：做空成交量占比。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">date</span></td><td>string</td><td>日期</td><td>—</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">short_volume_ratio</span></td><td>double</td><td>做空成交占比</td><td>小数</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_stocks_sip_quotes" data-market="platform" id="ds-us_stocks_sip_quotes"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>cleaned massive</span><span>时间列 sip_timestamp</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stocks_sip_quotes <span class="field-name">SIP 逐笔报价（cleaned）</span></h3><p class="ds-orig">quotes_v1：清洗后逐笔盘口。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">sip_timestamp</span></td><td>int</td><td>SIP 时间戳</td><td>ns UTC</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">bid_price</span></td><td>double</td><td>买价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">ask_price</span></td><td>double</td><td>卖价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">bid_size</span></td><td>double</td><td>买量</td><td>股</td><td>—</td></tr>
+<tr><td><span class="field-name">ask_size</span></td><td>double</td><td>卖量</td><td>股</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<details class="dataset-card" data-dataset="us_stocks_sip_trades" data-market="platform" id="ds-us_stocks_sip_trades"><summary class="ds-summary"><div><div class="ds-kicker"><span class="badge mk-platform">平台</span><span>cleaned massive</span><span>时间列 sip_timestamp</span><span>标的列 ticker</span></div><div class="ds-main"><h3>us_stocks_sip_trades <span class="field-name">SIP 逐笔成交（cleaned）</span></h3><p class="ds-orig">trades_v1：清洗后逐笔成交。</p></div></div><span class="chevron">⌄</span></summary><div class="ds-body">
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>字段名</th><th>类型</th><th>字段含义</th><th>单位</th><th>口径 / 备注</th></tr></thead><tbody>
+<tr><td><span class="field-name">ticker</span></td><td>string</td><td>股票代码</td><td>—</td><td><span class="tag tag-key">标的列</span></td></tr>
+<tr><td><span class="field-name">sip_timestamp</span></td><td>int</td><td>SIP 时间戳</td><td>ns UTC</td><td><span class="tag tag-key">时间列</span></td></tr>
+<tr><td><span class="field-name">price</span></td><td>double</td><td>成交价</td><td>USD</td><td>—</td></tr>
+<tr><td><span class="field-name">size</span></td><td>double</td><td>成交量</td><td>股</td><td>—</td></tr>
+</tbody></table></div></div></details>
+
+<!-- ============ 06 语义字段 ============ -->
+<section class="panel" id="semantic">
+<div class="eyebrow">SEMANTIC FIELDS · UNIT NORMALIZATION</div>
+<h2>06｜语义字段与单位规范（semantic_fields.yaml 摘要）</h2>
+<p>逻辑字段是跨数据集统一的语义层：声明 dtype / 频率 / 单位 / scale（归一化乘子）/ 时间语义 / join 策略。输出层可做 canonical 单位归一化（<code>normalize_table_units</code>）。下表摘录主要字段。</p>
+<div class="table-wrap"><table class="semantic-table"><thead><tr><th>逻辑字段</th><th>市场</th><th>物理数据集.列</th><th>源单位 → canonical</th><th>scale</th><th>时间角色 / join</th><th>备注</th></tr></thead><tbody>
+<tr><td><code>close / open / high / low</code></td><td>ashare</td><td>ashare_stock_daily.Close …</td><td>元</td><td>—</td><td>event_time / exact</td><td>不复权原始价</td></tr>
+<tr><td><code>volume / amount / vwap</code></td><td>ashare</td><td>ashare_stock_daily.*</td><td>股 / 元 / 元</td><td>—</td><td>event_time / exact</td><td>—</td></tr>
+<tr><td><code>return_bp</code>（alias ret）</td><td>ashare</td><td>ashare_stock_daily.Return</td><td>bp → decimal</td><td>0.0001</td><td>event_time / exact</td><td>A股专属；美股 ret 解析到小数</td></tr>
+<tr><td><code>market_cap</code></td><td>ashare</td><td>ashare_stock_valuation_daily.MarketCap</td><td>元（CNY）</td><td>—</td><td>event_time / exact</td><td>cross_market_comparable=false，需 FX</td></tr>
+<tr><td><code>circulating_market_cap</code></td><td>ashare</td><td>…CirculatingMarketCap</td><td>元（CNY）</td><td>—</td><td>event_time / exact</td><td>—</td></tr>
+<tr><td><code>pe_ratio / pb_ratio</code></td><td>ashare</td><td>…PeRatio / PbRatio</td><td>倍数</td><td>—</td><td>event_time / exact</td><td>—</td></tr>
+<tr><td><code>turnover_ratio</code>（alias turnover）</td><td>ashare</td><td>…TurnoverRatio</td><td>% → ratio</td><td>0.01</td><td>event_time / exact</td><td>A股专属</td></tr>
+<tr><td><code>eps</code></td><td>ashare</td><td>ashare_stock_indicator.Eps</td><td>元/股</td><td>—</td><td>knowledge_time(PubDate) / pit_asof_backward</td><td>财务 PIT，latest_period</td></tr>
+<tr><td><code>roe</code></td><td>ashare</td><td>ashare_stock_indicator.Roe</td><td>% → ratio</td><td>0.01</td><td>knowledge_time(PubDate) / pit_asof_backward</td><td>下一交易日可用</td></tr>
+<tr><td><code>total_assets</code></td><td>ashare</td><td>ashare_stock_balance.TotalAssets</td><td>元</td><td>—</td><td>knowledge_time(PubDate) / pit_asof_backward</td><td>point_in_time_stock</td></tr>
+<tr><td><code>total_liabilities</code></td><td>ashare</td><td>ashare_stock_balance.TotalLiability</td><td>元</td><td>—</td><td>knowledge_time(PubDate) / pit_asof_backward</td><td>—</td></tr>
+<tr><td><code>operating_revenue</code>（alias revenue）</td><td>ashare</td><td>ashare_stock_income.OperatingRevenue</td><td>元</td><td>—</td><td>knowledge_time(PubDate) / pit_asof_backward</td><td>cumulative_ytd_flow</td></tr>
+<tr><td><code>net_profit</code>（alias net_income）</td><td>ashare</td><td>ashare_stock_income.NetProfit</td><td>元</td><td>—</td><td>knowledge_time(PubDate) / pit_asof_backward</td><td>含少数股东</td></tr>
+<tr><td><code>index_weight</code></td><td>ashare</td><td>ashare_index_constituent.Weight</td><td>%</td><td>—</td><td>event_time / exact</td><td>required_filters=[IndexSymbol]</td></tr>
+<tr><td><code>ret / ret_intra / ret_overnight</code></td><td>us</td><td>us_stock_daily.Ret…</td><td>小数</td><td>—</td><td>event_time / exact</td><td>禁止再除</td></tr>
+<tr><td><code>adj_factor</code></td><td>us</td><td>us_stock_daily.AdjFactor</td><td>乘数</td><td>—</td><td>event_time / exact</td><td>后复权</td></tr>
+<tr><td><code>high_low_ratio</code></td><td>us</td><td>us_stock_daily.High_Low_Ratio</td><td>倍数</td><td>—</td><td>event_time / exact</td><td>—</td></tr>
+<tr><td><code>dividend_yield</code></td><td>us</td><td>us_stock_valuation_daily.dividend_yield</td><td>小数</td><td>—</td><td>event_time / exact</td><td>X0 稀疏，mining_allowed=false</td></tr>
+<tr><td><code>return_on_equity / return_on_assets</code></td><td>us</td><td>…return_on_equity / return_on_assets</td><td>小数</td><td>—</td><td>event_time / exact</td><td>X0 稀疏，mining_allowed=false</td></tr>
+<tr><td><code>price_to_earnings / price_to_book</code></td><td>us</td><td>…price_to_earnings / price_to_book</td><td>倍数</td><td>—</td><td>event_time / exact</td><td>X0 稀疏，mining_allowed=false</td></tr>
+<tr><td><code>us_market_cap</code></td><td>us</td><td>us_stock_valuation_daily.market_cap</td><td>USD</td><td>—</td><td>event_time / exact</td><td>X0 稀疏 raw reference</td></tr>
+<tr><td><code>us_market_cap_daily</code></td><td>us</td><td>derived: Close × weighted_shares_outstanding</td><td>USD</td><td>—</td><td>event_time / exact</td><td>derived 字段；挖掘用日频市值</td></tr>
+<tr><td><code>revenue</code></td><td>us</td><td>us_stock_income.revenue</td><td>USD</td><td>—</td><td>knowledge_time(filing_date) / pit_asof_backward</td><td>required_filters=[timeframe]</td></tr>
+<tr><td><code>net_income</code></td><td>us</td><td>us_stock_income.net_income_loss_attributable_common_shareholders</td><td>USD</td><td>—</td><td>knowledge_time(filing_date) / pit_asof_backward</td><td>指向 attributable common</td></tr>
+<tr><td><code>net_income_consolidated</code></td><td>us</td><td>…consolidated_net_income_loss</td><td>USD</td><td>—</td><td>knowledge_time(filing_date) / pit_asof_backward</td><td>consolidated ≠ attributable</td></tr>
+<tr><td><code>us_total_assets / us_total_liabilities</code></td><td>us</td><td>us_stock_balance.*</td><td>USD</td><td>—</td><td>knowledge_time(filing_date) / pit_asof_backward</td><td>point_in_time_stock</td></tr>
+<tr><td><code>shares_outstanding</code></td><td>us</td><td>us_ticker_shares_snapshot.weighted_shares_outstanding</td><td>股</td><td>—</td><td>event_time / exact</td><td>市值中性</td></tr>
+<tr><td><code>cash_dividend_local / cash_dividend</code></td><td>us</td><td>us_stock_dividend.cash_amount</td><td>原币种</td><td>—</td><td>knowledge_time(declaration_date) / pit_asof_backward</td><td>currency_column=currency；需 FX</td></tr>
+<tr><td><code>cash_dividend_usd</code></td><td>us</td><td>us_stock_dividend.cash_amount</td><td>USD</td><td>—</td><td>knowledge_time(declaration_date) / pit_asof_backward</td><td>仅 currency==USD 行</td></tr>
+<tr><td><code>adjusted_price_backward</code></td><td>any</td><td>derived: market provider（A: Close×Factor；US: Close×AdjFactor）</td><td>元 / USD</td><td>—</td><td>event_time / exact</td><td>canonical 概念；物理列仍是各市场原始列</td></tr>
+</tbody></table></div>
+<div class="callout direct"><b>单位归一化：</b>Return(bp)、ROE(%)、TurnoverRatio(%) 等在输出层可统一为 canonical 单位（scale_to_canonical / normalize_table_units）；默认 normalize_units=False 保持旧读路径逐字节一致。</div>
+</section>
+
+<!-- ============ 07 契约 ============ -->
+<section class="panel" id="contract">
+<div class="eyebrow">COS CONTRACTS · PIT &amp; JOIN</div>
+<h2>07｜COS 契约与 PIT 口径细则</h2>
+<div class="grid-2">
+<div><b>时间模型 → 默认 panel / PIT</b><p>D1→dense、S1→state_ready、MINUTE→minute、E1/E2/RAW_EVENT→event_only（带 availability_column 则 PIT=strict）、X0→sparse、STATIC→dimension、EMPTY→forbidden。</p></div>
+<div><b>PIT 契约字段</b><p>availability_column（知识可见时点）、period_column（会计期间）、event_column（生效日）、revision_columns（去重 tiebreaker）、event_id_columns。strict 要求 availability；effective_time_only 要求 event_column。</p></div>
+<div><b>join fan-out 守卫</b><p>相对日频面板，one_to_many 表（TopTen/Industry/美股 capital shares）exact join 会行放大。单值 dimension filter（如 IndustrySource='sw_l1'）才证明退化为一行；否则必须显式聚合/去重。</p></div>
+<div><b>A股 vs 美股 PIT fidelity</b><p>A股财务：knowledge_date_pit（COS 无历史 revision vintage，不能承诺 full bitemporal）；美股财务：vintage_pit（filing_date 是真披露时点，支持 vintage）。</p></div>
+</div>
+<h3>过滤条件（filter）速查</h3>
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>数据集</th><th>必填过滤</th><th>允许值</th><th>cardinality</th></tr></thead><tbody>
+<tr><td><code>ashare_stock_industry</code></td><td>IndustrySource</td><td>sw_l1/sw_l2/sw_l3/zjw/jq_l1/jq_l2</td><td>—（单值才能免 fan-out）</td></tr>
+<tr><td><code>ashare_index_constituent</code></td><td>IndexSymbol</td><td>任意指数代码</td><td>—</td></tr>
+<tr><td><code>us_stock_balance / income / cashflow</code></td><td>timeframe</td><td>quarterly / annual / trailing_twelve_months</td><td>exactly_one</td></tr>
+</tbody></table></div>
+<h3>时间表示与精度</h3>
+<div class="table-wrap"><table class="feature-table"><thead><tr><th>数据集</th><th>时间表示</th><th>精度</th><th>语义时区</th></tr></thead><tbody>
+<tr><td>A股财务（indicator/balance/income/cashflow）</td><td>date_label</td><td>date</td><td>Asia/Shanghai</td></tr>
+<tr><td>美股财务（balance/income/cashflow）</td><td>date_label</td><td>date</td><td>America/New_York</td></tr>
+<tr><td>美股分红 / 拆股</td><td>date_label</td><td>date</td><td>America/New_York</td></tr>
+<tr><td>us_fact_news</td><td>instant</td><td>timestamp</td><td>UTC 存储 / America/New_York 语义</td></tr>
+</tbody></table></div>
+<div class="callout risk"><b>前视红线：</b>effective_time_only 表（A股分红、美股拆股）没有可靠公告时点，只允许显式按生效日保守使用；生效日不得晚于 as_of/时间窗上界；production 下无界读取直接拒绝。美股分红可能有未来日期文件——直接当普通 parquet 读会前视。</div>
+</section>
+
+<div class="footer-note"><b>数据来源：</b>本清单基于 <code>data_access v0.10.2</code>（GitHub: HKUST-QUANT-SOCIETY/data_access，commit 942d22a）库内 <code>config/datasets.yaml</code>、<code>config/semantic_fields.yaml</code>、<code>cos_contract*.py</code> 整理。<b>口径提醒：</b>schema 未静态声明的「列表」数据集（如 <code>ashare_etf_list</code>、<code>us_security_master</code>）物理列以数据字典为准。单位换算务必以本清单「单位/口径」列为准，A股与美股口径不同，禁止跨市场直接套用。生成日期：2026-08-11。</div>
+</main>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelectorAll(s)};
+  var search=$('#search')[0], expandAll=$('#expandAll')[0], collapseAll=$('#collapseAll')[0];
+  var cards=$('.dataset-card'), navItems=$('.nav-item');
+  var idxA=[],idxU=[],idxP=[];
+  function buildNav(){
+    cards.forEach(function(c){
+      var ds=c.getAttribute('data-dataset'), mk=c.getAttribute('data-market');
+      var h3=c.querySelector('.ds-main h3');
+      var label=(h3?h3.textContent.trim():ds);
+      var a=document.createElement('a');
+      a.className='nav-item'; a.setAttribute('data-filter',mk); a.setAttribute('data-target',ds);
+      a.href='#ds-'+ds;
+      var sp=document.createElement('span'); sp.textContent=mk==='ashare'?'A':mk==='us'?'U':'P';
+      a.appendChild(sp); a.appendChild(document.createTextNode(' '+label));
+      if(mk==='ashare'){idxA.push(a);document.getElementById('nav-ashare').appendChild(a);}
+      else if(mk==='us'){idxU.push(a);document.getElementById('nav-us').appendChild(a);}
+      else{idxP.push(a);document.getElementById('nav-platform').appendChild(a);}
+    });
+  }
+  buildNav();
+  // filter
+  $('.filter-row button').forEach(function(b){
+    b.addEventListener('click',function(){
+      $('.filter-row button').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');
+      var f=b.getAttribute('data-filter');
+      cards.forEach(function(c){c.style.display=(f==='all'||c.getAttribute('data-market')===f)?'':'none'});
+      navItems.forEach(function(n){n.classList.toggle('hidden',f!=='all'&&n.getAttribute('data-filter')!==f)});
+    });
+  });
+  // search
+  search.addEventListener('input',function(){
+    var q=search.value.toLowerCase().trim();
+    if(!q){cards.forEach(function(c){c.style.display=''});navItems.forEach(function(n){n.classList.remove('hidden')});return;}
+    cards.forEach(function(c){
+      var txt=c.textContent.toLowerCase();
+      c.style.display=txt.indexOf(q)>-1?'':'none';
+    });
+    navItems.forEach(function(n){
+      var txt=n.textContent.toLowerCase();
+      n.classList.toggle('hidden',txt.indexOf(q)===-1);
+    });
+  });
+  // expand/collapse
+  function setAll(open){cards.forEach(function(c){c.open=open})}
+  expandAll.addEventListener('click',function(){setAll(true)});
+  collapseAll.addEventListener('click',function(){setAll(false)});
+  // sidebar toggle
+  function toggle(force){
+    document.body.classList.toggle('sidebar-collapsed',force!==undefined?force:undefined);
+  }
+  document.getElementById('sidebarToggle').addEventListener('click',function(){
+    document.body.classList.toggle('sidebar-collapsed');
+  });
+  document.getElementById('sidebarClose').addEventListener('click',function(){
+    document.body.classList.add('sidebar-collapsed');
+  });
+  // active nav highlighting
+  var sections=['overview','conventions','ashare-group','us-group','platform-group','semantic','contract'];
+  window.addEventListener('scroll',function(){
+    var y=window.scrollY+120,cur='';
+    sections.forEach(function(id){var el=document.getElementById(id);if(el&&el.offsetTop<=y)cur=id});
+    navItems.forEach(function(n){n.classList.toggle('active',n.getAttribute('data-target')===cur||n.getAttribute('data-target')==='ds-'+cur)});
+    cards.forEach(function(c){c.classList.remove('ds-active')});
+  });
+})();
+</script>
+</body></html>

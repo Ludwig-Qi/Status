@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="width=device-width,initial-scale=1" name="viewport">
+<title>G3 0A 特征状态清点 V2</title>
+<style>
+:root{--bg:#f3f5f9;--panel:#fff;--ink:#172033;--muted:#667085;--line:#dfe4ec;--blue:#2457d6;--blue2:#edf3ff;--nav:#0d1a2e;--nav2:#182945;--good:#eaf7f1;--risk:#fff1e8;--warn-bg:#fff8e7;--shadow:0 10px 30px rgba(20,39,75,.08);--sidebar-w:340px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar-w);background:linear-gradient(180deg,var(--nav),#081322);color:white;overflow:auto;overscroll-behavior:contain;padding:22px 16px 40px;z-index:30}
+.brand{padding:2px 8px 18px;border-bottom:1px solid rgba(255,255,255,.12)}
+.brand h1{font-size:17px;line-height:1.4;margin:0 0 7px}
+.brand p{font-size:12px;color:#aab7ca;margin:0}
+.nav-group{margin:14px 0}
+.nav-group-title{font-size:11px;letter-spacing:.07em;color:#8193b3;padding:0 8px 7px}
+.nav-item{display:flex;gap:8px;color:#cbd5e4;text-decoration:none;padding:8px;border-radius:8px;font-size:12px;line-height:1.35;margin:2px 0;border-left:3px solid transparent}
+.nav-item span{flex:0 0 27px;font-weight:800;color:#8295b8}
+.nav-item:hover{background:rgba(255,255,255,.07)}
+.nav-item.active{background:var(--nav2);border-left-color:#6fa0ff;color:#fff}
+.content{margin-left:var(--sidebar-w);max-width:1580px;padding:32px 48px 100px}
+.hero{background:linear-gradient(135deg,#fff,#ecf2ff);border:1px solid var(--line);border-radius:18px;padding:35px 40px;box-shadow:var(--shadow);margin-bottom:22px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--blue)}
+.hero h1{font-size:30px;line-height:1.25;margin:8px 0 13px}
+.hero p{color:var(--muted);max-width:1120px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 15px}
+.stat b{font-size:20px;margin-right:5px;color:#2457d6}
+.panel{margin:22px 0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 29px;box-shadow:var(--shadow);scroll-margin-top:16px}
+.panel h2{margin-top:0;font-size:22px}
+.section-purpose{background:#eef4ff;border-left:4px solid #4b78e6;border-radius:8px;padding:11px 14px;margin:10px 0 18px;color:var(--muted);font-size:13.5px;line-height:1.6}
+.section-purpose b{color:var(--blue)}
+.feature-badge{display:inline-block;border-radius:999px;padding:2px 8px;margin:1px 3px 2px 0;font-size:11.5px;font-weight:700;white-space:nowrap;vertical-align:middle}
+.priority-p0{background:#a72626;color:white}
+.priority-p1{background:#d87818;color:white}
+.priority-p2{background:#526f8c;color:white}
+.status-c{background:#fff3d8;color:#805300;border:1px solid #e8d5a1}
+.status-b{background:#e8f1ff;color:#24548f;border:1px solid #c5d5ed}
+.status-d{background:#fde9e9;color:#932f2f;border:1px solid #e8bfbf}
+.callout{border-radius:9px;padding:12px 14px;margin:10px 0;line-height:1.75}
+.direct{background:#eef4ff;border-left:4px solid #4b78e6}
+.use{background:var(--good);border-left:4px solid #2c9a6b}
+.risk{background:var(--risk);border-left:4px solid #dc7a34}
+.warn{background:var(--warn-bg);border-left:4px solid #d89a2b}
+.now-box{background:linear-gradient(135deg,#f1f6ff,#eaf2ff);border:1px solid #c6d7f0;border-radius:12px;padding:14px 16px;margin:12px 0;line-height:1.75}
+.now-box b{color:#173f9e}
+.impl-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;margin:12px 0;border:1px solid #d7e2ed;border-radius:12px;overflow:hidden}
+.impl-table thead th{background:#eaf2fa;color:#173f68;text-align:left;font-weight:700}
+.impl-table th,.impl-table td{border-right:1px solid #d7e2ed;border-bottom:1px solid #d7e2ed;padding:9px 10px;vertical-align:top;line-height:1.6}
+.impl-table th:last-child,.impl-table td:last-child{border-right:0}
+.impl-table tr:last-child td{border-bottom:0}
+.feature-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;margin:6px 0;border:1px solid #d7e2ed;border-radius:10px;overflow:hidden}
+.feature-table thead th{background:#eaf2fa;color:#173f68;text-align:left;font-weight:700;font-size:12px;padding:8px 9px;border-right:1px solid #d7e2ed;border-bottom:1px solid #d7e2ed;position:sticky;top:0;z-index:2}
+.feature-table th:last-child,.feature-table td:last-child{border-right:0}
+.feature-table td{padding:8px 9px;border-right:1px solid #e5e9f1;border-bottom:1px solid #e5e9f1;vertical-align:top;line-height:1.55}
+.feature-table tr:last-child td{border-bottom:0}
+.feature-table td:nth-child(1){min-width:40px;text-align:center;font-weight:700;color:var(--muted);white-space:nowrap}
+.feature-table td:nth-child(2){min-width:190px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.feature-table td:nth-child(3){min-width:120px}
+.feature-table td:nth-child(4){min-width:55px;text-align:center}
+.feature-table td:nth-child(5){min-width:120px;font-size:12px}
+.feature-table td:nth-child(6){min-width:105px;font-size:12px}
+.feature-table td:nth-child(7){min-width:220px;font-size:12px;line-height:1.5}
+.family-header{background:linear-gradient(90deg,#edf3ff,transparent);border-bottom:2px solid #cdd8ee;border-radius:12px;padding:16px 20px;margin:28px 0 12px}
+.family-header h3{margin:0;font-size:20px;color:#173f68}
+.family-header p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.tier-block{border:1px solid #d5e0ec;border-radius:13px;margin:14px 0;overflow:hidden}
+.tier-block>summary{cursor:pointer;list-style:none;padding:14px 17px;background:#edf4fb;font-weight:800;color:#153a63;display:flex;justify-content:space-between;font-size:15px}
+.tier-block>summary::-webkit-details-marker{display:none}
+.tier-body{padding:16px 18px}
+.status-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.status-card{background:#fff;border:1px solid #d5e2ee;border-radius:11px;padding:13px;text-align:center}
+.status-card b{display:block;font-size:28px;color:#173f68}
+.status-card span{display:block;font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4}
+.pit-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;margin:10px 0;border:1px solid #d7e2ed;border-radius:10px;overflow:hidden}
+.pit-table th,.pit-table td{border-right:1px solid #d7e2ed;border-bottom:1px solid #d7e2ed;padding:9px 10px;vertical-align:top;line-height:1.55}
+.pit-table thead th{background:#eaf2fa;color:#173f68;font-weight:700;text-align:left}
+.pit-table th:last-child,.pit-table td:last-child{border-right:0}
+.pit-table tr:last-child td{border-bottom:0}
+.pit-icon{font-size:16px;text-align:center}
+.pit-yes{color:#2c9a6b}
+.pit-no{color:#c7442c}
+.pit-warn{color:#d89a2b}
+.completion-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.completion-item{background:#f8faff;border:1px solid #dde6f1;border-radius:10px;padding:12px}
+.completion-item b{display:block;color:#173f68;margin-bottom:4px}
+.completion-item span{font-size:13px;color:var(--muted)}
+.d-why{background:#fff5f5;border:1px solid #e8cccc;border-radius:10px;padding:12px 15px;margin:14px 0 20px;font-size:13.5px;line-height:1.75}
+.d-why b{color:#932f2f}
+.b-note{background:#f0f5ff;border:1px solid #cddaf0;border-radius:10px;padding:12px 15px;margin:14px 0 20px;font-size:13.5px;line-height:1.75}
+.b-note b{color:#24548f}
+.foot{margin-top:28px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:1100px){.sidebar{position:relative;width:auto;max-height:470px}.content{margin-left:0;padding:22px}.status-bar{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.content{padding:13px}.hero{padding:22px}.hero h1{font-size:24px}.status-bar{grid-template-columns:1fr}}
+@media print{.sidebar{display:none}.content{margin:0;max-width:none}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+<div class="brand"><h1>G3 0A 特征状态清点</h1><p>STATUS · STAGE 0</p></div>
+<div class="nav-group">
+<div class="nav-group-title">总览</div>
+<a class="nav-item active" href="#hero"><span>总</span> 总体统计与分类定义</a>
+<a class="nav-item" href="#pit-rules"><span>时</span> 跨市场时间对齐规则</a>
+</div>
+<div class="nav-group">
+<div class="nav-group-title">特征族清点</div>
+<a class="nav-item" href="#f07"><span>F7</span> 期货与期权隐含信息 · 29项</a>
+<a class="nav-item" href="#f12"><span>F12</span> 港股离岸人民币 · 26项</a>
+<a class="nav-item" href="#f13"><span>F13</span> 美股全球风险偏好 · 31项</a>
+<a class="nav-item" href="#f14"><span>F14</span> 商品航运供应链 · 26项</a>
+<a class="nav-item" href="#f19"><span>F19</span> 期权Gamma对冲流 · 13项</a>
+</div>
+<div class="nav-group">
+<div class="nav-group-title">补数与交付</div>
+<a class="nav-item" href="#summary"><span>汇</span> 总汇总</a>
+</div>
+</aside>
+
+<main class="content">
+
+<!-- Hero -->
+<section class="hero" id="hero">
+<div class="eyebrow">G3 · STAGE 0 · 0A INVENTORY</div>
+<h1>G3 组 0A 清点：股指衍生品·离岸与全球前瞻风险</h1>
+<p>对 F07 / F12 / F13 / F14 / F19 共 <b>125 项</b>特征逐条判定状态，锁定数据源、PIT 可得性和跨市场时间对齐规则。数据来源：《市场状态识别与预测研究手册 V28》特征库表格。</p>
+<div class="stats">
+<div class="stat"><b>125</b>项全部清点</div>
+<div class="stat"><b>0</b>项 A Ready</div>
+<div class="stat"><b>0</b>项 B Derivable</div>
+<div class="stat"><b>116</b>项 C External Gap</div>
+<div class="stat"><b>9</b>项 D Not PIT-safe</div>
+</div>
+</section>
+
+<!-- Definitions -->
+<section class="panel" id="definitions">
+<div class="eyebrow">CLASSIFICATION · A / B / C / D</div>
+<h2>分类定义</h2>
+<div class="status-bar">
+<div class="status-card"><b>A</b><span>Ready<br>已落表并通过 PIT 校验</span></div>
+<div class="status-card"><b>B</b><span>Derivable<br>现有原始数据可计算，Stage 0 实现</span></div>
+<div class="status-card"><b>C</b><span>External Gap<br>依赖尚未接入的外部数据源</span></div>
+<div class="status-card"><b>D</b><span>Not PIT-safe<br>历史不可还原或依赖未来信息</span></div>
+</div>
+
+<div class="b-note"><b>⚠️ 关于 B 类的说明：</b>G3 目前判定的 0 项 B 类，前提是 Wind / 商业数据终端尚未接入 COS 特征系统。如果终端授权已到位，则 F07（中金所期货）、F12（港股/A50/CNH）、F13（VIX/美股/美债）中的大量 P0 项可从 C 类上调为 B 类。B 类的判定依据是：<b>原始数据可通过现有渠道获取，只需编写构造逻辑和 PIT 回放脚本</b>，而非需要新签采购合同。建议在 0B 阶段与 IT 及数据采购方确认终端覆盖范围后批量修正。</div>
+
+<div class="d-why"><b>🔴 关于 D 类的判定（9 项）：</b>以下 9 项即使外部数据全部到位，也无法在历史任意交易日按当时信息完整重建——它们要么依赖事后模型输出（如 forecast RV），要么依赖当时不可得的快照数据（如 IV 曲面逐 tick 快照），要么 A 股个股期权历史上根本没有足够覆盖。详见下表。</div>
+</section>
+
+<!-- PIT -->
+<section class="panel" id="pit-rules">
+<div class="eyebrow">PIT · CROSS-MARKET TIME ALIGNMENT</div>
+<h2>跨市场时间对齐规则</h2>
+<div class="section-purpose"><b>本节回答：</b>每个海外/衍生品市场的数据，在 A 股 t 日 9:30 开盘前是否已经存在？</div>
+<table class="pit-table">
+<thead><tr><th>市场/品种</th><th>交易时间（北京时间）</th><th style="text-align:center">t日A股开盘前可得</th><th>PIT 说明</th></tr></thead>
+<tbody>
+<tr><td><b>A股</b></td><td>9:30–15:00</td><td class="pit-icon">—</td><td>基准</td></tr>
+<tr><td><b>中金所股指期货</b> (IF/IH/IC/IM)</td><td>9:30–15:00，<b>无夜盘</b></td><td class="pit-icon pit-no">❌</td><td>与A股同步收盘，t日数据只能用于 t+1</td></tr>
+<tr><td><b>国内商品期货夜盘</b></td><td>21:00–23:00 / 01:00 / 02:30</td><td class="pit-icon pit-yes">✅</td><td>各品种收盘时间不同，夜盘数据在次日A股盘前可用</td></tr>
+<tr><td><b>SGX A50 期货</b></td><td>日盘 9:00–16:30，夜盘 ~17:00–05:15</td><td class="pit-icon pit-yes">✅</td><td>夜盘收盘数据完整覆盖A股盘前</td></tr>
+<tr><td><b>港股</b> (HSI/HSTECH)</td><td>9:30–16:00（午休12:00–13:00）</td><td class="pit-icon pit-yes">✅</td><td>前一日收盘数据在次日A股开盘前可用</td></tr>
+<tr><td><b>CNH</b></td><td>OTC，有效接近24小时</td><td class="pit-icon pit-yes">✅</td><td>A股开盘前最新报价直接可用</td></tr>
+<tr><td><b>美股</b> (SPX/NDX/SOX)</td><td>夏令时 21:30–04:00，冬令时 22:30–05:00</td><td class="pit-icon pit-yes">✅</td><td>美股收盘在A股开盘前4-5.5h</td></tr>
+<tr><td><b>Cboe VIX/SPX期权</b></td><td>9:30–16:15 ET；GTH 20:15–09:25 ET</td><td class="pit-icon pit-yes">✅</td><td>美股收盘时VIX已定</td></tr>
+<tr><td><b>VIX期货</b> (CFE)</td><td>近乎24h</td><td class="pit-icon pit-yes">✅</td><td>连续定价</td></tr>
+<tr><td><b>LME/海外商品</b></td><td>时区各异</td><td class="pit-icon pit-warn">⚠️</td><td>需逐个品种按时区映射</td></tr>
+</tbody>
+</table>
+
+<div class="now-box"><b>关键发现：</b><br>
+1. <b>中金所股指期货无夜盘</b>——IF/IH/IC/IM 的基差/持仓数据与A股同步收盘（15:00），无夜盘交易，只能用于 t+1。真正在 A 股开盘前反映隔夜情绪的前瞻信号来自 <b>SGX A50 期货夜盘</b>。<br>
+2. <b>A50 夜盘覆盖 A 股盘前</b>——夜盘约 17:00–05:15，A 股 9:30 开盘时已有完整的隔夜定价。<br>
+3. <b>国内商品夜盘</b>——铜/铁矿石/螺纹等夜盘数据在 A 股开盘前可用，PIT 时间戳正确。<br>
+4. <b>美股收盘→A 股开盘</b>——夏令约 5.5h、冬令约 4.5h，美股数据安全用作 A 股同日决策输入，关键纪律是<b>美国当日收盘对应次一A股交易日，不可回填到同一日期</b>。</div>
+</section>
+
+<!-- ===== D 类判据 ===== -->
+<section class="panel" id="d-rationale">
+<div class="eyebrow">D CLASSIFICATION RATIONALE</div>
+<h2>D 类（Not PIT-safe）逐项判据</h2>
+<div class="section-purpose"><b>判定原则：</b>D 类不是「数据难获取」，而是「即使数据到位也无法在历史任意交易日按当时信息完整重建」。通常原因：① 依赖事后模型输出（如预测波动率）；② 依赖当时不可得的市场快照（如 t 日的 IV 曲面逐 tick 快照在历史上并未保存）；③ A 股相关市场历史上根本不存在。</div>
+<table class="feature-table">
+<thead><tr><th>#</th><th>canonical_id</th><th>中文名</th><th>状态</th><th>无法 PIT 重建的原因</th></tr></thead>
+<tbody>
+<tr><td>17</td><td>variance_risk_premium</td><td>方差风险溢价</td><td><span class="feature-badge status-d">D</span></td><td>VRP = IV² − forecast_RV。forecast RV 模型本身需要历史训练和 OOS 验证。在模型建成之前，任何替代（如用事后 RV）都构成 look-ahead bias。若已有通过严格 PIT 校验的 forecast RV 模型，可升级为 C</td></tr>
+<tr><td>21</td><td>implied_correlation</td><td>隐含相关性代理</td><td><span class="feature-badge status-d">D</span></td><td>A 股个股期权历史上覆盖极度不足——2019 年之前仅有 50ETF 期权，2022 年后才逐步增加 300/500/创业板/中证1000。对于需要成分股期权的隐含相关性指标，早年的输入数据根本不存在</td></tr>
+<tr><td>114</td><td>gamma_flip_distance_proxy</td><td>Gamma翻转位距离代理</td><td><span class="feature-badge status-d">D</span></td><td>需要在一组现货价格网格上<b>重算当时各期权的 Gamma</b>。这要求历史每个 t 日有完整的 IV 曲面快照——而历史上 IV 曲面数据并未以 tick 级别保存。用今日的定价模型参数反推历史曲面 = D</td></tr>
+<tr><td>118</td><td>vanna_exposure_proxy</td><td>Vanna对冲暴露代理</td><td><span class="feature-badge status-d">D</span></td><td>Vanna = ∂²V/(∂S∂σ)。重算需要历史 IV 曲面、当时市场隐含的无风险利率和分红率，以及统一的定价模型。三个输入在历史上都不存在完整快照，"高度模型依赖"意味着不同模型参数给出不同结果，没有客观真值可校验</td></tr>
+<tr><td>119</td><td>charm_exposure_proxy</td><td>Charm时间衰减对冲暴露代理</td><td><span class="feature-badge status-d">D</span></td><td>Charm = −∂Delta/∂t = −∂²V/(∂S∂t)。与 Vanna 同理——需要历史 Greeks 快照或重算环境。到期周的 Charm 效应在历史上无法还原</td></tr>
+<tr><td>121</td><td>downside_variance_risk_premium</td><td>下行方差风险溢价</td><td><span class="feature-badge status-d">D</span></td><td>与 #17 同理——"下行预测 RV"模型不存在则不可用。如果无成熟 forecast model，该字段用事后下尾波动计算等同于未来数据泄露</td></tr>
+<tr><td>123</td><td>gex_sign_confidence</td><td>GEX符号置信度</td><td><span class="feature-badge status-d">D</span></td><td>需要多套参与者方向假设 + 成交方向代理。历史上并不存在这些假设对应的真实持仓数据来校准——"置信度"本身就是不可验证的。该字段是强制的逻辑校验字段（#113 的配套），但其自身的校验基准（真实 dealer 持仓）在历史上不存在</td></tr>
+<tr><td>124</td><td>gamma_flip_atr_distance</td><td>距Gamma Flip的ATR标准化距离</td><td><span class="feature-badge status-d">D</span></td><td>与 #114 同源——Flip 距离本身依赖多情景下重算的 Gamma，而重算使用的 IV 曲面快照在历史上未保存。输出"情景区间"而非"伪精确点"是正确做法，但不改变底层数据不可得的 D 判据</td></tr>
+</tbody>
+</table>
+<div class="callout warn"><b>⚠️ 关于 #17 和 #121 的升级路径：</b>如果团队已有通过严格 OOS 验证的 forecast RV 模型（如 HAR-RV 或机器学习预测），且该模型的 PIT 版本已在 COS 中可用，那么 #17 和 #121 可以从 C/D 升级为 B。当前判定 D 的默认前提是：预测模型尚未建成，不可用事后 RV 替代。</div>
+</section>
+
+<!-- ===== F07 ===== -->
+<section class="panel" id="f07">
+<div class="family-header"><h3>F07｜股指期货与期权隐含信息</h3><p>29 项 · C×27 / D×2 · 中金所 + 期权曲面未接入 COS · 中金所期货无夜盘</p></div>
+<table class="feature-table">
+<thead><tr><th>#</th><th>canonical_id</th><th>中文名</th><th>状态</th><th>数据源</th><th>PIT 可得性</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>if_basis</td><td>IF基差</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>t日收盘→t+1</td><td>与A股同步收盘，无夜盘</td></tr>
+<tr><td>2</td><td>ih_basis</td><td>IH基差</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>t日收盘→t+1</td><td></td></tr>
+<tr><td>3</td><td>ic_basis</td><td>IC基差</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>t日收盘→t+1</td><td></td></tr>
+<tr><td>4</td><td>im_basis</td><td>IM基差</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>t日收盘→t+1</td><td></td></tr>
+<tr><td>5</td><td>basis_cross_section</td><td>四大期货基差截面</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>依赖1-4</td><td>均值/离散度/排序</td></tr>
+<tr><td>6</td><td>basis_style_spread</td><td>IC/IM−IF/IH基差差</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>同上</td><td>小盘−大盘基差差</td></tr>
+<tr><td>7</td><td>futures_term_slope</td><td>期限结构斜率</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>t日收盘→t+1</td><td>需近远月合约</td></tr>
+<tr><td>8</td><td>futures_oi_change</td><td>持仓量变化</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>t日收盘→t+1</td><td>主力合约需连续化</td></tr>
+<tr><td>9</td><td>futures_volume_oi</td><td>成交持仓比</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>同上</td><td></td></tr>
+<tr><td>10</td><td>futures_roll_pressure</td><td>换月压力</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>同上</td><td></td></tr>
+<tr><td>11</td><td>futures_member_concentration</td><td>会员持仓集中度</td><td><span class="feature-badge status-c">C</span></td><td>中金所</td><td>t日收盘→t+1</td><td>P1</td></tr>
+<tr><td>12</td><td>atm_iv_level</td><td>平值隐含波动率</td><td><span class="feature-badge status-c">C</span></td><td>期权曲面/Wind</td><td>t日收盘→t+1</td><td>需完整的30天期限插值</td></tr>
+<tr><td>13</td><td>iv_term_slope</td><td>IV期限斜率</td><td><span class="feature-badge status-c">C</span></td><td>期权曲面/Wind</td><td>同上</td><td></td></tr>
+<tr><td>14</td><td>iv_skew_25d</td><td>25Delta偏度</td><td><span class="feature-badge status-c">C</span></td><td>期权曲面/Wind</td><td>同上</td><td></td></tr>
+<tr><td>15</td><td>put_call_volume</td><td>认沽/认购成交量比</td><td><span class="feature-badge status-c">C</span></td><td>期权统计/Wind</td><td>同上</td><td></td></tr>
+<tr><td>16</td><td>put_call_oi</td><td>认沽/认购持仓比</td><td><span class="feature-badge status-c">C</span></td><td>期权统计/Wind</td><td>同上</td><td></td></tr>
+<tr><td>17</td><td>variance_risk_premium</td><td>方差风险溢价</td><td><span class="feature-badge status-d">D</span></td><td>期权曲面 + forecast RV模型</td><td>—</td><td>⚠️ forecast RV 模型未建成则不可用；事后 RV = look-ahead</td></tr>
+<tr><td>18</td><td>option_gamma_concentration</td><td>期权Gamma集中度</td><td><span class="feature-badge status-c">C</span></td><td>期权OI+Greeks</td><td>t日收盘→t+1</td><td></td></tr>
+<tr><td>19</td><td>iv_dispersion_underlyings</td><td>不同标的IV离散度</td><td><span class="feature-badge status-c">C</span></td><td>多标期权曲面</td><td>同上</td><td>需多个品种期权IV</td></tr>
+<tr><td>20</td><td>option_liquidity_stress</td><td>期权流动性压力</td><td><span class="feature-badge status-c">C</span></td><td>期权统计</td><td>同上</td><td></td></tr>
+<tr><td>21</td><td>implied_correlation</td><td>隐含相关性代理</td><td><span class="feature-badge status-d">D</span></td><td>期权曲面/Wind</td><td>—</td><td>⚠️ A股个股期权历史覆盖不足（2019年前仅50ETF）</td></tr>
+<tr><td>22</td><td>iv_surface_no_arbitrage_violation</td><td>IV曲面无套利违例率</td><td><span class="feature-badge status-c">C</span></td><td>期权曲面</td><td>t日收盘→t+1</td><td></td></tr>
+<tr><td>23</td><td>futures_term_slope_by_variety</td><td>分品种期限结构</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>同#7</td><td></td></tr>
+<tr><td>24</td><td>futures_oi_change_by_variety</td><td>分品种持仓变化</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>同#8</td><td></td></tr>
+<tr><td>25</td><td>roll_yield_spread</td><td>展期收益率差</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>同上</td><td></td></tr>
+<tr><td>26</td><td>basis_momentum</td><td>基差动量</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>同上</td><td>基差差分</td></tr>
+<tr><td>27</td><td>oi_price_divergence</td><td>量价背离</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>同上</td><td></td></tr>
+<tr><td>28</td><td>futures_net_long_short_ratio</td><td>期货净多空比</td><td><span class="feature-badge status-c">C</span></td><td>中金所</td><td>同上</td><td></td></tr>
+<tr><td>29</td><td>futures_open_interest_term_structure</td><td>持仓期限分布</td><td><span class="feature-badge status-c">C</span></td><td>中金所/Wind</td><td>同上</td><td></td></tr>
+</tbody>
+</table>
+<div class="family-summary"><b>F07 小结：</b>29 项中 C×27（中金所期货 + 期权曲面/统计数据未接入），D×2（#17 VRP 依赖 forecast RV、#21 隐含相关性因 A 股个股期权历史覆盖不足）。Wind 终端如已接入，基差和 OI 类（#1–#11, #23–#29）可从 C 升级为 B。</div>
+</section>
+
+<!-- ===== F12 ===== -->
+<section class="panel" id="f12">
+<div class="family-header"><h3>F12｜港股、离岸中国资产与人民币</h3><p>26 项 · 全部 C（外部缺口）· 港交所/离岸/SGX 数据未接入 COS · 全部在 A 股开盘前可得</p></div>
+<table class="feature-table">
+<thead><tr><th>#</th><th>canonical_id</th><th>中文名</th><th>状态</th><th>数据源</th><th>PIT 可得性</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td>30</td><td>hsi_overnight_ret</td><td>恒生指数隔夜收益</td><td><span class="feature-badge status-c">C</span></td><td>港交所/Wind</td><td>✅ 盘前可得</td><td></td></tr>
+<tr><td>31</td><td>hscei_overnight_ret</td><td>恒生国企指数隔夜收益</td><td><span class="feature-badge status-c">C</span></td><td>港交所/Wind</td><td>✅</td><td></td></tr>
+<tr><td>32</td><td>hstech_ret</td><td>恒生科技收益</td><td><span class="feature-badge status-c">C</span></td><td>港交所/Wind</td><td>✅</td><td></td></tr>
+<tr><td>33</td><td>ah_premium_chg</td><td>AH溢价指数变化</td><td><span class="feature-badge status-c">C</span></td><td>Wind/商业</td><td>✅</td><td>需A+H配对价格</td></tr>
+<tr><td>34</td><td>ftse_a50_fut_overnight</td><td>富时A50期货隔夜变化</td><td><span class="feature-badge status-c">C</span></td><td>SGX/Wind</td><td>✅ 夜盘~17:00-05:15</td><td><b>最直接的盘前前瞻信号</b></td></tr>
+<tr><td>35</td><td>cnh_spot_chg</td><td>USD/CNH变化</td><td><span class="feature-badge status-c">C</span></td><td>外汇/Wind</td><td>✅ OTC 24h</td><td></td></tr>
+<tr><td>36</td><td>cny_cnh_basis</td><td>在岸−离岸汇差</td><td><span class="feature-badge status-c">C</span></td><td>外汇/Wind</td><td>✅</td><td></td></tr>
+<tr><td>37</td><td>fixing_surprise</td><td>人民币中间价意外</td><td><span class="feature-badge status-c">C</span></td><td>PBOC/Wind</td><td>✅ 9:15公布</td><td></td></tr>
+<tr><td>38</td><td>china_adr_ret</td><td>中概股组合隔夜收益</td><td><span class="feature-badge status-c">C</span></td><td>Nasdaq/Wind</td><td>✅ 美股收盘后</td><td></td></tr>
+<tr><td>39</td><td>kweb_fxi_spread</td><td>互联网−大盘中国ETF差</td><td><span class="feature-badge status-c">C</span></td><td>美股/Wind</td><td>✅</td><td></td></tr>
+<tr><td>40</td><td>hk_short_turnover</td><td>港股卖空成交占比</td><td><span class="feature-badge status-c">C</span></td><td>港交所</td><td>✅</td><td></td></tr>
+<tr><td>41</td><td>southbound_flow</td><td>南向资金流</td><td><span class="feature-badge status-c">C</span></td><td>港交所/Wind</td><td>✅</td><td></td></tr>
+<tr><td>42</td><td>offshore_onshore_divergence</td><td>离岸−在岸中国资产背离</td><td><span class="feature-badge status-c">C</span></td><td>多源</td><td>✅</td><td>综合指标</td></tr>
+<tr><td>43</td><td>hsi_hstech</td><td>恒生/恒生科技综合</td><td><span class="feature-badge status-c">C</span></td><td>港交所/Wind</td><td>✅</td><td></td></tr>
+<tr><td>44</td><td>usd_cnh</td><td>USD/CNH及波动</td><td><span class="feature-badge status-c">C</span></td><td>外汇/Wind</td><td>✅</td><td></td></tr>
+<tr><td>45</td><td>cfets_rmb_index</td><td>CFETS人民币指数</td><td><span class="feature-badge status-c">C</span></td><td>中国货币网</td><td>✅ 周频</td><td></td></tr>
+<tr><td>46</td><td>hkd_hibor</td><td>港元与HIBOR压力</td><td><span class="feature-badge status-c">C</span></td><td>港交所/Wind</td><td>✅</td><td>P2</td></tr>
+<tr><td>47</td><td>fxi_kweb</td><td>FXI/KWEB等海外中国ETF</td><td><span class="feature-badge status-c">C</span></td><td>美股/Wind</td><td>✅</td><td></td></tr>
+<tr><td>48</td><td>msci_china</td><td>MSCI China收益</td><td><span class="feature-badge status-c">C</span></td><td>Wind/商业</td><td>✅</td><td></td></tr>
+<tr><td>49</td><td>offshore_credit</td><td>中国美元债信用利差</td><td><span class="feature-badge status-c">C</span></td><td>Wind/Bloomberg</td><td>✅</td><td></td></tr>
+<tr><td>50</td><td>vhsi</td><td>恒生波动率指数VHSI</td><td><span class="feature-badge status-c">C</span></td><td>港交所/Wind</td><td>✅</td><td></td></tr>
+<tr><td>51</td><td>hshare_breadth</td><td>港股/中概宽度</td><td><span class="feature-badge status-c">C</span></td><td>港交所/Wind</td><td>✅</td><td></td></tr>
+<tr><td>52</td><td>hk_csi_correlation</td><td>港股−A股相关性</td><td><span class="feature-badge status-c">C</span></td><td>港交所+现有A股</td><td>✅</td><td>A股侧B类，港股侧C类</td></tr>
+<tr><td>53</td><td>ahn_premium_sector_split</td><td>AH溢价行业拆分</td><td><span class="feature-badge status-c">C</span></td><td>Wind/商业</td><td>✅</td><td></td></tr>
+<tr><td>54</td><td>cnh_vol_risk_premium</td><td>CNH波动风险溢价</td><td><span class="feature-badge status-c">C</span></td><td>外汇期权/Wind</td><td>✅</td><td></td></tr>
+<tr><td>55</td><td>offshore_liquidity_stress</td><td>离岸流动性压力综合</td><td><span class="feature-badge status-c">C</span></td><td>多源</td><td>✅</td><td>综合评分</td></tr>
+</tbody>
+</table>
+<div class="family-summary"><b>F12 小结：</b>26 项全部 C。G3 组中 PIT 最干净的族——所有离岸数据在 A 股开盘前均可获得。Wind 终端如已接入，绝大部分可从 C 升级为 B。</div>
+</section>
+
+<!-- ===== F13 ===== -->
+<section class="panel" id="f13">
+<div class="family-header"><h3>F13｜美股与全球风险偏好</h3><p>31 项 · 全部 C（外部缺口）· Cboe/FRED/OFR/Nasdaq 未接入 · 美股收盘在A股开盘前4-5.5h</p></div>
+<table class="feature-table">
+<thead><tr><th>#</th><th>canonical_id</th><th>中文名</th><th>状态</th><th>数据源</th><th>PIT 可得性</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td>56</td><td>spx_ret</td><td>标普500收益</td><td><span class="feature-badge status-c">C</span></td><td>Cboe/FRED/Wind</td><td>✅ 美股收盘在A股开盘前</td><td>美国收盘对应<b>次一A股交易日</b></td></tr>
+<tr><td>57</td><td>ndx_ret</td><td>纳斯达克100收益</td><td><span class="feature-badge status-c">C</span></td><td>Nasdaq/Wind</td><td>✅</td><td></td></tr>
+<tr><td>58</td><td>sox_ret</td><td>费城半导体指数收益</td><td><span class="feature-badge status-c">C</span></td><td>Nasdaq/Wind</td><td>✅</td><td>与A股电子联动</td></tr>
+<tr><td>59</td><td>russell2000_ret</td><td>罗素2000收益</td><td><span class="feature-badge status-c">C</span></td><td>Wind/商业</td><td>✅</td><td>P1</td></tr>
+<tr><td>60</td><td>msci_em_ret</td><td>MSCI新兴市场收益</td><td><span class="feature-badge status-c">C</span></td><td>Wind/商业</td><td>✅</td><td>P1</td></tr>
+<tr><td>61</td><td>vix</td><td>VIX水平与变化</td><td><span class="feature-badge status-c">C</span></td><td>Cboe/FRED/Wind</td><td>✅ 美股收盘时已定</td><td>P0 核心——全球恐慌指数</td></tr>
+<tr><td>62</td><td>vix9d_vix_spread</td><td>VIX9D−VIX短端压力</td><td><span class="feature-badge status-c">C</span></td><td>Cboe/Wind</td><td>✅</td><td></td></tr>
+<tr><td>63</td><td>vix_vix3m_spread</td><td>VIX−VIX3M期限倒挂</td><td><span class="feature-badge status-c">C</span></td><td>Cboe/Wind</td><td>✅</td><td></td></tr>
+<tr><td>64</td><td>vvix_level</td><td>VVIX波动率的波动率</td><td><span class="feature-badge status-c">C</span></td><td>Cboe/Wind</td><td>✅</td><td></td></tr>
+<tr><td>65</td><td>skew_index</td><td>Cboe SKEW尾部偏度</td><td><span class="feature-badge status-c">C</span></td><td>Cboe/Wind</td><td>✅</td><td></td></tr>
+<tr><td>66</td><td>ust_yields</td><td>美国国债收益率</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td></td></tr>
+<tr><td>67</td><td>us_2y_10y</td><td>美债10年−2年利差</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td></td></tr>
+<tr><td>68</td><td>us_real_yield_10y</td><td>美国10年实际利率</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td>TIPS</td></tr>
+<tr><td>69</td><td>dxy_chg</td><td>美元指数变化</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td></td></tr>
+<tr><td>70</td><td>hy_oas</td><td>美国高收益信用利差</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td>ICE BofA HY OAS</td></tr>
+<tr><td>71</td><td>ig_oas</td><td>美国投资级信用利差</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td></td></tr>
+<tr><td>72</td><td>hy_ig_spread</td><td>高收益/投资级利差差</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td></td></tr>
+<tr><td>73</td><td>ofr_fsi</td><td>OFR金融压力指数</td><td><span class="feature-badge status-c">C</span></td><td>OFR/FRED</td><td>✅</td><td></td></tr>
+<tr><td>74</td><td>stlfsi</td><td>圣路易斯联储金融压力</td><td><span class="feature-badge status-c">C</span></td><td>FRED</td><td>✅ 周频</td><td></td></tr>
+<tr><td>75</td><td>move_index</td><td>MOVE美债波动率</td><td><span class="feature-badge status-c">C</span></td><td>Wind/商业</td><td>✅</td><td></td></tr>
+<tr><td>76</td><td>nfci_ofr_fsi</td><td>全球金融条件/压力</td><td><span class="feature-badge status-c">C</span></td><td>FRED/OFR</td><td>✅</td><td></td></tr>
+<tr><td>77</td><td>spx_breadth</td><td>标普500市场宽度</td><td><span class="feature-badge status-c">C</span></td><td>美股/Wind</td><td>✅</td><td></td></tr>
+<tr><td>78</td><td>semiconductor_china_divergence</td><td>SOX−A股电子背离</td><td><span class="feature-badge status-c">C</span></td><td>美股+现有A股</td><td>✅</td><td>A股侧B类，美股侧C类</td></tr>
+<tr><td>79</td><td>us_breakeven_inflation</td><td>美国盈亏平衡通胀率</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td></td></tr>
+<tr><td>80</td><td>us_financial_conditions_index</td><td>美国金融条件综合</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td></td></tr>
+<tr><td>81</td><td>global_equity_correlation</td><td>全球权益相关性</td><td><span class="feature-badge status-c">C</span></td><td>多市场/Wind</td><td>✅</td><td></td></tr>
+<tr><td>82</td><td>us_sector_dispersion</td><td>美股行业离散度</td><td><span class="feature-badge status-c">C</span></td><td>美股/Wind</td><td>✅</td><td></td></tr>
+<tr><td>83</td><td>vix_futures_curve_slope</td><td>VIX期货曲线斜率</td><td><span class="feature-badge status-c">C</span></td><td>Cboe/Wind</td><td>✅</td><td></td></tr>
+<tr><td>84</td><td>ted_spread</td><td>TED利差</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅</td><td></td></tr>
+<tr><td>85</td><td>global_risk_appetite_index</td><td>全球风险偏好综合指数</td><td><span class="feature-badge status-c">C</span></td><td>多源</td><td>✅</td><td>综合评分</td></tr>
+<tr><td>86</td><td>china_global_beta</td><td>中国−全球Beta</td><td><span class="feature-badge status-c">C</span></td><td>全球+现有A股</td><td>✅</td><td>A股侧B类，全球侧C类</td></tr>
+</tbody>
+</table>
+<div class="family-summary"><b>F13 小结：</b>31 项全部 C。Cboe/FRED/OFR 等美国官方数据源提供免费公开历史数据，接入路径清晰。Wind 终端如已接入，大部分 C 可升级为 B。</div>
+</section>
+
+<!-- ===== F14 ===== -->
+<section class="panel" id="f14">
+<div class="family-header"><h3>F14｜商品、航运与供应链</h3><p>26 项 · 全部 C（外部缺口）· 国内商品夜盘数据在A股开盘前可用 · BDI/GSCPI/SCFI频次各异</p></div>
+<table class="feature-table">
+<thead><tr><th>#</th><th>canonical_id</th><th>中文名</th><th>状态</th><th>数据源</th><th>PIT 可得性</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td>87</td><td>brent_wti</td><td>Brent/WTI原油</td><td><span class="feature-badge status-c">C</span></td><td>FRED/Wind</td><td>✅ 近24h</td><td>需换月连续化</td></tr>
+<tr><td>88</td><td>crude_term_slope</td><td>原油期限结构</td><td><span class="feature-badge status-c">C</span></td><td>Wind/商业</td><td>✅</td><td></td></tr>
+<tr><td>89</td><td>copper</td><td>铜价</td><td><span class="feature-badge status-c">C</span></td><td>LME/上期所/Wind</td><td>✅ 上期所夜盘21:00-01:00</td><td></td></tr>
+<tr><td>90</td><td>copper_gold_ratio</td><td>铜金比</td><td><span class="feature-badge status-c">C</span></td><td>商品/Wind</td><td>✅</td><td></td></tr>
+<tr><td>91</td><td>gold</td><td>黄金</td><td><span class="feature-badge status-c">C</span></td><td>COMEX/上期所/Wind</td><td>✅ 上期所夜盘21:00-02:30</td><td></td></tr>
+<tr><td>92</td><td>gold_risk_off</td><td>黄金避险强度</td><td><span class="feature-badge status-c">C</span></td><td>商品+股票/Wind</td><td>✅</td><td></td></tr>
+<tr><td>93</td><td>iron_ore</td><td>铁矿石</td><td><span class="feature-badge status-c">C</span></td><td>大商所/Wind</td><td>✅ 夜盘21:00-23:00</td><td></td></tr>
+<tr><td>94</td><td>iron_rebar_spread</td><td>铁矿−螺纹相对强弱</td><td><span class="feature-badge status-c">C</span></td><td>大商所+上期所/Wind</td><td>✅</td><td></td></tr>
+<tr><td>95</td><td>coal</td><td>动力煤/焦煤焦炭</td><td><span class="feature-badge status-c">C</span></td><td>郑商所/大商所/Wind</td><td>✅ 夜盘21:00-23:00</td><td></td></tr>
+<tr><td>96</td><td>coal_power_spread</td><td>煤炭−电力成本压力</td><td><span class="feature-badge status-c">C</span></td><td>商品+行业/Wind</td><td>✅</td><td></td></tr>
+<tr><td>97</td><td>commodity_breadth</td><td>商品上涨品种比例</td><td><span class="feature-badge status-c">C</span></td><td>多商品/Wind</td><td>✅</td><td></td></tr>
+<tr><td>98</td><td>commodity_dispersion</td><td>商品收益离散度</td><td><span class="feature-badge status-c">C</span></td><td>多商品/Wind</td><td>✅</td><td></td></tr>
+<tr><td>99</td><td>industrial_metals_index</td><td>工业金属组合</td><td><span class="feature-badge status-c">C</span></td><td>上期所/Wind</td><td>✅</td><td></td></tr>
+<tr><td>100</td><td>black_complex_index</td><td>黑色产业链组合</td><td><span class="feature-badge status-c">C</span></td><td>大商所+上期所/Wind</td><td>✅</td><td></td></tr>
+<tr><td>101</td><td>baltic_dry</td><td>波罗的海干散货指数</td><td><span class="feature-badge status-c">C</span></td><td>Wind/Bloomberg</td><td>✅ 日频</td><td>P2</td></tr>
+<tr><td>102</td><td>bdi_chg</td><td>BDI变化</td><td><span class="feature-badge status-c">C</span></td><td>同上</td><td>✅</td><td></td></tr>
+<tr><td>103</td><td>container_freight</td><td>集装箱运价</td><td><span class="feature-badge status-c">C</span></td><td>Wind/SCFI/CCFI</td><td>⚠️ 周频</td><td></td></tr>
+<tr><td>104</td><td>container_freight_chg</td><td>集装箱运价变化</td><td><span class="feature-badge status-c">C</span></td><td>同上</td><td>⚠️ 周频</td><td></td></tr>
+<tr><td>105</td><td>gscpi</td><td>全球供应链压力指数</td><td><span class="feature-badge status-c">C</span></td><td>纽约联储</td><td>✅ 月频</td><td></td></tr>
+<tr><td>106</td><td>ovx</td><td>OVX原油波动率</td><td><span class="feature-badge status-c">C</span></td><td>Cboe/Wind</td><td>✅</td><td>P2</td></tr>
+<tr><td>107</td><td>gvz</td><td>GVZ黄金波动率</td><td><span class="feature-badge status-c">C</span></td><td>Cboe/Wind</td><td>✅</td><td>P2</td></tr>
+<tr><td>108</td><td>terms_of_trade_proxy</td><td>中国贸易条件代理</td><td><span class="feature-badge status-c">C</span></td><td>商品/Wind</td><td>✅</td><td>P2</td></tr>
+<tr><td>109</td><td>commodity_equity_corr</td><td>商品−A股相关性</td><td><span class="feature-badge status-c">C</span></td><td>商品+现有A股</td><td>✅</td><td>A股侧B类，商品侧C类</td></tr>
+<tr><td>110</td><td>input_cost_pressure</td><td>输入成本压力</td><td><span class="feature-badge status-c">C</span></td><td>PPI+商品/Wind</td><td>⚠️ PPI月频</td><td>依赖F10宏观</td></tr>
+<tr><td>111</td><td>agricultural_breadth</td><td>农产品广度</td><td><span class="feature-badge status-c">C</span></td><td>多商品/Wind</td><td>✅</td><td></td></tr>
+<tr><td>112</td><td>precious_metals_spread</td><td>贵金属价差</td><td><span class="feature-badge status-c">C</span></td><td>商品/Wind</td><td>✅</td><td></td></tr>
+</tbody>
+</table>
+<div class="family-summary"><b>F14 小结：</b>26 项全部 C。国内商品夜盘数据可在 A 股开盘前获得，PIT 正确。BDI 日频/SCFI 周频/GSCPI 月频，低频数据需在发布日对齐。Wind 终端如已接入，绝大部分 C 可升级为 B。</div>
+</section>
+
+<!-- ===== F19 ===== -->
+<section class="panel" id="f19">
+<div class="family-header"><h3>F19｜期权对冲流、Gamma 结构与波动反馈</h3><p>13 项 · C×6 / D×7 · 需完整期权OI + Greeks + IV曲面 · 所有GEX字段必须带 <code>_proxy</code></p></div>
+<table class="feature-table">
+<thead><tr><th>#</th><th>canonical_id</th><th>中文名</th><th>状态</th><th>数据源</th><th>PIT 可得性</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td>113</td><td>net_gamma_exposure_proxy</td><td>净Gamma暴露代理（GEX）</td><td><span class="feature-badge status-c">C</span></td><td>期权OI+Greeks/Wind</td><td>t日收盘→t+1</td><td>⚠️ 必须 <code>_proxy</code>。公开OI无法识别dealer净头寸</td></tr>
+<tr><td>114</td><td>gamma_flip_distance_proxy</td><td>Gamma翻转位距离代理</td><td><span class="feature-badge status-d">D</span></td><td>期权OI+Greeks/Wind</td><td>—</td><td>⚠️ 需历史IV曲面快照重算Gamma，快照不存在。P2</td></tr>
+<tr><td>115</td><td>gamma_near_spot_concentration</td><td>近现货Gamma集中度</td><td><span class="feature-badge status-c">C</span></td><td>期权OI+Greeks/Wind</td><td>t日收盘→t+1</td><td></td></tr>
+<tr><td>116</td><td>gamma_expiry_concentration</td><td>近到期Gamma集中度</td><td><span class="feature-badge status-c">C</span></td><td>期权OI+Greeks/Wind</td><td>t日收盘→t+1</td><td></td></tr>
+<tr><td>117</td><td>put_call_gamma_imbalance</td><td>认沽−认购Gamma不平衡</td><td><span class="feature-badge status-c">C</span></td><td>期权OI+Greeks/Wind</td><td>t日收盘→t+1</td><td></td></tr>
+<tr><td>118</td><td>vanna_exposure_proxy</td><td>Vanna对冲暴露代理</td><td><span class="feature-badge status-d">D</span></td><td>期权Greeks/授权曲面</td><td>—</td><td>⚠️ 历史IV曲面+无风险利率+分红率快照不可得。P2</td></tr>
+<tr><td>119</td><td>charm_exposure_proxy</td><td>Charm时间衰减对冲暴露代理</td><td><span class="feature-badge status-d">D</span></td><td>期权Greeks/授权曲面</td><td>—</td><td>⚠️ 与Vanna同理，历史Greeks快照不可得。P2</td></tr>
+<tr><td>120</td><td>option_hedging_pressure_score</td><td>期权对冲压力综合分</td><td><span class="feature-badge status-c">C</span></td><td>以上各项</td><td>t日收盘→t+1</td><td>分量中D类项使用proxy占位</td></tr>
+<tr><td>121</td><td>downside_variance_risk_premium</td><td>下行方差风险溢价</td><td><span class="feature-badge status-d">D</span></td><td>期权曲面 + forecast RV模型</td><td>—</td><td>⚠️ 与#17同理，forecast下行RV模型未建成则不可用</td></tr>
+<tr><td>122</td><td>iv_skew_term_curvature</td><td>IV偏度期限曲率</td><td><span class="feature-badge status-c">C</span></td><td>期权曲面/Wind</td><td>t日收盘→t+1</td><td></td></tr>
+<tr><td>123</td><td>gex_sign_confidence</td><td>GEX符号置信度</td><td><span class="feature-badge status-d">D</span></td><td>期权OI+多情景</td><td>—</td><td>⚠️ 多情景假设的校验基准（真实dealer持仓）在历史上不存在</td></tr>
+<tr><td>124</td><td>gamma_flip_atr_distance</td><td>距Gamma Flip的ATR标准化距离</td><td><span class="feature-badge status-d">D</span></td><td>期权OI+价格</td><td>—</td><td>⚠️ 与#114同源，历史IV曲面快照不可得</td></tr>
+<tr><td>125</td><td>iv_surface_no_arbitrage_violation</td><td>IV曲面无套利违例率</td><td><span class="feature-badge status-c">C</span></td><td>期权曲面</td><td>t日收盘→t+1</td><td></td></tr>
+</tbody>
+</table>
+<div class="callout risk"><b>⚠️ F19 的工程纪律（不可妥协）：</b>没有做市商净持仓方向数据时，所有 GEX/Gamma/Vanna/Charm 字段必须以 <code>_proxy</code> 结尾；<code>gex_sign_confidence</code>（#123）是#113的强制配套字段，输出多情景符号一致率而非宣称的精确值；F19 全量不进入首版 Factor Health 和 Router，仅保持 Shadow 研究状态。</div>
+<div class="family-summary"><b>F19 小结：</b>13 项中最严重的 D 类集中——7 项因 IV 曲面历史快照不存在或底层模型不可验证而无法 PIT 重建。数据采购只解决 C 类（#113/115/116/117/120/122/125），D 类按 Shadow 跟踪、不上线。只有完成期权定价引擎部署并积累足够历史的 daily IV 曲面快照后，D 类方可重新评估。</div>
+</section>
+
+<!-- ===== Summary ===== -->
+<section class="panel" id="summary">
+<div class="eyebrow">SUMMARY · 125/125 CLEARED</div>
+<h2>总汇总</h2>
+<table class="impl-table">
+<thead><tr><th>特征族</th><th>总计</th><th>A</th><th>B</th><th>C</th><th>D</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><b>F07</b> 期货期权隐含</td><td><b>29</b></td><td>0</td><td>0</td><td><b>27</b></td><td><b>2</b></td><td>#17 VRP(forecast RV)/#21 隐含相关(期权覆盖不足)</td></tr>
+<tr><td><b>F12</b> 港股离岸</td><td><b>26</b></td><td>0</td><td>0</td><td><b>26</b></td><td>0</td><td>PIT最干净的族；Wind到位可批量升B</td></tr>
+<tr><td><b>F13</b> 美股全球</td><td><b>31</b></td><td>0</td><td>0</td><td><b>31</b></td><td>0</td><td>Cboe/FRED公开数据接入路径清晰</td></tr>
+<tr><td><b>F14</b> 商品航运</td><td><b>26</b></td><td>0</td><td>0</td><td><b>26</b></td><td>0</td><td>国内商品夜盘PIT正确</td></tr>
+<tr><td><b>F19</b> 期权Gamma</td><td><b>13</b></td><td>0</td><td>0</td><td><b>6</b></td><td><b>7</b></td><td>D类集中在需历史IV曲面/Greeks快照的项</td></tr>
+<tr style="background:#f8faff;font-weight:700"><td><b>合计</b></td><td><b>125</b></td><td><b>0</b></td><td><b>0</b></td><td><b>116</b></td><td><b>9</b></td><td>—</td></tr>
+</tbody>
+</table>
+</section>
+
+
+<div class="foot">
+G3 0A 特征状态清点 V2 · 清点日期 2026-08-11 · 基于《市场状态识别与预测研究手册 V28》
+</div>
+
+</main>
+</body>
+</html>

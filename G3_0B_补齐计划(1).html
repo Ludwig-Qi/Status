@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="width=device-width,initial-scale=1" name="viewport">
+<title>G3 0B 补齐计划</title>
+<style>
+:root{--bg:#f3f5f9;--panel:#fff;--ink:#172033;--muted:#667085;--line:#dfe4ec;--blue:#2457d6;--nav:#0d1a2e;--nav2:#182945;--good:#eaf7f1;--risk:#fff1e8;--warn-bg:#fff8e7;--shadow:0 10px 30px rgba(20,39,75,.08);--sidebar-w:340px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar-w);background:linear-gradient(180deg,var(--nav),#081322);color:white;overflow:auto;overscroll-behavior:contain;padding:22px 16px 40px;z-index:30}
+.brand{padding:2px 8px 18px;border-bottom:1px solid rgba(255,255,255,.12)}
+.brand h1{font-size:17px;line-height:1.4;margin:0 0 8px}
+.brand p{font-size:12px;color:#aab7ca;margin:0}
+.nav-group{margin:14px 0}
+.nav-group-title{font-size:11px;letter-spacing:.07em;color:#8193b3;padding:0 8px 7px}
+.nav-item{display:flex;gap:8px;color:#cbd5e4;text-decoration:none;padding:8px;border-radius:8px;font-size:12px;line-height:1.35;margin:2px 0;border-left:3px solid transparent}
+.nav-item span{flex:0 0 27px;font-weight:800;color:#8295b8}
+.nav-item:hover{background:rgba(255,255,255,.07)}
+.nav-item.active{background:var(--nav2);border-left-color:#6fa0ff;color:#fff}
+.content{margin-left:var(--sidebar-w);max-width:1580px;padding:32px 48px 100px}
+.hero{background:linear-gradient(135deg,#fff,#ecf2ff);border:1px solid var(--line);border-radius:18px;padding:35px 40px;box-shadow:var(--shadow);margin-bottom:22px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--blue)}
+.hero h1{font-size:30px;line-height:1.25;margin:8px 0 13px}
+.hero p{color:var(--muted);max-width:1120px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 15px}
+.stat b{font-size:20px;margin-right:5px;color:#2457d6}
+.panel{margin:22px 0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 29px;box-shadow:var(--shadow);scroll-margin-top:16px}
+.panel h2{margin-top:0;font-size:22px}
+.panel h3{color:#173f68;font-size:17px;margin:18px 0 10px}
+.section-purpose{background:#eef4ff;border-left:4px solid #4b78e6;border-radius:8px;padding:11px 14px;margin:10px 0 18px;color:var(--muted);font-size:13.5px;line-height:1.6}
+.section-purpose b{color:var(--blue)}
+.feature-badge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11.5px;font-weight:700;white-space:nowrap;vertical-align:middle}
+.priority-p0{background:#a72626;color:white}
+.priority-p1{background:#d87818;color:white}
+.priority-p2{background:#526f8c;color:white}
+.status-b{background:#e8f1ff;color:#24548f;border:1px solid #c5d5ed}
+.status-c{background:#fff3d8;color:#805300;border:1px solid #e8d5a1}
+.status-d{background:#fde9e9;color:#932f2f;border:1px solid #e8bfbf}
+.callout{border-radius:9px;padding:12px 14px;margin:10px 0;line-height:1.75}
+.direct{background:#eef4ff;border-left:4px solid #4b78e6}
+.use{background:var(--good);border-left:4px solid #2c9a6b}
+.risk{background:var(--risk);border-left:4px solid #dc7a34}
+.now-box{background:linear-gradient(135deg,#f1f6ff,#eaf2ff);border:1px solid #c6d7f0;border-radius:12px;padding:14px 16px;margin:12px 0;line-height:1.75}
+.now-box b{color:#173f9e}
+.impl-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;margin:12px 0;border:1px solid #d7e2ed;border-radius:12px;overflow:hidden}
+.impl-table thead th{background:#eaf2fa;color:#173f68;text-align:left;font-weight:700}
+.impl-table th,.impl-table td{border-right:1px solid #d7e2ed;border-bottom:1px solid #d7e2ed;padding:9px 10px;vertical-align:top;line-height:1.6}
+.impl-table th:last-child,.impl-table td:last-child{border-right:0}
+.impl-table tr:last-child td{border-bottom:0}
+.field-table td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:nowrap;min-width:180px}
+.gap-card{border:1px solid #d5e0ec;border-radius:13px;margin:14px 0;overflow:hidden}
+.gap-card>summary{cursor:pointer;list-style:none;padding:14px 17px;background:#f8faff;font-weight:800;color:#153a63;display:flex;justify-content:space-between;font-size:15px}
+.gap-card>summary::-webkit-details-marker{display:none}
+.gap-card>summary em{font-style:normal;color:var(--muted);font-weight:400}
+.gap-body{padding:16px 18px}
+.gap-body h4{margin:0 0 8px;color:#173f68}
+.foot{margin-top:28px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+.summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.summary-card{background:#fff;border:1px solid #d5e2ee;border-radius:11px;padding:13px;text-align:center}
+.summary-card b{display:block;font-size:26px;color:#173f68}
+.summary-card span{display:block;font-size:12px;color:var(--muted);margin-top:3px;line-height:1.4}
+@media(max-width:1100px){.sidebar{position:relative;width:auto;max-height:470px}.content{margin-left:0;padding:22px}.summary-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.content{padding:13px}.hero{padding:22px}.hero h1{font-size:24px}.summary-grid{grid-template-columns:1fr}}
+@media print{.sidebar{display:none}.content{margin:0;max-width:none}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+<div class="brand"><h1>G3 0B 补齐计划</h1><p>STATUS · STAGE 0</p></div>
+<div class="nav-group">
+<div class="nav-group-title">总览</div>
+<a class="nav-item active" href="#hero"><span>总</span> 0B 总览与基线</a>
+</div>
+<div class="nav-group">
+<div class="nav-group-title">三大产出</div>
+<a class="nav-item" href="#plan-b"><span>B</span> B 类构造计划 · 13 项</a>
+<a class="nav-item" href="#plan-c"><span>C</span> C 类 Gap 清单 · 103 项</a>
+<a class="nav-item" href="#plan-d"><span>D</span> D 类 Shadow · 9 项</a>
+</div>
+</aside>
+
+<main class="content">
+
+<!-- Hero -->
+<section class="hero" id="hero">
+<div class="eyebrow">G3 · STAGE 0 · 0B DATA GAP & CONSTRUCTION PLAN</div>
+<h1>G3 组 0B 补齐计划：基础字段与原始数据</h1>
+<p>基于 0A 清点 V3（A×0 / B×13 / C×103 / D×9），登记 B 类构造路径、C 类基础字段缺口与采购计划、D 类不可重建原因与升级前提。</p>
+<div class="stats">
+<div class="stat"><b>13</b>项 B · 安排编码</div>
+<div class="stat"><b>103</b>项 C · 登记缺口</div>
+<div class="stat"><b>9</b>项 D · 标记 Shadow</div>
+</div>
+</section>
+
+<!-- 0B Baseline -->
+
+<!-- ===== B 类构造计划 ===== -->
+<section class="panel" id="plan-b">
+<div class="eyebrow">0B OUTPUT 1 · B-CLASS CONSTRUCTION PLAN</div>
+<h2>B 类构造计划（13 项）</h2>
+<div class="section-purpose"><b>这 13 项的特征值已可从 COS 直接构造。</b>不需要任何外部采购。0B 阶段登记 COS 表名和 ETF Ticker；0C 阶段由 G3 组成员编写查询和 PIT 回放。</div>
+<h3>F12｜中概与离岸中国 ETF（2 项）</h3>
+<table class="impl-table"><thead><tr><th>#</th><th>特征</th><th>COS 表</th><th>Ticker</th><th>构造公式</th><th>PIT 校验要点</th></tr></thead><tbody>
+<tr><td>38</td><td>china_adr_ret</td><td><code>us_stock_daily</code></td><td>KWEB 或自建中概池</td><td>等权/市值加权日收益；取 Ret 列（已是小数）</td><td>美股收盘→次一A股交易日对齐；<br>确认 KWEB 覆盖范围内的中概股</td></tr>
+<tr><td>47</td><td>fxi_kweb</td><td><code>us_etf_daily</code></td><td>FXI, KWEB</td><td>FXI.Ret − KWEB.Ret</td><td>两个 ETF 同一交易日均有数据</td></tr>
+</tbody></table>
+<h3>F13｜美股指数 / 利率 / 美元 proxy（8 项）</h3>
+<table class="impl-table"><thead><tr><th>#</th><th>特征</th><th>COS 表</th><th>Ticker</th><th>构造公式</th><th>PIT 校验要点</th></tr></thead><tbody>
+<tr><td>56</td><td>spx_ret</td><td><code>us_etf_daily</code></td><td>SPY</td><td>SPY.Ret（已是小数）</td><td>确认 COS 覆盖 SPY；验证 SPY vs ^GSPC 跟踪误差</td></tr>
+<tr><td>57</td><td>ndx_ret</td><td><code>us_etf_daily</code></td><td>QQQ</td><td>QQQ.Ret</td><td>同上，QQQ vs ^NDX</td></tr>
+<tr><td>58</td><td>sox_ret</td><td><code>us_etf_daily</code></td><td>SOXX 或 SMH</td><td>SOXX.Ret 或 SMH.Ret</td><td>先确认 COS 覆盖哪个半导体 ETF；与 A 股电子板块联动校验</td></tr>
+<tr><td>59</td><td>russell2000_ret</td><td><code>us_etf_daily</code></td><td>IWM</td><td>IWM.Ret</td><td>IWM vs ^RUT</td></tr>
+<tr><td>60</td><td>msci_em_ret</td><td><code>us_etf_daily</code></td><td>EEM</td><td>EEM.Ret</td><td>EEM vs MSCI EM 指数</td></tr>
+<tr><td>66</td><td>ust_yields</td><td><code>us_etf_daily</code></td><td>TLT, IEF, SHY</td><td>Δyield ≈ −ETF_ret / duration；<br>TLT(久期~16y), IEF(久期~7y), SHY(久期~2y)</td><td>利率 proxy 有凸性偏差；<br>只做方向信号不做精确水平</td></tr>
+<tr><td>69</td><td>dxy_chg</td><td><code>us_etf_daily</code></td><td>UUP</td><td>UUP.Ret</td><td>UUP 跟踪美元指数期货非现货</td></tr>
+<tr><td>78</td><td>semiconductor_china_divergence</td><td><code>us_etf_daily</code> + <code>ashare_stock_industry</code></td><td>SOXX/SMH + A股电子</td><td>SOX 侧 ETF Ret − A 股电子行业等权 Ret</td><td>A 股侧 IndustrySource=sw_l1；<br>确认电子行业成分范围</td></tr>
+</tbody></table>
+<h3>F14｜商品 ETF proxy（3 项）</h3>
+<table class="impl-table"><thead><tr><th>#</th><th>特征</th><th>COS 表</th><th>Ticker</th><th>构造公式</th><th>PIT 校验要点</th></tr></thead><tbody>
+<tr><td>87</td><td>brent_wti</td><td><code>us_etf_daily</code></td><td>USO</td><td>USO.Ret</td><td>⚠️ 原油 ETF 有展期损耗（contango 时持续跑输现货）；标注为 proxy</td></tr>
+<tr><td>91</td><td>gold</td><td><code>us_etf_daily</code></td><td>GLD</td><td>GLD.Ret</td><td>GLD 跟踪黄金现货价格，跟踪误差通常 < 0.5%</td></tr>
+<tr><td>92</td><td>gold_risk_off</td><td><code>us_etf_daily</code> + <code>ashare_stock_daily</code></td><td>GLD + A 股全市场</td><td>GLD.Ret − A 股等权/市值加权 Ret</td><td>A 股侧收益 ÷10000 转小数；单位对齐</td></tr>
+</tbody></table>
+<div class="callout use"><b>B 类 0B 交付物清单：</b>① COS Ticker 覆盖确认（每个 ETF 在 us_etf_daily 或 us_stock_daily 中是否存在、历史起始日期）；② 构造 SQL/Python 模板；③ ETF-vs-指数一致性校验脚本；④ PIT 回放通过记录。</div>
+</section>
+
+<!-- ===== C 类 Gap List ===== -->
+<section class="panel" id="plan-c">
+<div class="eyebrow">0B OUTPUT 2 · C-CLASS RAW DATA GAP LIST</div>
+<h2>C 类 Raw Data Gap 清单（103 项）</h2>
+<div class="section-purpose"><b>C 类的 0B 动作是登记，不是编码。</b>按数据源聚合——同一数据源的多项特征共享同一套基础字段，一次采购解决一批。每组列出需要的基础字段、采购路径和优先顺序。0C 阶段数据到位后才开始构造。</div>
+
+<h3>开源数据（免费公开，可直接下载）</h3>
+
+<details class="gap-card" open>
+<summary><span>FRED API · 美国利率 / 信用利差 / 美元 / 通胀</span><em>影响 F13 约 8 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>FRED Series ID</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>2Y Treasury Yield</td><td>DGS2</td><td>日频</td><td>#66, #67</td></tr>
+<tr><td>10Y Treasury Yield</td><td>DGS10</td><td>日频</td><td>#66, #67, #68</td></tr>
+<tr><td>30Y Treasury Yield</td><td>DGS30</td><td>日频</td><td>#66</td></tr>
+<tr><td>10Y TIPS Yield (Real)</td><td>DFII10</td><td>日频</td><td>#68, #79</td></tr>
+<tr><td>ICE BofA US High Yield OAS</td><td>BAMLH0A0HYM2</td><td>日频</td><td>#70, #72</td></tr>
+<tr><td>ICE BofA US Corporate OAS</td><td>BAMLC0A0CM</td><td>日频</td><td>#71, #72</td></tr>
+<tr><td>Trade Weighted USD Index</td><td>DTWEXBGS</td><td>日频</td><td>#69</td></tr>
+<tr><td>TED Spread</td><td>TEDRATE</td><td>日频</td><td>#84</td></tr>
+</tbody></table>
+<div class="callout direct"><b>采购路径：</b>FRED API（api.stlouisfed.org）— 免费注册获取 API Key，Python fredapi 库直接拉取，历史数据覆盖数十年。PIT 时区：美国东部时间收盘 → A 股次日开盘前可用。</div>
+</div></details>
+
+<details class="gap-card" open>
+<summary><span>Cboe 官网 · VIX 系列 / SKEW</span><em>影响 F13 约 6 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>Cboe Symbol</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>VIX Close</td><td>VIX</td><td>日频</td><td>#61, #63</td></tr>
+<tr><td>VIX9D Close</td><td>VIX9D</td><td>日频</td><td>#62</td></tr>
+<tr><td>VIX3M Close</td><td>VIX3M</td><td>日频</td><td>#63</td></tr>
+<tr><td>VVIX Close</td><td>VVIX</td><td>日频</td><td>#64</td></tr>
+<tr><td>SKEW Close</td><td>SKEW</td><td>日频</td><td>#65</td></tr>
+<tr><td>VIX Futures (近月/远月)</td><td>VX Futures</td><td>日频</td><td>#83</td></tr>
+</tbody></table>
+<div class="callout direct"><b>采购路径：</b>Cboe 官网（www.cboe.com/tradable-products/vix/vix-historical-data）— 免费 CSV 下载，历史数据覆盖自 1990 年（VIX）/ 2004 年（VVIX）/ 2011 年（SKEW）。PIT 时区：美股收盘时值已定 → A 股次日开盘前可用。</div>
+</div></details>
+
+<details class="gap-card" open>
+<summary><span>OFR / 圣路易斯联储 · 金融压力指数</span><em>影响 F13 约 3 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>来源</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>OFR Financial Stress Index</td><td>OFR / FRED</td><td>日频</td><td>#73</td></tr>
+<tr><td>St. Louis Fed Financial Stress</td><td>FRED (STLFSI4)</td><td>周频</td><td>#74</td></tr>
+<tr><td>Chicago Fed NFCI</td><td>FRED (NFCI)</td><td>周频</td><td>#76</td></tr>
+</tbody></table>
+<div class="callout direct"><b>采购路径：</b>OFR FSI 从 financialresearch.gov 免费下载；STLFSI 和 NFCI 通过 FRED API（同上）。</div>
+</div></details>
+
+<details class="gap-card">
+<summary><span>纽约联储 · 全球供应链压力指数</span><em>影响 F14 1 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>来源</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>GSCPI</td><td>纽约联储</td><td>月频</td><td>#105</td></tr>
+</tbody></table>
+<div class="callout direct"><b>采购路径：</b>纽约联储 GSCPI 页面免费下载（newyorkfed.org/research/policy/gscpi）。月频发布延迟约 2 周。</div>
+</div></details>
+
+<h3>需订阅数据（商业终端 / 交易所合同）</h3>
+
+<details class="gap-card">
+<summary><span>中金所 · IF/IH/IC/IM 期货行情</span><em>影响 F07 约 15 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>说明</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>IF/IH/IC/IM 主力合约收盘价</td><td>连续合约或主力合约收盘</td><td>日频</td><td>#1–#6, #26</td></tr>
+<tr><td>IF/IH/IC/IM 近月/远月合约收盘价</td><td>用于期限结构</td><td>日频</td><td>#7, #23, #25</td></tr>
+<tr><td>IF/IH/IC/IM 主力合约成交量、持仓量</td><td>连续化处理</td><td>日频</td><td>#8, #9, #24</td></tr>
+<tr><td>IF/IH/IC/IM 持仓期限分布</td><td>各期限合约 OI</td><td>日频</td><td>#10, #29</td></tr>
+<tr><td>前 20 会员多空持仓</td><td>中金所日统计</td><td>日频</td><td>#11, #28</td></tr>
+<tr><td>IF/IH/IC/IM 合约到期日</td><td>换月日历</td><td>静态</td><td>#10</td></tr>
+</tbody></table>
+<div class="callout warn"><b>PIT 关键约束：</b>中金所期货无夜盘，交易时间 9:30–15:00，与 A 股同步收盘。t 日基差/持仓数据只能用于 t+1 日。有别于商品期货，中金所品种不存在 t 日盘前可得性。</div>
+</div></details>
+
+<details class="gap-card">
+<summary><span>上交所/深交所 · ETF 与股指期权统计</span><em>影响 F07 约 10 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>说明</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>50ETF/300ETF 期权平值 IV</td><td>约 30 天期限，插值</td><td>日频</td><td>#12</td></tr>
+<tr><td>50ETF/300ETF 期权 IV 期限曲线</td><td>1M/3M IV 或固定期限插值</td><td>日频</td><td>#13</td></tr>
+<tr><td>50ETF/300ETF 期权 25Delta IV</td><td>Put 25Δ / Call 25Δ</td><td>日频</td><td>#14</td></tr>
+<tr><td>50ETF/300ETF 期权成交量（Put/Call 分）</td><td>分期限和 moneyness</td><td>日频</td><td>#15</td></tr>
+<tr><td>50ETF/300ETF 期权持仓量（Put/Call 分）</td><td>分期限和 moneyness</td><td>日频</td><td>#16</td></tr>
+<tr><td>多标的期权 IV（50/300/500/创业板/1000）</td><td>各品种平值 IV</td><td>日频</td><td>#19</td></tr>
+<tr><td>期权价差、零成交合约比例</td><td>流动性监控</td><td>日频</td><td>#20</td></tr>
+</tbody></table>
+<div class="callout warn"><b>数据限制：</b>如需计算 VRP 还需要 forecast RV 模型。期权 Gamma/IV 曲面需要更完整的逐合约数据（见下方商业期权数据）。</div>
+</div></details>
+
+<details class="gap-card">
+<summary><span>港交所 · HSI / 港股通 / 卖空 / VHSI</span><em>影响 F12 约 18 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>说明</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>HSI / HSCEI / HSTECH 收盘点位</td><td>港股三大指数</td><td>日频</td><td>#30–#32, #43</td></tr>
+<tr><td>AH 股配对价格（A+H 同公司）</td><td>AH 溢价计算</td><td>日频</td><td>#33, #53</td></tr>
+<tr><td>港股卖空成交额 / 总成交额</td><td>卖空占比</td><td>日频</td><td>#40</td></tr>
+<tr><td>港股通南向净买入 / 成交</td><td>互联互通每日公布</td><td>日频</td><td>#41</td></tr>
+<tr><td>HIBOR (O/N, 1M, 3M)</td><td>港元利率</td><td>日频</td><td>#46</td></tr>
+<tr><td>VHSI</td><td>恒生波指</td><td>日频</td><td>#50</td></tr>
+<tr><td>港股上涨比例 / 新高新低</td><td>市场宽度</td><td>日频</td><td>#51</td></tr>
+<tr><td>USD/HKD 汇率</td><td>港汇强弱方</td><td>日频</td><td>#46</td></tr>
+</tbody></table>
+<div class="callout warn"><b>PIT 关键：</b>港股交易时间 9:30–16:00（午休 12:00–13:00）。前一日港股收盘数据在次日 A 股 9:30 开盘前完整可用，无时区问题。北向/南向数据随披露制度变化。</div>
+</div></details>
+
+<details class="gap-card">
+<summary><span>SGX · 富时 A50 期货</span><em>影响 F12 2 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>说明</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>A50 期货日盘收盘价、夜盘收盘价</td><td>A 股盘前截点对齐</td><td>日频</td><td>#34</td></tr>
+</tbody></table>
+<div class="callout use"><b>PIT 优势：</b>A50 夜盘约 17:00–05:15，在 A 股 9:30 开盘前有完整的隔夜定价——是 G3 最直接的前瞻信号。</div>
+</div></details>
+
+<details class="gap-card">
+<summary><span>PBOC / 外汇中心 · 人民币中间价 / CNY / CNH / CFETS</span><em>影响 F12 约 4 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>说明</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>USD/CNY 收盘价</td><td>在岸人民币</td><td>日频</td><td>#36</td></tr>
+<tr><td>USD/CNH 收盘价</td><td>离岸人民币</td><td>日频</td><td>#35, #36, #44</td></tr>
+<tr><td>人民币中间价</td><td>PBOC 每日 9:15 公布</td><td>日频</td><td>#37</td></tr>
+<tr><td>CFETS 人民币汇率指数</td><td>一篮子汇率</td><td>周频</td><td>#45</td></tr>
+</tbody></table>
+<div class="callout use"><b>PIT 优势：</b>中间价 9:15 公布、CNH 24h OTC——均在 A 股开盘前可得，是 Transition 预测的理想输入。</div>
+</div></details>
+
+<details class="gap-card">
+<summary><span>国内商品期货 · 上期所/大商所/郑商所</span><em>影响 F14 约 18 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>来源</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>铜/铝/锌/镍 主力合约收盘价（含夜盘）</td><td>上期所</td><td>日频</td><td>#89, #99</td></tr>
+<tr><td>铁矿石 主力合约收盘价（含夜盘）</td><td>大商所</td><td>日频</td><td>#93, #94</td></tr>
+<tr><td>螺纹钢 主力合约收盘价（含夜盘）</td><td>上期所</td><td>日频</td><td>#94</td></tr>
+<tr><td>焦煤/焦炭 主力合约收盘价（含夜盘）</td><td>大商所</td><td>日频</td><td>#95, #96, #100</td></tr>
+<tr><td>动力煤 主力合约收盘价（含夜盘）</td><td>郑商所</td><td>日频</td><td>#95, #96</td></tr>
+<tr><td>多品种主力合约组合（20+ 品种）</td><td>三所</td><td>日频</td><td>#97, #98, #111</td></tr>
+</tbody></table>
+<div class="callout use"><b>PIT 优势：</b>国内商品夜盘（21:00–23:00/01:00/02:30）收盘数据在次日 A 股盘前完整可用，PIT 时间戳正确。是国内所有 C 类中 PIT 最友好的数据源之一。</div>
+</div></details>
+
+
+<details class="gap-card">
+<summary><span>商业授权期权数据 · 完整 OI + Greeks + IV 曲面</span><em>影响 F19 C 类 6 项 + F07 部分项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>说明</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>逐合约：执行价、到期日、OI、成交量、Delta/Gamma/Vanna/Charm</td><td>供应商提供或内部定价引擎计算</td><td>#113, #115, #116, #117, #120</td></tr>
+<tr><td>IV 曲面逐 tick 快照</td><td>各执行价/各到期日的 IV</td><td>#122, #125</td></tr>
+<tr><td>合约乘数、无风险利率、分红率</td><td>期权定价模型输入</td><td>#113–#125</td></tr>
+<tr><td>WTI 原油期货近月远月</td><td>商品期货</td><td>#88</td></tr>
+<tr><td>LME 铜/COMEX 黄金</td><td>海外商品</td><td>#89, #91（现货替代）</td></tr>
+</tbody></table>
+<div class="callout risk"><b>约束：</b>无 dealer 净持仓数据——所有 GEX 字段必须带 <code>_proxy</code>，不宣称"真实做市商净 Gamma"。</div>
+<div class="callout direct"><b>备注（期权组已部分实现）：</b>期权组已完成部分 Delta / Gamma 计算和 IV 曲面定价模块。如果定价引擎可直接输出上述 Greeks 和 IV 曲面数据，则本组中的 #113 GEX、#115 Gamma 集中度、#116 到期集中度、#117 Put/Call Gamma 失衡、#120 对冲压力分、#122 IV 偏度曲率、#125 IV 曲面无套利违例——可从 C 降为 B。需确认：期权引擎是否覆盖历史全时段回放、输出口径是否与特征公式一致。</div>
+</div></details>
+
+<details class="gap-card">
+<summary><span>航运指数 · BDI / SCFI / CCFI</span><em>影响 F14 4 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>来源</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>BDI</td><td>Baltic Exchange / Wind</td><td>日频</td><td>#101, #102</td></tr>
+<tr><td>SCFI / CCFI</td><td>上海航交所 / Wind</td><td>周频</td><td>#103, #104</td></tr>
+</tbody></table>
+</div></details>
+
+<details class="gap-card">
+<summary><span>海外商品波动率 · OVX / GVZ</span><em>影响 F14 2 项</em></summary>
+<div class="gap-body">
+<h4>需要的基础字段</h4>
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>来源</th><th>频率</th><th>用于特征</th></tr></thead><tbody>
+<tr><td>OVX</td><td>Cboe</td><td>日频</td><td>#106</td></tr>
+<tr><td>GVZ</td><td>Cboe</td><td>日频</td><td>#107</td></tr>
+</tbody></table>
+<div class="callout direct"><b>采购路径：</b>与 VIX 系列同源——Cboe 官网免费下载。</div>
+</div></details>
+
+<details class="gap-card">
+<summary><span>其他 C 类补充 · 美元债 / MSCI / 贸易条件</span><em>影响 F12/F13/F14 约 5 项</em></summary>
+<div class="gap-body">
+<table class="impl-table field-table"><thead><tr><th>字段名</th><th>用于特征</th><th>来源</th></tr></thead><tbody>
+<tr><td>中资美元债 IG/HY OAS</td><td>#49</td><td>Bloomberg / Wind</td></tr>
+<tr><td>MSCI China 指数收盘</td><td>#48</td><td>MSCI / Wind</td></tr>
+<tr><td>CNH 期权 IV</td><td>#54</td><td>Wind / Bloomberg</td></tr>
+<tr><td>中国贸易条件（出口/进口价格比）</td><td>#108</td><td>海关 / Wind</td></tr>
+<tr><td>多国股指（全球相关性）</td><td>#81, #85, #86</td><td>各国交易所 / Wind</td></tr>
+</tbody></table>
+</div></details>
+</section>
+
+<!-- ===== D 类 Shadow ===== -->
+<section class="panel" id="plan-d">
+<div class="eyebrow">0B OUTPUT 3 · D-CLASS SHADOW REGISTER</div>
+<h2>D 类 Shadow 清单（9 项）</h2>
+<div class="section-purpose"><b>D 类的 0B 动作不是采购数据，而是登记"为什么不可 PIT 重建 + 什么条件满足后重新评估"。</b>当前不进入任何回测。</div>
+<table class="impl-table"><thead><tr><th>#</th><th>特征</th><th>不可 PIT 重建的原因</th><th>升级前提</th><th>替代方案</th></tr></thead><tbody>
+<tr><td>17</td><td>variance_risk_premium</td><td>需要 forecast RV 模型；用事后 RV 即 look-ahead</td><td>forecast RV 模型建成并通过严格 OOS 验证</td><td>暂用 IV 水平和 IV 期限结构（#12, #13）作为前瞻波动 proxy</td></tr>
+<tr><td>21</td><td>implied_correlation</td><td>A 股个股期权早年不存在（2019 年前仅 50ETF）</td><td>个股期权覆盖足够 5+ 年后重新评估</td><td>用实际相关性（来自 G1 截面 + G2 行业相关）替代</td></tr>
+<tr><td>114</td><td>gamma_flip_distance_proxy</td><td>需要历史 IV 曲面逐 tick 快照重算 Gamma，快照不存在</td><td>期权定价引擎部署 + daily 曲面快照积累 2+ 年历史</td><td>不进入生产；研究阶段用当前日快照做情景分析</td></tr>
+<tr><td>118</td><td>vanna_exposure_proxy</td><td>需要 IV 曲面 + 当时无风险利率/分红率快照 + 定价模型</td><td>期权定价引擎部署 + daily 曲面快照积累</td><td>同上</td></tr>
+<tr><td>119</td><td>charm_exposure_proxy</td><td>与 Vanna 同——历史 Greeks 快照不可得</td><td>同上</td><td>同上</td></tr>
+<tr><td>121</td><td>downside_variance_risk_premium</td><td>与 #17 同——需要 forecast 下行 RV 模型</td><td>forecast 下行 RV 模型建成并通过 OOS 验证</td><td>用偏度（#14）和 Put/Call 比率（#15, #16）替代</td></tr>
+<tr><td>123</td><td>gex_sign_confidence</td><td>校验基准（真实 dealer 持仓）在历史上不存在</td><td>不解决——公开 OI 的固有限制，只能做情景假设</td><td>始终输出多情景的符号情景区间，不宣称"真实 GEX 为正/负"</td></tr>
+<tr><td>124</td><td>gamma_flip_atr_distance</td><td>与 #114 同源——Flip 距离依赖历史曲面快照</td><td>同 #114</td><td>同 #114</td></tr>
+</tbody></table>
+<div class="callout use"><b>D 类处理原则：</b>所有 9 项在全生命周期保持 Shadow——不在 Stage 0 构造、不进入 Factor Health 训练、不进入 Router。除非升级前提全部满足且独立 OOS 验证通过。</div>
+</section>
+
+<div class="foot">
+G3 0B 补齐计划 · 清点日期 2026-08-11 · 基于 0A 清点 V3
+</div>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta content="width=device-width,initial-scale=1" name="viewport">
+<title>Status特征工程分组建议与任务清单</title>
+<style>
+:root{--bg:#f3f5f9;--panel:#fff;--ink:#172033;--muted:#667085;--line:#dfe4ec;--blue:#2457d6;--blue2:#edf3ff;--nav:#0d1a2e;--nav2:#182945;--good:#eaf7f1;--risk:#fff1e8;--shadow:0 10px 30px rgba(20,39,75,.08);--sidebar-w:350px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:18px}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.78 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}a{color:var(--blue)}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar-w);background:linear-gradient(180deg,var(--nav),#081322);color:white;overflow:auto;overscroll-behavior:contain;padding:22px 16px 40px;z-index:30;transition:transform .22s ease}.brand{padding:2px 8px 18px;border-bottom:1px solid rgba(255,255,255,.12)}.brand h1{font-size:17px;line-height:1.4;margin:0 0 7px}.brand p{font-size:12px;color:#aab7ca;margin:0}.nav-tools{position:sticky;top:-22px;background:linear-gradient(180deg,var(--nav) 82%,rgba(13,26,46,.95));padding:14px 4px 12px;z-index:4}.search{width:100%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:white;border-radius:9px;padding:10px 11px;outline:none}.search::placeholder{color:#aab5c7}.nav-group{margin:14px 0}.nav-group-title{font-size:11px;letter-spacing:.07em;color:#8193b3;padding:0 8px 7px}.nav-item{display:flex;gap:8px;color:#cbd5e4;text-decoration:none;padding:8px;border-radius:8px;font-size:12px;line-height:1.35;margin:2px 0;border-left:3px solid transparent}.nav-item span{flex:0 0 27px;font-weight:800;color:#8295b8}.nav-item:hover{background:rgba(255,255,255,.07)}.nav-item.active{background:var(--nav2);border-left-color:#6fa0ff;color:#fff}.nav-item.hidden{display:none}.nav-core-block{margin:8px 0}.nav-core-block>summary{list-style:none;cursor:pointer;font-size:12px;font-weight:800;letter-spacing:.05em;color:#9fb0cb;padding:8px;border-radius:8px}.nav-core-block>summary::-webkit-details-marker{display:none}.nav-core-block>summary:hover{background:rgba(255,255,255,.06)}
+.sidebar-toggle{position:fixed;left:14px;top:14px;z-index:60;border:1px solid #cad5e5;background:#fff;color:#18304e;border-radius:10px;padding:9px 12px;font-weight:750;cursor:pointer;box-shadow:0 5px 18px rgba(20,39,75,.16);display:none}
+.content{margin-left:var(--sidebar-w);max-width:1580px;padding:32px 48px 100px;transition:margin-left .22s ease}body.sidebar-collapsed .sidebar{transform:translateX(-100%);box-shadow:none}body.sidebar-collapsed .content{margin-left:0;max-width:1720px}body.sidebar-collapsed .sidebar-toggle{display:inline-block}
+.hero{background:linear-gradient(135deg,#fff,#ecf2ff);border:1px solid var(--line);border-radius:18px;padding:35px 40px;box-shadow:var(--shadow)}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--blue)}.hero h1{font-size:30px;line-height:1.25;margin:8px 0 13px}.hero p{color:var(--muted);max-width:1120px}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 15px}.stat b{font-size:20px;margin-right:5px;color:#2457d6}
+.panel{margin:22px 0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 29px;box-shadow:var(--shadow);scroll-margin-top:16px}.panel h2{margin-top:0}.feature-library-panel{border:1px solid #bfd3e8;border-radius:18px;background:#fff;margin:22px 0;padding:24px;box-shadow:0 8px 24px rgba(23,63,104,.08);scroll-margin-top:16px}.feature-library-panel h2{font-size:27px;margin:3px 0 8px;color:#153a63}.feature-library-panel .lead{font-size:16px;line-height:1.9}.section-purpose{background:#eef4ff;border-left:4px solid #4b78e6;border-radius:8px;padding:11px 14px;margin:10px 0}.status-critical{background:#fdeeea;border-left:5px solid #c7442c;border-radius:8px;padding:13px 15px;margin:12px 0;line-height:1.85}.note-box{background:#eef9f2;border-left:5px solid #2c9a6b;border-radius:8px;padding:12px 15px;margin:12px 0}.status-rule{background:#eef9f2;border-left:5px solid #2c9a6b;border-radius:8px;padding:10px 13px;margin:10px 0}.final-choice{background:#fff7e6;border-left:5px solid #d89a2b;border-radius:8px;padding:10px 13px;margin:10px 0}.now-box{background:linear-gradient(135deg,#f1f6ff,#eaf2ff);border:1px solid #c6d7f0;border-radius:12px;padding:14px 16px;margin:12px 0}
+.callout{border-radius:9px;padding:12px 14px;margin:10px 0}.direct{background:#eef4ff;border-left:4px solid #4b78e6}.use{background:var(--good);border-left:4px solid #2c9a6b}.risk{background:var(--risk);border-left:4px solid #dc7a34}.task-gate{background:#101a2c;color:#f7f9ff;border-radius:10px;padding:12px 15px;margin:12px 0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;overflow-x:auto;white-space:nowrap}
+.impl-table,.coverage-table,.registry-table,.feature-table,.owner-table,.balance-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;margin:10px 0}.impl-table th,.impl-table td,.coverage-table th,.coverage-table td,.registry-table th,.registry-table td,.feature-table th,.feature-table td,.owner-table th,.owner-table td,.balance-table th,.balance-table td{border:1px solid #d7e2ed;padding:9px 10px;vertical-align:top;line-height:1.65}.impl-table thead th,.coverage-table thead th,.registry-table thead th,.feature-table thead th,.owner-table thead th,.balance-table thead th{background:#eaf2fa;color:#173f68;text-align:left;font-weight:700}
+.feature-family{margin:13px 0;border:1px solid #cbdbea;border-radius:13px;overflow:hidden;background:#fff;scroll-margin-top:16px}.feature-family>summary{display:flex;justify-content:space-between;gap:20px;align-items:center;padding:14px 18px;background:#f3f8fd;cursor:pointer;color:#173f68;list-style:none}.feature-family>summary::-webkit-details-marker{display:none}.feature-family>summary span{display:flex;flex-direction:column}.feature-family>summary b{font-size:15px}.feature-family>summary small{font-weight:400;color:#596d82;margin-top:3px}.feature-family>summary em{font-style:normal;color:#486989;white-space:nowrap;font-weight:700}.feature-family-body{overflow:auto;max-height:82vh;padding:4px 2px}
+.feature-badge{display:inline-block;border-radius:999px;padding:2px 8px;margin:1px 4px 2px 0;font-size:11.5px;font-weight:700;white-space:nowrap}.role-i{background:#eaf3ff;color:#255b92}.role-t{background:#fff0d7;color:#84550d}.role-e{background:#edf7ee;color:#2d6b3a}.role-r{background:#f1eaff;color:#5b4386}.status-have,.status-free{background:#e9f7ee;color:#24623a}.status-part{background:#fff4d9;color:#7a590e}.status-p0{background:#fde9e9;color:#932f2f}.status-p1{background:#fff0d9;color:#84540d}.status-p2{background:#eef1f4;color:#536272}.priority-p0{background:#a72626;color:white}.priority-p1{background:#d87818;color:white}.priority-p2{background:#526f8c;color:white}.priority-p3{background:#7a8794;color:white}.badge-a{background:#e9f7ee;color:#24623a}.badge-b{background:#e8f1ff;color:#24548f}.badge-c{background:#fff3d8;color:#805300}.badge-d{background:#f1f2f4;color:#5f6672}
+.blueprint-block{border:1px solid #d5e0ec;background:#fff;border-radius:13px;margin:14px 0;overflow:hidden;scroll-margin-top:16px}.blueprint-block>summary{cursor:pointer;list-style:none;padding:14px 17px;background:#edf4fb;font-weight:800;color:#153a63;display:flex;justify-content:space-between}.blueprint-block>summary::-webkit-details-marker{display:none}.blueprint-body{padding:16px 18px}
+.priority-grid,.pair-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0}.priority-grid>div,.pair-grid>div{border:1px solid #d5e2ee;border-radius:11px;background:#f9fcff;padding:13px}.pair-grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}.priority-grid>div b,.pair-grid>div b{color:#173f68}.priority-grid>div p,.pair-grid>div p{margin:5px 0 0}
+.group-header{margin:34px 0 14px;padding:20px 23px;border-bottom:2px solid #cdd8ee;background:linear-gradient(90deg,#edf3ff,transparent);border-radius:12px;scroll-margin-top:16px}.group-header h2{margin:4px 0;font-size:24px}.group-header p{margin:0;color:var(--muted)}.group-header .gh-tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.task-steps{background:#f8faff;border:1px solid #dde6f1;border-radius:10px;padding:11px 14px;margin:10px 0}.task-steps b{color:#173f68}.task-steps ol{margin:6px 0 0;padding-left:20px}.task-steps li{margin:2px 0}
+.phase-block{border:1px solid #cfdeec;border-radius:12px;margin:14px 0;overflow:hidden}.phase-block>summary{padding:13px 16px;background:#edf5fc;color:#173f68;font-weight:800;cursor:pointer;list-style:none}.phase-block>summary::-webkit-details-marker{display:none}.phase-body{padding:15px}
+.owner-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0}.owner-card{border:1px solid #d5e2ee;border-radius:11px;background:#f9fcff;padding:12px}.owner-card b{color:#173f68;display:block}.owner-card .owner-slot{border:1px dashed #bccbdd;border-radius:8px;padding:8px;margin-top:8px;background:#fff;font-size:13px;color:#4a5a70}.owner-card .owner-slot code{display:block;font-size:12px;color:#24548f}
+.feature-family-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:16px 0}.feature-family-nav a{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid #d5e1ec;border-radius:9px;text-decoration:none;color:#284d72;background:#fbfdff}.feature-family-nav a b{background:#244f7c;color:#fff;border-radius:6px;padding:2px 5px}.feature-family-nav a span{flex:1}.feature-family-nav a em{font-style:normal;font-size:12px;color:#6b7d90}.feature-family-nav a.research-nav{border-color:#a9c6df;background:#f0f7fd}.feature-family-nav a.research-nav b{background:#1e6495}
+.code-badge{margin-left:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}.small-note{font-size:12px;color:#667085}.feature-source-note{background:#f0f4f8;border-radius:8px;padding:9px 12px;margin:10px 0;font-size:13px;color:#41536b}
+.group-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:14px 0}.gflow{border:1px solid #cad5eb;background:#f7f9fd;border-radius:11px;padding:12px;min-height:110px}.gflow b{display:block;color:#173f68;font-size:13px;margin-bottom:4px}.gflow span{font-size:12px;color:var(--muted)}.gflow em{display:block;font-style:normal;font-weight:800;color:#2457d6;font-size:20px;margin-bottom:4px}
+.checklist{counter-reset:check;margin:8px 0;padding:0}.checklist li{list-style:none;position:relative;padding:2px 0 2px 26px}.checklist li:before{counter-increment:check;content:counter(check);position:absolute;left:0;top:1px;width:19px;height:19px;border-radius:50%;background:#244f7c;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
+@media(max-width:1200px){.feature-family-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.owner-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.group-flow{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:850px){.sidebar{position:relative;width:auto;max-height:480px}.content{margin-left:0;padding:22px}.priority-grid,.pair-grid{grid-template-columns:1fr}.feature-family-nav,.owner-grid,.group-flow{grid-template-columns:1fr}.sidebar-toggle{display:inline-block}.nav-tools{top:0}}
+@media print{.sidebar{display:none}.content{margin:0;max-width:none}details{break-inside:avoid}}
+</style></head>
+<body>
+<button class="sidebar-toggle" id="sidebarToggle" type="button">☰ 目录</button>
+<aside class="sidebar" id="sidebar">
+<div class="brand"><h1>Status 特征工程<br>分组建议与任务清单</h1><p>基于《市场状态识别与预测研究手册 V28》· Stage 0 · 10人/5组</p></div>
+<div class="nav-tools"><input class="search" id="search" placeholder="搜索Fxx、关键词或任务…"></div>
+<details class="nav-core-block" open=""><summary>01｜概览与原则</summary><div class="nav-group">
+<a class="nav-item" data-target="overview" href="#overview"><span>总</span> 总体建议与统计</a>
+<a class="nav-item" data-target="principles" href="#principles"><span>则</span> 分组设计原则</a>
+</div></details>
+<details class="nav-core-block" open=""><summary>02｜特征清单</summary><div class="nav-group">
+<a class="nav-item" data-target="feature-counts" href="#feature-counts"><span>特</span> F01–F23 细化特征数</a>
+</div></details>
+<details class="nav-core-block" open=""><summary>03｜五组分组建议</summary><div class="nav-group">
+<a class="nav-item" data-target="group-plan" href="#group-plan"><span>分</span> 五组分配总览</a>
+<a class="nav-item" data-target="group-g1" href="#group-g1"><span>G1</span> 市场价量核心状态</a>
+<a class="nav-item" data-target="group-g2" href="#group-g2"><span>G2</span> 行业风格·资金流</a>
+<a class="nav-item" data-target="group-g3" href="#group-g3"><span>G3</span> 衍生品·离岸全球</a>
+<a class="nav-item" data-target="group-g4" href="#group-g4"><span>G4</span> 宏观利率·数据治理</a>
+<a class="nav-item" data-target="group-g5" href="#group-g5"><span>G5</span> 因子模型健康治理</a>
+</div></details>
+<details class="nav-core-block" open=""><summary>04｜细化任务清单</summary><div class="nav-group">
+<a class="nav-item" data-target="task-plan" href="#task-plan"><span>单</span> 任务清单使用说明</a>
+<a class="nav-item" data-target="task-g1" href="#task-g1"><span>T1</span> G1 任务清单（F01-F04,F06）</a>
+<a class="nav-item" data-target="task-g2" href="#task-g2"><span>T2</span> G2 任务清单（F05,F08,F23）</a>
+<a class="nav-item" data-target="task-g3" href="#task-g3"><span>T3</span> G3 任务清单（F07,F12-F14,F19）</a>
+<a class="nav-item" data-target="task-g4" href="#task-g4"><span>T4</span> G4 任务清单（F09-F11,F16）</a>
+<a class="nav-item" data-target="task-g5" href="#task-g5"><span>T5</span> G5 任务清单（F15,F17,F18,F20-F22）</a>
+</div></details>
+<details class="nav-core-block" open=""><summary>05｜协作流程与登记</summary><div class="nav-group">
+<a class="nav-item" data-target="coordination" href="#coordination"><span>协</span> 0A–0D 协作流程</a>
+<a class="nav-item" data-target="gates" href="#gates"><span>门</span> Gate 与验收</a>
+<a class="nav-item" data-target="owner-registry" href="#owner-registry"><span>表</span> 负责人登记表</a>
+</div></details>
+</aside>
+
+<main class="content">
+<section class="hero" id="overview">
+<div class="eyebrow">STATUS FEATURE ENGINEERING · STAGE 0 · GROUPING &amp; TASKS</div>
+<h1>Status 特征工程：Fxx 分组建议与细化任务清单</h1>
+<p>本文件是《市场状态识别与预测研究手册 V28》Stage 0 的执行配套。基于手册中 F01–F23 共 <b>587 项细化特征</b>（按特征库表格逐行清点，非摘要模板数），将 10 人分成 5 个双人小组，按「数据源/特征族」切分任务。分配同时满足：<b>工作量（特征数）比较平衡</b>（108–126 项/组，587÷5≈117）、<b>重要性（P0/P1）混合均衡</b>、以及<b>组内任务相关性高</b>（同数据源、同经济逻辑、相互引用）。每组一人实现、一人交叉复核，完成后轮换复核。</p>
+<div class="stats">
+<div class="stat"><b>587</b>项细化特征（F01–F23）</div>
+<div class="stat"><b>23</b>个特征族</div>
+<div class="stat"><b>5</b>个双人小组</div>
+<div class="stat"><b>10</b>人（A实现/B复核）</div>
+<div class="stat"><b>108–126</b>项/组工作量带</div>
+</div>
+<div class="now-box"><b>Critical Path：</b>Stage 0 全员先完成「数据与特征可用性闭环」→ G0 通过 → Stage 1 全员 Market Soft State MVP。任何正式状态模型在此之前不启动。本文件把 Stage 0 的 587 项拆到 5 组，落实 <code>0A 清点 → 0B 补数 → 0C 实现/回放 → 0D 交叉验收</code> 四步闭环。</div>
+</section>
+
+<section class="panel" id="principles">
+<div class="eyebrow">DESIGN PRINCIPLES</div>
+<h2>分组设计原则</h2>
+<div class="priority-grid">
+<div><b>① 按数据源/特征族切分，组内高相关</b><p>沿用手册 Stage 0「按数据源/特征族切分 F01–F23」。每组落在同一条数据链路或同一经济逻辑上：日频量价、行业/风格网络、衍生品+离岸、宏观政策、因子治理。组内字段共享口径、PIT 规则与实现函数，返工面最小。</p></div>
+<div><b>② 工作量平衡：特征数 108–126/组</b><p>587÷5≈117。分配目标区间 108–126（极差≤18，±8%）。同时考虑「现期可实现量」：含数据缺口（F17/F19/F20 等）与机械计算（F06/F23）的组按实际工作量修正，不只看行数。</p></div>
+<div><b>③ 重要性平衡：每组都有 P0 核心</b><p>每组都至少有一个 P0 核心族（G1≈98、G3≈74、G5≈66、G2≈65、G4≈48 项标 P0），避免「一组全 P0、一组全 P1」。G1 作为 HMM 核心状态输入天然最重，G4 宏观多为 P1 转移/上下文，形成轻重搭配。</p></div>
+<div><b>④ 关键路径单列、治理层聚合</b><p>STATE-CORE/MVP 直接依赖的市场内部量价（G1）独立成组，保证 critical path 不被拖累；因子健康/漂移/拥挤/家族状态（G5）聚合到同一治理层，直接服务 2026 因子失效问题与 Router。</p></div>
+</div>
+<div class="callout direct"><b>组内分工：</b>每组固定 2 人。A 负责实现（canonical_id、公式、PIT、落表、回放），B 负责交叉复核（winsor/标准化时点、缺失处理、无 future shift）；本组完成后 A/B 轮换角色，再与其他组交叉 review。所有组共享统一函数接口与 <code>state_feature_snapshot</code>，禁止各组私有版本。</div>
+</section>
+
+<section class="feature-library-panel" id="feature-counts">
+<div class="eyebrow">FEATURE LIBRARY · F01–F23</div>
+<h2>F01–F23 细化特征数（共 587 项）</h2>
+<div class="section-purpose"><b>说明：</b>下列数量为该族特征库表格<b>逐行清点</b>的细化特征数（含首批 code 模板行与后补紧凑行），合计 587，与手册「587 项特征」一致。每个 Fxx 摘要处的 <code>N 个特征模板</code>（如 F01=13）只统计首批模板行，不作为任务量口径。</div>
+<table class="balance-table">
+<thead><tr><th>Fxx</th><th>特征族主题</th><th>细化特征数</th><th>优先级画像</th><th>主要数据源</th><th>拟分入组</th></tr></thead>
+<tbody>
+<tr><td>F01</td><td>A股收益、趋势与回撤</td><td>23</td><td><span class="feature-badge priority-p0">P0</span></td><td>日线/指数量价</td><td>G1</td></tr>
+<tr><td>F02</td><td>波动率、跳跃与尾部风险</td><td>22</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>日线+分钟</td><td>G1</td></tr>
+<tr><td>F03</td><td>市场宽度与横截面分布</td><td>28</td><td><span class="feature-badge priority-p0">P0</span></td><td>全A横截面</td><td>G1</td></tr>
+<tr><td>F04</td><td>流动性、成交与拥挤</td><td>23</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>日线量价</td><td>G1</td></tr>
+<tr><td>F05</td><td>行业、风格与相关结构</td><td>30</td><td><span class="feature-badge priority-p0">P0</span></td><td>行业/风格指数</td><td>G2</td></tr>
+<tr><td>F06</td><td>分钟级日内结构</td><td>30</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>分钟线</td><td>G1</td></tr>
+<tr><td>F07</td><td>股指期货与期权隐含信息</td><td>29</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>期货/期权（缺口）</td><td>G3</td></tr>
+<tr><td>F08</td><td>资金流、杠杆与持仓</td><td>30</td><td><span class="feature-badge priority-p1">P1</span></td><td>融资融券/ETF/北向</td><td>G2</td></tr>
+<tr><td>F09</td><td>国内利率、货币与信用</td><td>32</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>货币网/中债（缺口）</td><td>G4</td></tr>
+<tr><td>F10</td><td>国内宏观增长、通胀与地产</td><td>30</td><td><span class="feature-badge priority-p1">P1</span></td><td>NBS宏观（缺口）</td><td>G4</td></tr>
+<tr><td>F11</td><td>政策、公告、新闻与情绪</td><td>24</td><td><span class="feature-badge priority-p1">P1</span><span class="feature-badge priority-p2">P2</span></td><td>公告/新闻（部分缺口）</td><td>G4</td></tr>
+<tr><td>F12</td><td>港股、离岸中国资产与人民币</td><td>26</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>港交所/离岸（缺口）</td><td>G3</td></tr>
+<tr><td>F13</td><td>美股与全球风险偏好</td><td>31</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>Cboe/FRED（缺口）</td><td>G3</td></tr>
+<tr><td>F14</td><td>商品、航运与供应链</td><td>26</td><td><span class="feature-badge priority-p1">P1</span></td><td>商品/航运（缺口）</td><td>G3</td></tr>
+<tr><td>F15</td><td>因子与模型健康度</td><td>29</td><td><span class="feature-badge priority-p0">P0</span></td><td>因子/OOS日志</td><td>G5</td></tr>
+<tr><td>F16</td><td>日历、事件与数据质量</td><td>22</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>日历/公告维表</td><td>G4</td></tr>
+<tr><td>F17</td><td>市场微观结构、订单流毒性</td><td>22</td><td><span class="feature-badge priority-p1">P1</span><span class="feature-badge priority-p2">P2</span></td><td>分钟代理/L2（缺口）</td><td>G5</td></tr>
+<tr><td>F18</td><td>动量崩溃、尾部风险与商业周期</td><td>14</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>现有收益/因子</td><td>G5</td></tr>
+<tr><td>F19</td><td>期权对冲流、Gamma结构与波动反馈</td><td>13</td><td><span class="feature-badge priority-p1">P1</span><span class="feature-badge priority-p2">P2</span></td><td>期权（缺口）</td><td>G3</td></tr>
+<tr><td>F20</td><td>深度隐式状态、离散码本与潜变量</td><td>15</td><td><span class="feature-badge priority-p1">P1</span><span class="feature-badge priority-p2">P2</span></td><td>模型衍生（严格OOS）</td><td>G5</td></tr>
+<tr><td>F21</td><td>概念漂移、因子拥挤与防衰减治理</td><td>24</td><td><span class="feature-badge priority-p0">P0</span></td><td>因子/模型日志</td><td>G5</td></tr>
+<tr><td>F22</td><td>因子家族软状态、持续性与失效诊断</td><td>16</td><td><span class="feature-badge priority-p0">P0</span></td><td>因子/OOS日志</td><td>G5</td></tr>
+<tr><td>F23</td><td>A股行业、概念/主题、领导结构与相关网络</td><td>48</td><td><span class="feature-badge priority-p0">P0</span><span class="feature-badge priority-p1">P1</span></td><td>行业/概念membership</td><td>G2</td></tr>
+</tbody>
+</table>
+<div class="feature-source-note"><b>合计：587 项。</b>「优先级画像」为族内 P0/P1 的混合标签；「主要数据源」含缺口标注（外部数据未采购，进入缺口清单而非回填）。</div>
+</section>
+
+<section class="panel" id="group-plan">
+<div class="eyebrow">GROUPING PLAN · 5 GROUPS × 2 PEOPLE</div>
+<h2>五组分配总览</h2>
+<div class="section-purpose"><b>本节回答：</b>23 个特征族如何切给 5 个双人小组，为什么这样分、每组的量/重要性/相关性如何。</div>
+<div class="group-flow">
+<div class="gflow"><em>G1 · 126</em><b>市场价量核心状态</b><span>F01,F02,F03,F04,F06｜P0×98｜核心HMM输入</span></div>
+<div class="gflow"><em>G2 · 108</em><b>行业风格·资金流</b><span>F05,F08,F23｜P0×65｜行业/风格/网络+资金流</span></div>
+<div class="gflow"><em>G3 · 125</em><b>衍生品·离岸全球</b><span>F07,F12,F13,F14,F19｜P0×74｜开盘前前瞻定价</span></div>
+<div class="gflow"><em>G4 · 108</em><b>宏观利率·数据治理</b><span>F09,F10,F11,F16｜P0×48｜宏观政策+PIT治理</span></div>
+<div class="gflow"><em>G5 · 120</em><b>因子模型健康治理</b><span>F15,F17,F18,F20,F21,F22｜P0×66｜健康/漂移/拥挤/Router</span></div>
+</div>
+<table class="balance-table">
+<thead><tr><th>组</th><th>拟分 Fxx</th><th>特征数</th><th>P0 数</th><th>P1 数</th><th>重要性分（P0×2+P1）</th><th>组内关联逻辑</th></tr></thead>
+<tbody>
+<tr><td><b>G1</b> 市场价量核心状态</td><td>F01, F02, F03, F04, F06</td><td><b>126</b></td><td>98</td><td>74</td><td>270</td><td>日频→分钟的 A 股市场内部状态（收益/波动/宽度/流动性/日内），STATE-CORE/MVP 直接输入</td></tr>
+<tr><td><b>G2</b> 行业风格·相关网络·资金流</td><td>F05, F08, F23</td><td><b>108</b></td><td>65</td><td>72</td><td>202</td><td>行业轮动/风格领导/相关网络（F05↔F23）+ 资金流驱动拥挤（F08）</td></tr>
+<tr><td><b>G3</b> 股指衍生品·离岸与全球前瞻风险</td><td>F07, F12, F13, F14, F19</td><td><b>125</b></td><td>74</td><td>88</td><td>236</td><td>开盘前可得的衍生品（F07↔F19）+ 离岸/全球/商品（F12/F13/F14）前瞻风险定价</td></tr>
+<tr><td><b>G4</b> 国内宏观·利率·政策·数据治理</td><td>F09, F10, F11, F16</td><td><b>108</b></td><td>48</td><td>53</td><td>149</td><td>国内宏观政策块（F09/F10/F11 共享发布时点）+ F16 日历/数据质量治理层</td></tr>
+<tr><td><b>G5</b> 因子与模型健康治理</td><td>F15, F17, F18, F20, F21, F22</td><td><b>120</b></td><td>66</td><td>35</td><td>167</td><td>Factor Health 底座（F15）+ 漂移/拥挤（F21）+ 家族软状态（F22）+ 动量崩溃（F18）+ Router 输入（F17/F20）</td></tr>
+</tbody>
+</table>
+<div class="callout use"><b>平衡性结论：</b>① 工作量：126/108/125/108/120，极差 18（±8%）；考虑现期可实现量后（F17/F19/F20 数据缺口、F06/F23 机械计算）实际差异更小。② 重要性：每组各有 P0 核心（48–98 项），G1 最重是 critical path 的自然结果，G4 宏观偏 P1 形成轻重搭配。③ 相关性：每组都落在同一条数据链路/经济逻辑上，组内字段共享口径与实现。</div>
+</section>
+
+<section class="panel" id="group-g1">
+<div class="eyebrow">GROUP 1 · MARKET PRICE-VOLUME CORE</div>
+<h2>G1｜市场价量核心状态（F01, F02, F03, F04, F06 · 126 项）</h2>
+<div class="group-header"><h2>定位</h2><p>日频→分钟的 A 股市场内部状态：方向/趋势、波动/尾部、宽度/横截面、流动性/拥挤与日内路径。这是 STATE-CORE-12~15 与 MVP-28 的直接输入，也是全队 critical path 的核心组。</p>
+<div class="gh-tags"><span class="feature-badge priority-p0">P0×98</span><span class="feature-badge priority-p1">P1×74</span><span class="feature-badge status-have">可由现有构造</span><span class="feature-badge role-i">识别当前状态</span><span class="feature-badge role-t">预测状态切换</span></div></div>
+<div class="pair-grid four">
+<div><b>数据源</b><p>Stock/IndexDailyBar、StockMinuteBar、Universe/停牌/涨跌停/交易状态表；Return 先 ÷10000，按复利累计；指数代码后缀固定。</p></div>
+<div><b>PIT 要点</b><p>全部为「t 日收盘后可知、最早用于 t+1」；分钟线无独立集合竞价，隔夜跳空单独标记；Universe 按日 PIT 生成。</p></div>
+<div><b>核心任务</b><p>统一 Universe 口径 → 收益/趋势/回撤三版加权 → 波动/半方差/跳跃 → 宽度/离散/背离 → 流动性/拥挤 → 分钟聚合（开尾盘/U型/日内相关性）。</p></div>
+<div><b>关键交付</b><p>STATE-CORE 收益/波动/宽度/流动性字段、MVP-28 日内部分、state_feature_snapshot 首版、PIT Replay 通过。</p></div>
+</div>
+<div class="callout direct"><b>组内关联：</b>F06 是 F01–F04 的分钟级实现（开盘冲击、尾盘、U 型、日内宽度）；F04 的拥挤与 F02 的尾部风险共同刻画「高波+拥挤」的危险状态。A/B 共享同一分钟→日频聚合管线。</div>
+</section>
+
+<section class="panel" id="group-g2">
+<div class="eyebrow">GROUP 2 · INDUSTRY / STYLE / FLOWS</div>
+<h2>G2｜行业风格·相关网络·资金流（F05, F08, F23 · 108 项）</h2>
+<div class="group-header"><h2>定位</h2><p>行业轮动、风格领导、相关结构/概念网络 + 资金流（融资、ETF 份额、北向）驱动拥挤。F23（48 项）为最大单族，与 F05 同属「行业/风格/相关」体系；F08 提供资金面证据。</p>
+<div class="gh-tags"><span class="feature-badge priority-p0">P0×65</span><span class="feature-badge priority-p1">P1×72</span><span class="feature-badge status-part">部分现有/可做代理</span><span class="feature-badge role-i">识别当前状态</span></div></div>
+<div class="pair-grid four">
+<div><b>数据源</b><p>行业/概念 PIT membership、风格指数、指数成分、融资融券、ETF 份额、互联互通；行业源先固定（sw_l1）。</p></div>
+<div><b>PIT 要点</b><p>行业/概念 membership 必须按日 PIT 重建（成分调整日生效）；ETF 份额注意拆分/合并；北向披露频率随制度变化。</p></div>
+<div><b>核心任务</b><p>行业扩散/领导/轮动/相关网络（F23）→ 风格价差/相关收敛（F05）→ 资金流/杠杆/持仓（F08）→ 交叉的「风格拥挤」。</p></div>
+<div><b>关键交付</b><p>行业/概念 PIT membership 表、行业网络指标（模度/MST）、ETF/融资/北向数据表、概念只做 Overlay 的约束说明。</p></div>
+</div>
+<div class="callout risk"><b>边界：</b>概念/主题特征只作为 Overlay / Factor Environment，不作为硬状态标签；F23 的 48 项中网络类（模度/中心度/MST）依赖 membership 质量，先验证成分调整后的稳定性。</div>
+</section>
+
+<section class="panel" id="group-g3">
+<div class="eyebrow">GROUP 3 · DERIVATIVES / OFFSHORE / GLOBAL</div>
+<h2>G3｜股指衍生品·离岸与全球前瞻风险（F07, F12, F13, F14, F19 · 125 项）</h2>
+<div class="group-header"><h2>定位</h2><p>「开盘前可得的前瞻/离岸/衍生品定价」：境内股指期货/期权隐含（F07）与期权 Gamma/对冲流（F19）共享期权数据；港股离岸（F12）、美股全球（F13）、商品航运（F14）为同一套全球风险偏好外溢。</p>
+<div class="gh-tags"><span class="feature-badge priority-p0">P0×74</span><span class="feature-badge priority-p1">P1×88</span><span class="feature-badge status-part">部分现有/可做代理</span><span class="feature-badge status-p2">缺失P2/专项</span><span class="feature-badge role-t">预测状态切换</span></div></div>
+<div class="pair-grid four">
+<div><b>数据源</b><p>中金所期货/期权、港交所、Cboe/FRED/OFR、商品/航运指数；多属外部缺口，需登记采购顺序。</p></div>
+<div><b>PIT 要点</b><p>跨市场按 A 股开盘前时间对齐；期货/期权换月与到期规则统一；海外数据保存发布日期与修订版本。</p></div>
+<div><b>核心任务</b><p>基差/期限结构/IV/VRP（F07）→ GEX/Gamma 集中（F19，仅 proxy）→ AH/CNH/A50 隔夜（F12）→ VIX 期限/信用利差/金融压力（F13）→ 商品/BDI/GSCPI（F14）。</p></div>
+<div><b>关键交付</b><p>前瞻特征表、缺口采购清单（期权 Greeks/期货/海外）、GEX 符号情景敏感性报告、跨市场时间对齐校验。</p></div>
+</div>
+<div class="callout risk"><b>边界：</b>无 dealer-side 持仓方向时，F19 一律命名为 <code>*_proxy</code>，禁止解释成真实做市商净 Gamma；VRP 严格使用 forecast RV；海外数据不得用静态历史回填。</div>
+</section>
+
+<section class="panel" id="group-g4">
+<div class="eyebrow">GROUP 4 · MACRO / RATES / POLICY / GOVERNANCE</div>
+<h2>G4｜国内宏观·利率·政策·数据治理（F09, F10, F11, F16 · 108 项）</h2>
+<div class="group-header"><h2>定位</h2><p>国内宏观政策块（利率货币信用、增长通胀地产、政策公告情绪）+ 日历/事件/数据质量治理层。F16 提供发布日历、修订风险与数据新鲜度，是该块 PIT 对齐的保障层。</p>
+<div class="gh-tags"><span class="feature-badge priority-p0">P0×48</span><span class="feature-badge priority-p1">P1×53</span><span class="feature-badge status-part">部分现有/可做代理</span><span class="feature-badge role-t">预测状态切换</span><span class="feature-badge role-e">解释与风控</span></div></div>
+<div class="pair-grid four">
+<div><b>数据源</b><p>中国货币网/中债/PBOC/NBS/SAFE、公告与事件日历；外部缺口为主，须保存发布日期与 vintage。</p></div>
+<div><b>PIT 要点</b><p>区分 reference_period 与 release_date；宏观只用发布后值；历史回测尽量保存 first_release；统计口径变化要标记。</p></div>
+<div><b>核心任务</b><p>利率/曲线/信用脉冲（F09）→ 增长/通胀/地产/意外（F10）→ 政策/公告/事件（F11）→ 日历与数据质量维表（F16）。</p></div>
+<div><b>关键交付</b><p>宏观发布日历、vintage 表、资金面意外、数据陈旧度/修订标记、制度版本表（market_rule_version）。</p></div>
+</div>
+<div class="callout use"><b>重要性说明：</b>该组 P0 相对偏少（48 项），因宏观多为转移/上下文特征（P1），恰好与 G1 的高 P0 形成整体平衡。F09 利率信用仍是 P0 核心（27 项 P0）。</div>
+</section>
+
+<section class="panel" id="group-g5">
+<div class="eyebrow">GROUP 5 · FACTOR / MODEL HEALTH GOVERNANCE</div>
+<h2>G5｜因子与模型健康治理（F15, F17, F18, F20, F21, F22 · 120 项）</h2>
+<div class="group-header"><h2>定位</h2><p>对应手册「状态转移、Router、风险覆盖与模型治理层」：Factor Health 底座（F15）+ 漂移/拥挤/防衰减（F21）+ 因子家族软状态/失效（F22）+ 动量崩溃（F18）+ 微观压力/隐式状态作为 Router 输入（F17/F20）。直接回应 2026 因子失效问题。</p>
+<div class="gh-tags"><span class="feature-badge priority-p0">P0×66</span><span class="feature-badge priority-p1">P1×35</span><span class="feature-badge status-have">可由现有构造</span><span class="feature-badge status-part">部分现有/可做代理</span><span class="feature-badge role-r">软路由/模型治理</span></div></div>
+<div class="pair-grid four">
+<div><b>数据源</b><p>现有因子值与严格 OOS 日志、分钟（F17 代理）、模型输出（F20）；raw-factor shadow ledger 为基础。</p></div>
+<div><b>PIT 要点</b><p>标签未成熟前不得使用未来 IC/OOS/后验 latent；F17 代理与真实 Level-2 版本分离；F20 先过泄漏审计。</p></div>
+<div><b>核心任务</b><p>Factor Health 底座与 shadow ledger（F15）→ 漂移/谱拥挤/IC 衰减（F21）→ 家族有效/衰减/反转概率（F22）→ 动量崩溃（F18）→ BVC 压力代理（F17）→ latent 审计（F20）。</p></div>
+<div><b>关键交付</b><p>Factor Health v1、DriftService 输入、label maturity 覆盖表、Router/Retrain 治理输入、代理/真实版本清单。</p></div>
+</div>
+<div class="callout risk"><b>边界：</b>F17 分钟代理不得冒充真实 VPIN；F20 不使用含未来收益的 posterior 做实时特征；不为每个单因子各训一个状态模型；拥挤指标不等同「市场必跌」。</div>
+</section>
+
+<section class="feature-library-panel" id="task-plan">
+<div class="eyebrow">DETAILED TASK LIST · STAGE 0</div>
+<h2>细化任务清单：逐 Fxx 的实现 / 复核 / 交付</h2>
+<div class="section-purpose"><b>用法：</b>每张 Fxx 卡列出 代表特征、数据源与 PIT、优先级、Readiness（A Ready / B Derivable / C External Gap / D Not PIT-safe）、关键实现动作与复核要点。A+B 构成首轮可执行 Feature Store；C/D 进入缺口清单，不得偷偷进入回测。</div>
+<div class="task-gate">0A 清点 → 0B 补数 → 0C 实现/回放 → 0D 交叉验收　|　canonical_id · formula_hash · availability_timestamp · coverage · status(A/B/C/D)</div>
+<div class="callout direct"><b>五组统一动作模板（每个 Fxx 都执行）：</b>① 清点：登记 canonical_id、公式、来源、历史覆盖、PIT 可得时间、缺失率、更新频率、版本；② 实现：构造并落表（winsor/标准化时点统一）；③ 复核：交叉复核极端行情/停复牌/涨跌停/成分/财报日；④ 回放：任意历史交易日可重建、无 future shift；⑤ 缺口：无法构造项登记 C/D 与 proxy。</div>
+</section>
+
+<section class="feature-library-panel" id="task-g1">
+<div class="group-header"><h2>T1｜G1 任务清单：市场价量核心（F01–F04, F06）</h2><p>126 项 · P0×98 · 数据源：日线/分钟/Universe</p></div>
+<div class="feature-family-nav"><a href="#task-f01"><b>F01</b><span>收益趋势回撤</span><em>23</em></a><a href="#task-f02"><b>F02</b><span>波动跳跃尾部</span><em>22</em></a><a href="#task-f03"><b>F03</b><span>宽度横截面</span><em>28</em></a><a href="#task-f04"><b>F04</b><span>流动性拥挤</span><em>23</em></a><a href="#task-f06"><b>F06</b><span>分钟日内结构</span><em>30</em></a></div>
+
+<details class="feature-family" id="task-f01" data-search="f01 收益 趋势 回撤 mkt_ret drawdown ma_gap 任务"><summary><span><b>F01｜A股收益、趋势与回撤</b><small>判断市场方向、趋势强弱和趋势是否正在衰减；G1 核心 P0。</small></span><em>23 项 · P0</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>mkt_ret_1d/5d/20d/60d/120d</code>（等权/市值/自由流通三版）、<code>ma_gap_5_20/20_60/60_120</code>、<code>trend_slope_r2</code>、<code>drawdown_level/speed</code>、<code>overnight_intraday_split</code>、指数相对背离</td><td>Stock/IndexDailyBar；Return÷10000 后复利累计；t 日收盘后可知 → t+1</td><td><span class="feature-badge priority-p0">P0</span> HMM/SJM 核心</td><td><span class="feature-badge badge-b">B</span> 可由现有构造 → A</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>固定指数后缀映射（.SH/.SZ/.CSI）；复权方向先校验</li><li>三版加权收益 + 复利累计；均线缺口/斜率/拟合度</li><li>回撤水平/速度/修复比例；隔夜与日内拆分</li><li>跨制度分段（market_rule_version）重算</li></ol><b>复核要点：</b>除权日与停牌日收益、复权口径、指数成分调整、长假期缺口。</div>
+</div></details>
+
+<details class="feature-family" id="task-f02" data-search="f02 波动 跳跃 尾部 rv parkinson garman jump tail 任务"><summary><span><b>F02｜波动率、跳跃与尾部风险</b><small>区分低波稳定、缓慢恶化、急跌恐慌和反弹高波等机制。</small></span><em>22 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>rv_5d/20d/60d</code>、<code>parkinson_vol</code>、<code>garman_klass_vol</code>、<code>downside_vol_ratio</code>、<code>vol_of_vol</code>、<code>jump_variation</code>、<code>tail_loss_share</code>、<code>realized_skew/kurt</code>、<code>intraday_max_drawdown</code>、<code>idiosyncratic_vol</code>、上下行半方差</td><td>日线 + 分钟（RV/BV 需分钟）；分钟无集合竞价→单独标隔夜跳空</td><td><span class="feature-badge priority-p0">P0</span> rv/downside/vol_of_vol<br><span class="feature-badge priority-p1">P1</span> parkinson/GK/jump/skew</td><td><span class="feature-badge badge-b">B</span> 可由现有构造</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>std×√252 与半方差；Parkinson/GK 公式</li><li>分钟实现方差/双幂变差→跳跃占比；截面尾部损失</li><li>特异波动率：滚动回归残差（行业源固定 sw_l1）</li><li>小窗偏度/峰度 winsorize + 收缩</li></ol><b>复核要点：</b>涨跌停/停牌剔除、跳空标记、窗口末端=决策日、分钟缺失回退日线。</div>
+</div></details>
+
+<details class="feature-family" id="task-f03" data-search="f03 宽度 横截面 advance breadth dispersion skew 任务"><summary><span><b>F03｜市场宽度与横截面分布</b><small>避免只看指数；识别「指数上涨但多数股票下跌」等内部背离。</small></span><em>28 项 · P0</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>advance_ratio</code>、<code>ad_line/adv_dec</code>、<code>pct_above_ma_20/60/120</code>、<code>new_high_low_ratio</code>、<code>limit_up_down</code>、<code>open_board_ratio</code>、<code>cross_section_dispersion/skew/kurt</code>、<code>breadth_thrust</code>、<code>breadth_divergence</code>、<code>zero_return_ratio</code></td><td>全A 横截面日收益；Universe 按日 PIT 生成（raw 与 tradable 口径）</td><td><span class="feature-badge priority-p0">P0</span> 核心</td><td><span class="feature-badge badge-b">B</span> 可由现有构造</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>当日 tradable universe 口径；涨跌停/开板标记</li><li>累积线/TRIN/McClellan；20/60/120 三窗均线宽度</li><li>截面离散度分解、偏度、峰度、连涨/连跌持续性</li><li>指数—宽度背离（breadth_divergence）</li></ol><b>复核要点：</b>「指数涨但宽度弱」样本、停复牌影响、制度变化分段（涨跌幅制度）。</div>
+</div></details>
+
+<details class="feature-family" id="task-f04" data-search="f04 流动性 成交 拥挤 amount turnover amihud crowding 任务"><summary><span><b>F04｜流动性、成交与拥挤</b><small>识别资金是否充裕、交易是否拥挤以及冲击成本是否上升。</small></span><em>23 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>market_amount</code>、<code>market_turnover</code>、<code>amihud_illiq</code>、<code>suspend_ratio</code>、<code>amount_hhi</code>、<code>turnover_hhi</code>、<code>small_large_liq_gap</code>、<code>vwap_deviation</code>、<code>liquidity_commonality</code>、<code>crowding_composite</code>、<code>volume_price_divergence</code></td><td>日线量价（分钟用于 VWAP）；涨跌停无量单独处理</td><td><span class="feature-badge priority-p0">P0</span> amount/turnover/amihud<br><span class="feature-badge priority-p1">P1</span> hhi/commonality/crowding</td><td><span class="feature-badge badge-b">B</span> 可由现有构造</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>成交额/换手分位数；Amihud=|r|/amount</li><li>流动性共同性（市场因子回归）；量价背离</li><li>拥挤综合分（集中度+换手+小盘缺口）</li><li>停牌/零成交比例口径统一</li></ol><b>复核要点：</b>涨跌停无量、停牌、新股；量价背离方向；流动性退化≠状态突变。</div>
+</div></details>
+
+<details class="feature-family" id="task-f06" data-search="f06 分钟 日内 open30 close30 intraday u型 任务"><summary><span><b>F06｜分钟级日内结构</b><small>从日内路径提取开盘冲击、尾盘资金、跳跃和流动性恶化。</small></span><em>30 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>open30_ret</code>、<code>close30_ret</code>、<code>morning_afternoon_gap</code>、<code>intraday_rv</code>、<code>intraday_trend_score</code>、<code>intraday_reversal</code>、<code>volume_u_shape</code>、<code>last_hour_amount_share</code>、<code>minute_corr_level</code>、<code>high_low_time</code>、<code>intraday_jump_count</code>、<code>limit_touch_intraday</code>、<code>auction_imbalance</code></td><td>StockMinuteBar（连续竞价 240 根，无独立集合竞价）；UTC→北京时间</td><td><span class="feature-badge priority-p0">P0</span> open/close/intraday_rv/last_hour<br><span class="feature-badge priority-p1">P1</span> 其余</td><td><span class="feature-badge badge-b">B</span> 可由现有构造</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>分钟聚合：开/尾盘收益、上午/下午差、日内 RV</li><li>U 型拟合、成交集中度、日内相关性峰值</li><li>跳跃次数、触及涨跌停时间、开板率、尾盘封板</li><li>集合竞价缺口单独标记（分钟无竞价数据）</li></ol><b>复核要点：</b>时间对齐、停牌剔除、异常 High=Low、隔夜跳空与日内跳跃分开。</div>
+</div></details>
+</section>
+
+<section class="feature-library-panel" id="task-g2">
+<div class="group-header"><h2>T2｜G2 任务清单：行业风格·相关网络·资金流（F05, F08, F23）</h2><p>108 项 · P0×65 · 数据源：行业/概念 membership、风格指数、融资融券、ETF、北向</p></div>
+<div class="feature-family-nav"><a href="#task-f05"><b>F05</b><span>行业风格相关</span><em>30</em></a><a href="#task-f08"><b>F08</b><span>资金流杠杆持仓</span><em>30</em></a><a href="#task-f23"><b>F23</b><span>行业概念网络</span><em>48</em></a></div>
+
+<details class="feature-family" id="task-f05" data-search="f05 行业 风格 相关 size spread rotation corr 任务"><summary><span><b>F05｜行业、风格与相关结构</b><small>识别大小盘、价值成长、行业轮动和相关性收敛。</small></span><em>30 项 · P0</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>size/value_growth/vol/quality/momentum_spread</code>、<code>industry_dispersion/breadth/concentration</code>、<code>rotation_speed</code>、<code>avg_stock_corr</code>、<code>first_eigen_share</code>、<code>index_constituent_concentration</code>、<code>bank_nonbank_spread</code>、<code>soe_private_spread</code></td><td>指数/股票、行业、风格指数；候选指数核验 IndexDailyBar</td><td><span class="feature-badge priority-p0">P0</span> 风格/行业<br><span class="feature-badge priority-p1">P1</span> 相关特征</td><td><span class="feature-badge badge-b">B</span> 可由现有构造</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>风格价差（大小盘/价值成长/红利成长等）与风格反转速度</li><li>行业离散/上涨占比/领涨集中度/轮动速度</li><li>平均相关性、第一特征值占比、相关性收敛</li><li>估值离散度、行业成分集中度</li></ol><b>复核要点：</b>指数代码后缀固定、行业源固定、成分调整日、风格指数口径。</div>
+</div></details>
+
+<details class="feature-family" id="task-f08" data-search="f08 资金流 杠杆 持仓 margin etf northbound 任务"><summary><span><b>F08｜资金流、杠杆与持仓</b><small>识别融资杠杆、ETF申赎、互联互通和机构仓位变化。</small></span><em>30 项 · P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>margin_balance</code>、<code>margin_buy_repay</code>、<code>securities_lending</code>、<code>etf_share_flow</code>（宽基/小盘/红利/科技）、<code>etf_premium_discount</code>、<code>northbound_turnover/holdings</code>、<code>large_order_flow</code>、<code>fund_issuance_flow</code>、<code>share_pledge_pressure</code>、<code>ipo_fund_drain</code></td><td>交易所融资融券、ETF 份额、互联互通（外部为主）；披露频率随制度变化</td><td><span class="feature-badge priority-p1">P1</span> 主体<br><span class="feature-badge priority-p0">P0</span> 融资余额变化等核心项</td><td><span class="feature-badge badge-c">C</span> 缺口为主，ETF 份额部分可构造</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>融资余额/买入占比/偿还压力；融券余额变化</li><li>ETF 份额变化（宽基/小盘/红利/科技）、折溢价、成交占比</li><li>北向成交/持仓变化；公募发行流；回购/IPO 抽取</li><li>质押/解禁压力（日历联动）</li></ol><b>复核要点：</b>份额拆分/合并、披露频率变化、融资融券口径、解禁日历准确性。</div>
+</div></details>
+
+<details class="feature-family" id="task-f23" data-search="f23 行业 概念 主题 网络 leadership rotation membership 任务"><summary><span><b>F23｜A股行业、概念/主题、领导结构与相关网络</b><small>把「行业轮动、概念炒作、主题扩散、市场共振」转成可 PIT 计算的连续状态变量。</small></span><em>48 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>industry_advancing_ratio</code>、<code>industry_return_dispersion</code>、<code>industry_leadership_hhi/entropy</code>、<code>industry_rotation_speed</code>、<code>concept_advancing_ratio</code>、<code>concept_leader_persistence</code>、<code>concept_new_theme_emergence</code>、<code>concept_heat_concentration</code>、<code>concept_limitup_breadth</code>、<code>concept_overlap_density</code>、<code>concept_membership_entropy</code>、<code>industry_avg_correlation</code>、<code>industry_corr_eigen1_share</code>、<code>industry_network_modularity</code>、<code>industry_mst_length</code>、<code>style_leadership_entropy</code></td><td>行业/概念 PIT membership、成分股、指数成分；概念只做 Overlay</td><td><span class="feature-badge priority-p0">P0</span> 行业扩散/领导/轮动/相关<br><span class="feature-badge priority-p1">P1</span> 概念/网络/风格领导</td><td><span class="feature-badge badge-b">B</span> 需补齐 PIT membership</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>行业/概念 PIT membership 表（成分调整日生效，保存 revision）</li><li>行业扩散/领导集中/轮动速度/相关性/网络指标（模度/MST）</li><li>概念热度/扩散/重叠/成员换手；主题新涌现检测</li><li>风格领导熵与价差（与 F05 联动）</li></ol><b>复核要点：</b>membership 按日 PIT、成分调整、概念分类稳定性；概念仅作 Overlay/Factor Environment，不作为硬状态标签。</div>
+</div></details>
+</section>
+
+<section class="feature-library-panel" id="task-g3">
+<div class="group-header"><h2>T3｜G3 任务清单：股指衍生品·离岸与全球前瞻风险（F07, F12–F14, F19）</h2><p>125 项 · P0×74 · 数据源：期货/期权、港交所、Cboe/FRED、商品航运</p></div>
+<div class="feature-family-nav"><a href="#task-f07"><b>F07</b><span>期货期权隐含</span><em>29</em></a><a href="#task-f12"><b>F12</b><span>港股离岸人民币</span><em>26</em></a><a href="#task-f13"><b>F13</b><span>美股全球风险</span><em>31</em></a><a href="#task-f14"><b>F14</b><span>商品航运供应链</span><em>26</em></a><a href="#task-f19"><b>F19</b><span>期权Gamma对冲</span><em>13</em></a></div>
+
+<details class="feature-family" id="task-f07" data-search="f07 股指期货 期权 basis iv skew vrp 任务"><summary><span><b>F07｜股指期货与期权隐含信息</b><small>使用基差、持仓和隐含波动率捕捉前瞻风险定价。</small></span><em>29 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>if/ih/ic/im_basis</code>、<code>futures_term_slope</code>、<code>futures_oi_change</code>、<code>futures_member_position</code>、<code>atm_implied_vol</code>、<code>iv_term_structure</code>、<code>option_skew</code>、<code>put_call_ratio</code>、<code>variance_risk_premium</code>、<code>implied_correlation</code></td><td>中金所期货、期权合约/OI/Greeks（外部缺口）</td><td><span class="feature-badge priority-p0">P0</span> 基差<br><span class="feature-badge priority-p1">P1</span> IV/PCR/VRP</td><td><span class="feature-badge badge-c">C</span> 缺数据，有部分则 B</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>基差年化与截面（IC/IM−IF/IH）；期限结构、OI 变化、会员集中</li><li>ATM IV、期限斜率、25Delta 偏度、PCR（成交量/持仓）</li><li>VRP 严格用 forecast RV；隐含相关性</li></ol><b>复核要点：</b>换月/到期规则、主力合约切换、IV 曲面口径、VRP 定义统一。</div>
+</div></details>
+
+<details class="feature-family" id="task-f12" data-search="f12 港股 离岸 人民币 hsi ah cnh a50 任务"><summary><span><b>F12｜港股、离岸中国资产与人民币</b><small>捕捉中国风险在A股开盘前的离岸定价。</small></span><em>26 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>hsi_hstech</code>、<code>ah_premium</code>、<code>usd_cnh</code>、<code>cny_cnh_basis</code>、<code>cfets_rmb_index</code>、<code>hkd_hibor</code>、<code>fxi_kweb</code>、<code>china_adr</code>、<code>sgx_a50_futures</code>、<code>vhsi</code>、<code>southbound_flow</code>、<code>offshore_onshore_divergence</code></td><td>港交所/离岸（外部缺口）；A 股开盘前对齐</td><td><span class="feature-badge priority-p0">P0</span> AH/CNH/A50<br><span class="feature-badge priority-p1">P1</span> 其余</td><td><span class="feature-badge badge-c">C</span> 缺数据</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>恒生/国企/科技隔夜收益；AH 溢价变化</li><li>USD/CNH 变化、中间价意外、在岸—离岸背离</li><li>A50 期货隔夜、中概组合隔夜、南向资金</li></ol><b>复核要点：</b>时区对齐（A 股开盘前可得）、披露频率、汇率口径。</div>
+</div></details>
+
+<details class="feature-family" id="task-f13" data-search="f13 美股 全球 风险 vix ust dollar hy 任务"><summary><span><b>F13｜美股与全球风险偏好</b><small>捕捉全球风险、科技周期、美元和信用压力对A股的外溢。</small></span><em>31 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>spx_ret</code>、<code>ndx_ret</code>、<code>sox_ret</code>、<code>russell2000</code>、<code>vix/vvix/vix9d/vxeem</code>、<code>vix_term</code>、<code>ust_yields</code>、<code>ust_curve</code>、<code>dollar_index</code>、<code>hy_ig_spread</code>、<code>nfci_ofr_fsi</code>、<code>move_index</code></td><td>Cboe/FRED/OFR（外部缺口）</td><td><span class="feature-badge priority-p0">P0</span> VIX 期限/美股隔夜<br><span class="feature-badge priority-p1">P1</span> 其余</td><td><span class="feature-badge badge-c">C</span> 缺数据</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>美股/科技/小盘隔夜收益；VIX9D−VIX、VIX−VIX3M 期限倒挂</li><li>美债 2Y/10Y、实际利率、美元指数变化</li><li>HY/IG OAS、金融压力指数（OFR/圣路易斯）、MOVE、SKEW</li></ol><b>复核要点：</b>时区对齐、VIX 系列口径、修订版本、SOX—A股电子背离方向。</div>
+</div></details>
+
+<details class="feature-family" id="task-f14" data-search="f14 商品 航运 供应链 brent bdi gscpi 任务"><summary><span><b>F14｜商品、航运与供应链</b><small>刻画中国增长预期、输入成本和全球供应链压力。</small></span><em>26 项 · P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>brent_wti</code>、<code>copper</code>、<code>gold</code>、<code>iron_ore</code>、<code>coal</code>、<code>commodity_breadth</code>、<code>baltic_dry</code>、<code>gscpi</code>、<code>container_freight</code>、<code>ovx/gvz</code>、<code>copper_gold_ratio</code>、<code>terms_of_trade_proxy</code>、<code>input_cost_pressure</code></td><td>商品/航运/供应链指数（外部缺口）</td><td><span class="feature-badge priority-p1">P1</span> 主体</td><td><span class="feature-badge badge-c">C</span> 缺数据</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>商品收益/离散/上涨品种比；期限结构</li><li>BDI 变化、集装箱运价、GSCPI；铜金比</li><li>商品—A股相关性、输入成本压力</li></ol><b>复核要点：</b>合约换月规则、日期对齐、指数口径、供应链指数滞后。</div>
+</div></details>
+
+<details class="feature-family" id="task-f19" data-search="f19 期权 gamma gex 对冲流 任务"><summary><span><b>F19｜期权对冲流、Gamma结构与波动反馈</b><small>在公开/授权期权数据上构造 GEX、Gamma Flip 和对冲压力代理。</small></span><em>13 项 · P1/P2</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>net_gamma_exposure_proxy</code>、<code>gamma_flip_distance_proxy</code>、<code>gamma_near_spot_concentration</code>、<code>gamma_expiry_concentration</code>、<code>put_call_gamma_imbalance</code>、<code>vanna_exposure_proxy</code>、<code>charm_exposure_proxy</code>、<code>option_hedging_pressure_score</code>、<code>gex_sign_confidence</code>、<code>iv_surface_no_arbitrage_violation</code></td><td>期权合约/OI/Greeks（缺口）；无 dealer 方向只许 proxy</td><td><span class="feature-badge priority-p1">P1</span> 代理<br><span class="feature-badge priority-p2">P2</span> 真实</td><td><span class="feature-badge badge-c">C</span> 数据缺口</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>GEX/Gamma 集中/到期集中/Flip 距离情景</li><li>Vanna/Charm proxy、对冲压力分、GEX 符号置信</li><li>IV 曲面无套利/覆盖质量门禁</li></ol><b>复核要点：</b>无 dealer 净持仓时禁止声称真实净 GEX；必须做多种符号情景敏感性分析。</div>
+</div></details>
+</section>
+
+<section class="feature-library-panel" id="task-g4">
+<div class="group-header"><h2>T4｜G4 任务清单：国内宏观·利率·政策·数据治理（F09–F11, F16）</h2><p>108 项 · P0×48 · 数据源：货币网/中债/PBOC/NBS、事件日历</p></div>
+<div class="feature-family-nav"><a href="#task-f09"><b>F09</b><span>利率货币信用</span><em>32</em></a><a href="#task-f10"><b>F10</b><span>宏观增长通胀地产</span><em>30</em></a><a href="#task-f11"><b>F11</b><span>政策公告情绪</span><em>24</em></a><a href="#task-f16"><b>F16</b><span>日历数据质量</span><em>22</em></a></div>
+
+<details class="feature-family" id="task-f09" data-search="f09 利率 货币 信用 dr007 shibor curve credit 任务"><summary><span><b>F09｜国内利率、货币与信用</b><small>刻画资金价格、信用脉冲和流动性松紧。</small></span><em>32 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>dr007</code>、<code>r007_dr007_spread</code>、<code>shibor3m</code>、<code>lpr</code>、<code>omo_mlf_rate</code>、<code>pboc_net_injection</code>、<code>cgb_yields</code>、<code>curve_10y_1y</code>、<code>credit_aaa/aa_spread</code>、<code>cd_spread</code>、<code>m1_m2_gap</code>、<code>tsf</code>、<code>credit_impulse</code>、<code>liquidity_surprise</code></td><td>中国货币网/中债/PBOC（外部缺口）；保存发布日期</td><td><span class="feature-badge priority-p0">P0</span> dr007/信用利差/m1-m2<br><span class="feature-badge priority-p1">P1</span> 其余</td><td><span class="feature-badge badge-c">C</span> 缺数据</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>DR/R007 与利差、回购波动、GC001−DR001</li><li>国债曲线斜率/曲率、国开—国债、AAA/AA 信用利差</li><li>净投放、资金面意外、股债相关性、互换—回购</li><li>M1−M2、社融、信用脉冲</li></ol><b>复核要点：</b>发布时点、vintage 与修订、节假日回购口径、统计口径变化。</div>
+</div></details>
+
+<details class="feature-family" id="task-f10" data-search="f10 宏观 增长 通胀 地产 pmi cpi ppi 任务"><summary><span><b>F10｜国内宏观增长、通胀与地产</b><small>刻画经济周期和政策反应函数，但必须按真实发布日期对齐。</small></span><em>30 项 · P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>official_pmi</code>、<code>pmi_new_orders</code>、<code>caixin_pmi</code>、<code>cpi_ppi</code>、<code>industrial_production/profit</code>、<code>retail_sales</code>、<code>fixed_asset_investment</code>、<code>exports_imports</code>、<code>property_cycle</code>、<code>fiscal_impulse</code>、<code>china_epu</code>、<code>economic_surprise_cn</code>、<code>macro_release_density</code></td><td>NBS 宏观（外部 vintage）；按 PubDate as-of</td><td><span class="feature-badge priority-p1">P1</span> 转移/上下文</td><td><span class="feature-badge badge-c">C</span> 缺数据</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>PMI/CPI-PPI/工业/社零/固投/出口等按发布日对齐</li><li>意外值=实际−公布前一致预期，按历史误差标准化</li><li>地产销售/土地热度、财政支出脉冲、专项债节奏</li><li>宏观发布密度与集中度</li></ol><b>复核要点：</b>报告期 vs 发布日期、修订、统计口径变化、vintage 保存。</div>
+</div></details>
+
+<details class="feature-family" id="task-f11" data-search="f11 政策 公告 新闻 情绪 sentiment event 任务"><summary><span><b>F11｜政策、公告、新闻与情绪</b><small>用于表达数值数据无法直接刻画的政策和预期冲击。</small></span><em>24 项 · P1/P2</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>policy_surprise</code>、<code>macro_surprise</code>、<code>announcement_intensity</code>、<code>earnings_surprise</code>、<code>analyst_revision</code>、<code>news_sentiment</code>、<code>policy_text_uncertainty</code>、<code>social_sentiment</code>、<code>regulatory_events</code>、<code>geopolitical_risk</code>、<code>dragon_tiger_activity</code>、<code>block_trade_pressure</code></td><td>公告/事件（现有可做）；新闻全文/舆情（缺口）</td><td><span class="feature-badge priority-p1">P1</span> 事件/公告<br><span class="feature-badge priority-p2">P2</span> 文本情绪</td><td><span class="feature-badge badge-b">B</span> 事件类<br><span class="feature-badge badge-d">D</span> 文本历史 PIT 不可还原</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>事件日历（会议/监管/公告）、龙虎榜、大宗交易</li><li>公告情绪、分析师修正宽度、业绩预警宽度、账户增速</li><li>文本情绪/不确定性仅进入 P1/P2 Shadow，不得进正式回测</li></ol><b>复核要点：</b>文本时间戳、反事实泄漏、情绪分数稳定性、机构调研与基金经理情绪代理口径。</div>
+</div></details>
+
+<details class="feature-family" id="task-f16" data-search="f16 日历 事件 数据质量 freshness revision 任务"><summary><span><b>F16｜日历、事件与数据质量</b><small>防止模型把季末、长假、成分调整或数据缺失误判为新状态。</small></span><em>22 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>month_quarter_end</code>、<code>holiday_gap</code>、<code>earnings_season</code>、<code>ipo_intensity</code>、<code>index_rebalance</code>、<code>unlock_calendar</code>、<code>data_freshness</code>、<code>missing_coverage</code>、<code>stale_quote_ratio</code>、<code>revision_rate</code>、<code>futures/options_expiry_window</code>、<code>macro_event_calendar</code>、<code>revision_risk_flag</code>、<code>timezone_alignment_flag</code></td><td>日历/事件/数据质量维表（现有+公告）</td><td><span class="feature-badge priority-p0">P0</span> 日历/新鲜度<br><span class="feature-badge priority-p1">P1</span> 其余</td><td><span class="feature-badge badge-b">B</span> 可由现有构造</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>交易日历维表（长假、季末、调仓、到期、会议窗口）</li><li>数据陈旧度分、覆盖断点、修订风险标记、时区对齐检查</li><li>IPO/解禁日历；涨跌停制度版本表（market_rule_version）</li></ol><b>复核要点：</b>长假与季末、制度变化分段、数据缺失≠状态变化。</div>
+</div></details>
+</section>
+
+<section class="feature-library-panel" id="task-g5">
+<div class="group-header"><h2>T5｜G5 任务清单：因子与模型健康治理（F15, F17, F18, F20–F22）</h2><p>120 项 · P0×66 · 数据源：因子/OOS 日志、分钟 proxy、模型输出</p></div>
+<div class="feature-family-nav"><a href="#task-f15"><b>F15</b><span>因子模型健康</span><em>29</em></a><a href="#task-f17"><b>F17</b><span>微观结构订单流</span><em>22</em></a><a href="#task-f18"><b>F18</b><span>动量崩溃尾部</span><em>14</em></a><a href="#task-f20"><b>F20</b><span>隐式状态潜变量</span><em>15</em></a><a href="#task-f21"><b>F21</b><span>漂移拥挤防衰减</span><em>24</em></a><a href="#task-f22"><b>F22</b><span>因子家族软状态</span><em>16</em></a></div>
+
+<details class="feature-family" id="task-f15" data-search="f15 因子 模型 健康 ic drawdown decay 任务"><summary><span><b>F15｜因子与模型健康度</b><small>识别「市场状态未变，但因子/模型已经失效」的情况。</small></span><em>29 项 · P0</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>factor_ic</code>、<code>factor_icir</code>、<code>factor_return</code>、<code>factor_drawdown</code>、<code>factor_turnover</code>、<code>factor_capacity</code>、<code>factor_corr</code>、<code>factor_effective_dim</code>、<code>factor_crowding</code>、<code>factor_decay_half_life</code>、<code>model_residual_drift</code>、<code>psi/mmd</code>、<code>prob_calibration</code>、<code>expert_disagreement</code>、<code>router_entropy</code></td><td>现有因子值 + 严格 OOS 日志（模型层）</td><td><span class="feature-badge priority-p0">P0</span> 主体</td><td><span class="feature-badge badge-b">B</span> 依赖 OOS ledger</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>建立 raw-factor shadow ledger（标签基于未门控原始因子，与生产 gate 解耦）</li><li>IC/ICIR/回撤/换手/容量/相关/有效维度/拥挤/半衰期</li><li>残差漂移、PSI/MMD、校准误差、专家分歧、路由熵</li></ol><b>复核要点：</b>OOS 口径、标签成熟、不得使用未来 IC；family 级报告而非单因子平均。</div>
+</div></details>
+
+<details class="feature-family" id="task-f17" data-search="f17 微观结构 订单流 vpin lob 任务"><summary><span><b>F17｜市场微观结构、订单流毒性与流动性脆弱</b><small>把 VPIN、LOB 深度耗散、撤单与微观压力转成盘中 Regime / 执行风险输入。</small></span><em>22 项 · P1/P2</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>regime_vpin_multiscale</code>、<code>vpin_proxy_bvc</code>、<code>vpin_acceleration</code>、<code>signed_vpin_pressure</code>、<code>orderflow_volume_time_imbalance</code>、<code>lob_depth_slope_divergence</code>、<code>lob_depth_replenishment_ratio</code>、<code>lob_liquidity_void_flag</code>、<code>spread_depth_stress</code>、<code>cancel_trade_ratio</code>、<code>ohlcv_pressure_asymmetry</code>、<code>kyle_lambda_intraday</code></td><td>分钟（BVC 代理）；真实 VPIN/LOB 需 Level-2/逐笔（缺口）</td><td><span class="feature-badge priority-p1">P1</span> proxy/BVC<br><span class="feature-badge priority-p2">P2</span> 真实 L2</td><td><span class="feature-badge badge-b">B</span> proxy<br><span class="feature-badge badge-c">C</span> 真实 L2</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>先做 BVC-VPIN 代理与 <code>intraday_imbalance</code>/Amihud 简单基线同测</li><li>分钟压力代理（OHLCV 多空压力、价差×深度）</li><li>真实版（volume-bucket VPIN、LOB、撤单）待 L2 到位</li></ol><b>复核要点：</b>代理不得冒充真实 VPIN（独立 feature_id）；买卖方向分类算法断点写入 formula_version。</div>
+</div></details>
+
+<details class="feature-family" id="task-f18" data-search="f18 动量崩溃 尾部 商业周期 drawdown rebound beta 任务"><summary><span><b>F18｜动量崩溃、尾部风险与商业周期</b><small>显式识别「深跌 + 高波 + 强反弹 + Beta不对称」的动量崩溃风险。</small></span><em>14 项 · P0/P1</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>market_drawdown_duration</code>、<code>contemporaneous_rebound_spike</code>、<code>momentum_winner_beta</code>、<code>momentum_loser_beta</code>、<code>factor_beta_asymmetry_spread</code>、<code>momentum_factor_volatility</code>、<code>regime_composite_panic_score</code>、<code>factor_crowded_loser_unwind</code>、<code>business_cycle_regime_prob</code>、<code>cycle_transition_risk</code></td><td>现有收益/因子；滚动 Beta 只用历史</td><td><span class="feature-badge priority-p0">P0</span> 回撤/反弹/Beta差<br><span class="feature-badge priority-p1">P1</span> 其余</td><td><span class="feature-badge badge-b">B</span> 可由现有构造</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>回撤深度/持续期、同期反弹尖峰</li><li>赢家/输家 Beta 差与凸性、动量因子波动/负偏</li><li>拥挤输家平仓、恐慌综合分、商业周期概率</li></ol><b>复核要点：</b>「熊市」≠动量崩溃；需联合条件与样本外校准；滚动 Beta。</div>
+</div></details>
+
+<details class="feature-family" id="task-f20" data-search="f20 隐式状态 码本 潜变量 gumbel hirevae hurst 任务"><summary><span><b>F20｜深度隐式状态、离散码本与连续潜变量</b><small>把 Gumbel-Softmax、HireVAE、VQ 与 Hurst 等输出注册为可审计的状态特征。</small></span><em>15 项 · P1/P2</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>gumbel_regime_prob_k</code>、<code>gumbel_regime_entropy</code>、<code>hirevae_market_embedding</code>、<code>vq_codebook_index/distance/entropy</code>、<code>latent_regime_persistence</code>、<code>hurst_exponent_rolling</code>、<code>prior_posterior_kl_trainonly</code>、<code>latent_codebook_occupancy_entropy</code>、<code>regime_embedding_stability</code></td><td>模型衍生输出（严格 OOS）；posterior 与 prior 物理隔离</td><td><span class="feature-badge priority-p1">P1</span> 诊断<br><span class="feature-badge priority-p2">P2</span> 研究</td><td><span class="feature-badge badge-c">C</span> 模型未跑<br><span class="feature-badge badge-d">D</span> 含未来 posterior 禁止</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>先过泄漏审计与稳定性验收；Hurst 滚动/漂移</li><li>Gumbel/HireVAE/VQ 概率与熵注册为 side-channel</li><li>不允许含未来收益的 posterior 做实时特征</li></ol><b>复核要点：</b>prior/posterior 物理隔离；无监督 cluster ID 不得直接决定仓位。</div>
+</div></details>
+
+<details class="feature-family" id="task-f21" data-search="f21 漂移 拥挤 防衰减 psi wasserstein ic decay crowding 任务"><summary><span><b>F21｜概念漂移、因子拥挤与防衰减治理</b><small>把输入漂移、OOS损失、因子IC衰减、谱拥挤和AST同质化接入治理。</small></span><em>24 项 · P0</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>concept_drift_severity</code>、<code>input_psi_shift</code>、<code>input_wasserstein_shift</code>、<code>input_mmd_shift</code>、<code>residual_mean/scale_shift</code>、<code>expert_oos_loss_acceleration</code>、<code>factor_ic_decay_speed</code>、<code>factor_cov_first_eigen_share</code>、<code>factor_effective_rank</code>、<code>factor_crowding_score</code>、<code>ast_similarity_pressure</code>、<code>expert_effective_sample_size</code>、<code>label_maturity_coverage</code>、<code>router_regret_vs_oracle</code></td><td>现有因子 + 模型日志（可由现有构造）</td><td><span class="feature-badge priority-p0">P0</span> 主体</td><td><span class="feature-badge badge-b">B</span> 依赖成熟标签/OOS 日志</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>PSI/Wasserstein/MMD、残差漂移、Page-Hinkley 报警</li><li>OOS 损失加速度、IC 衰减速度、第一特征值占比/有效秩</li><li>谱拥挤、持仓重叠、平仓敏感性、环境不变性</li></ol><b>复核要点：</b>标签未成熟前不得使用未来 IC/OOS；拥挤指标≠「市场必跌」。</div>
+</div></details>
+
+<details class="feature-family" id="task-f22" data-search="f22 因子家族 软状态 失效 momentum decay reversal 任务"><summary><span><b>F22｜因子家族软状态、持续性与失效诊断</b><small>刻画因子自身的持续、衰减和反转风险，处理因子失效问题。</small></span><em>16 项 · P0</em></summary><div class="feature-family-body">
+<table class="feature-table"><thead><tr><th>代表特征</th><th>数据源与 PIT</th><th>优先级</th><th>Readiness</th></tr></thead><tbody>
+<tr><td><code>factor_return_momentum_20/60/252</code>、<code>factor_ic_momentum_20/60</code>、<code>factor_ic_drawdown</code>、<code>factor_ic_slope</code>、<code>factor_ic_sign_stability</code>、<code>factor_family_prob_effective/decay/reversal</code>、<code>factor_conditional_beta_drift</code>、<code>factor_loading_turnover</code>、<code>factor_covariate_shift_score</code>、<code>factor_local_conformal_width</code></td><td>现有因子 + 严格 OOS 日志</td><td><span class="feature-badge priority-p0">P0</span> 主体</td><td><span class="feature-badge badge-b">B</span> 可由现有构造</td></tr>
+</tbody></table>
+<div class="task-steps"><b>关键实现动作：</b><ol><li>家族收益/IC 动量、IC 回撤/斜率/符号稳定性</li><li>有效/衰减/反转概率；条件 Beta 漂移；载荷换手</li><li>协变量/概念 shift 分解；局部 conformal 宽度</li></ol><b>复核要点：</b>不为每个单因子各训一个状态模型；输入漂移≠因子关系已失效。</div>
+</div></details>
+</section>
+
+<section class="panel" id="coordination">
+<div class="eyebrow">COORDINATION · 0A–0D</div>
+<h2>协作流程：五组如何一起完成 Stage 0</h2>
+<table class="impl-table">
+<thead><tr><th>Stage 0 动作</th><th>五组协作方式</th><th>必须产物</th><th>验收</th></tr></thead>
+<tbody>
+<tr><td><b>0A｜全量清点</b></td><td>5 个双人组按本文件分组切分 F01–F23；每组一人实现、一人交叉复核，完成后轮换复核。</td><td>587 项 Feature Readiness Matrix：canonical_id、source、formula、frequency、PIT time、history_start、coverage、status A/B/C/D。</td><td>587/587 都有负责人、来源和状态；无「先空着以后再说」的字段。</td></tr>
+<tr><td><b>0B｜字段与原始数据补齐</b></td><td>各组优先解决 B 类（现有日线/分钟/指数/ETF/行业/估值/财务/交易状态/因子日志可构造）；缺口进入 Data Gap List。</td><td>Raw Data Gap List、source mapping、数据质量报告、行业/概念 PIT membership 表。</td><td>首轮 STATE-CORE / MVP / TRANS 所需字段 100% 可重建；缺口不阻塞 MVP。</td></tr>
+<tr><td><b>0C｜特征实现与回放</b></td><td>5 组并行实现；统一函数接口、winsor/标准化时点、缺失处理与 available_time；禁止私有版本。</td><td>state_feature_snapshot、Feature Store、公式 hash、版本号、coverage report。</td><td>任意历史交易日可重建当日可见特征；重复运行一致；无 future shift。</td></tr>
+<tr><td><b>0D｜交叉验收</b></td><td>每组检查另一组；至少抽查极端行情、停复牌、涨跌停、指数/行业成分变化、财报发布日。</td><td>PIT Replay Test、异常样本表、修复记录。</td><td>G0 通过后全员才进入 Market State MVP。</td></tr>
+</tbody></table>
+<div class="callout direct"><b>组间接口（防版本错配）：</b>每份日快照保存 <code>state_model_version / feature_version / factor_health_version / expert_version / router_version</code> 完整 bundle；参数、特征定义、K、Health 标签与阈值冻结后开启新版本，不覆盖旧回测；回滚必须回到完整 bundle 而非单文件。</div>
+</section>
+
+<section class="panel" id="gates">
+<div class="eyebrow">GATES &amp; ACCEPTANCE</div>
+<h2>Gate 与验收标准</h2>
+<div class="priority-grid">
+<div><b>G0｜Stage 0 通过</b><p>STATE-CORE-12~15、MVP-28、首轮 TRANS 输入 100% 可在历史任意交易日按当时信息重建；A/B 类实现完成；C/D 类明确且不偷偷进入回测；PIT Replay Test 通过。</p></div>
+<div><b>数据纪律</b><p>依赖尚未采购的 Level-2、完整期权 Greeks、宏观 vintage 等特征不得用事后数据或静态历史回填替代；必须进入缺口清单并给出 proxy、数据建设计划与是否阻塞 P0 的结论。</p></div>
+<div><b>OOS 纪律</b><p>2026 固定为 known-shift stress set；参数冻结后使用 forward shadow 作为真正未见检验；禁止围绕 2026 已知失效反复调参并称为「未见测试」。</p></div>
+<div><b>样本纪律</b><p>每日标签不是独立样本（相邻日期共享未来收益）：训练集按最大 label horizon 做 purged/embargo；置信区间用时间块 bootstrap；不把日期硬切 K 份或伪造专家样本量。</p></div>
+</div>
+<div class="task-gate">G0 完成定义：587/587 项有明确状态（A/B/C/D）· A+B 已落表 · C/D 有负责人与计划 · 无 future shift · state_feature_snapshot 可回放</div>
+</section>
+
+<section class="panel" id="owner-registry">
+<div class="eyebrow">OWNER REGISTRY · TO BE FILLED</div>
+<h2>负责人登记表（占位模板）</h2>
+<p>每组 2 人：A 负责实现，B 负责复核；本组完成后轮换角色并与其他组交叉 review。下列为待填写模板，填入姓名后即形成 587 项 Readiness Matrix 的分组负责人。</p>
+<div class="owner-grid">
+<div class="owner-card"><b>G1 市场价量核心</b>F01,F02,F03,F04,F06 · 126 项<div class="owner-slot">实现（A）<code>____</code>复核（B）<code>____</code></div></div>
+<div class="owner-card"><b>G2 行业风格·资金流</b>F05,F08,F23 · 108 项<div class="owner-slot">实现（A）<code>____</code>复核（B）<code>____</code></div></div>
+<div class="owner-card"><b>G3 衍生品·离岸全球</b>F07,F12,F13,F14,F19 · 125 项<div class="owner-slot">实现（A）<code>____</code>复核（B）<code>____</code></div></div>
+<div class="owner-card"><b>G4 宏观利率·治理</b>F09,F10,F11,F16 · 108 项<div class="owner-slot">实现（A）<code>____</code>复核（B）<code>____</code></div></div>
+<div class="owner-card"><b>G5 因子模型健康</b>F15,F17,F18,F20,F21,F22 · 120 项<div class="owner-slot">实现（A）<code>____</code>复核（B）<code>____</code></div></div>
+</div>
+<table class="owner-table">
+<thead><tr><th>组</th><th>Fxx 清单</th><th>项数</th><th>实现人（A）</th><th>复核人（B）</th><th>交叉复核对象</th><th>状态</th><th>完成日期</th></tr></thead>
+<tbody>
+<tr><td>G1</td><td>F01, F02, F03, F04, F06</td><td>126</td><td></td><td></td><td>G5</td><td>□0A □0B □0C □0D</td><td></td></tr>
+<tr><td>G2</td><td>F05, F08, F23</td><td>108</td><td></td><td></td><td>G4</td><td>□0A □0B □0C □0D</td><td></td></tr>
+<tr><td>G3</td><td>F07, F12, F13, F14, F19</td><td>125</td><td></td><td></td><td>G1</td><td>□0A □0B □0C □0D</td><td></td></tr>
+<tr><td>G4</td><td>F09, F10, F11, F16</td><td>108</td><td></td><td></td><td>G2</td><td>□0A □0B □0C □0D</td><td></td></tr>
+<tr><td>G5</td><td>F15, F17, F18, F20, F21, F22</td><td>120</td><td></td><td></td><td>G3</td><td>□0A □0B □0C □0D</td><td></td></tr>
+</tbody>
+</table>
+<div class="small-note">「交叉复核对象」建议错位安排：G1↔G5、G2↔G4、G3↔G1、G4↔G2、G5↔G3，确保每组的实现被另一组核查，且相邻主题（G1↔G5 的量价↔因子、G2↔G4 的行业↔宏观）能互相发现口径冲突。</div>
+</section>
+
+</main>
+<script>
+const navs=[...document.querySelectorAll('.nav-item')];
+const search=document.getElementById('search');
+const fams=[...document.querySelectorAll('.feature-family')];
+
+// Sidebar toggle
+const sideToggle=document.getElementById('sidebarToggle');
+function safeGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function safeSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function setSidebar(c){document.body.classList.toggle('sidebar-collapsed',c);safeSet('feGroupCollapsed',c?'1':'0')}
+if(sideToggle)sideToggle.addEventListener('click',()=>setSidebar(!document.body.classList.contains('sidebar-collapsed')));
+if(safeGet('feGroupCollapsed')==='1')setSidebar(true);
+
+// Search: filter feature-family task blocks by text
+function applySearch(){
+  const q=search.value.trim().toLowerCase();
+  fams.forEach(f=>{
+    const hay=(f.dataset.search||'').toLowerCase();
+    f.style.display=(!q||hay.includes(q))?'':'none';
+  });
+  navs.forEach(a=>{const t=document.getElementById(a.dataset.target);if(t)a.classList.toggle('hidden',t.style.display==='none');});
+}
+search.addEventListener('input',applySearch);
+
+// Nav click: smooth scroll, open ancestor details, highlight
+function openAncestors(t){let p=t;while(p){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}}
+navs.forEach(a=>a.addEventListener('click',e=>{
+  e.preventDefault();
+  const t=document.getElementById(a.dataset.target); if(!t)return;
+  openAncestors(t);
+  if(t.tagName==='DETAILS')t.open=true;
+  history.replaceState(null,'','#'+t.id);
+  const y=t.getBoundingClientRect().top+window.scrollY-16;
+  window.scrollTo({top:y,behavior:'smooth'});
+}));
+
+// Active nav highlight via scroll
+const sections=[...document.querySelectorAll('section[id], .feature-library-panel[id]')];
+const observer=new IntersectionObserver(entries=>{
+  const vis=entries.filter(x=>x.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);
+  if(!vis.length)return;
+  const id=vis[0].target.id;
+  navs.forEach(a=>a.classList.toggle('active',a.dataset.target===id));
+},{rootMargin:'-12% 0px -78% 0px',threshold:[0,.1]});
+sections.forEach(s=>observer.observe(s));
+
+// Deep-link on load
+if(location.hash){const t=document.querySelector(location.hash);if(t){openAncestors(t);if(t.tagName==='DETAILS')t.open=true;setTimeout(()=>{const y=t.getBoundingClientRect().top+window.scrollY-16;window.scrollTo({top:y});},0);}}
+</script>
+</body></html>
